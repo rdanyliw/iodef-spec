@@ -126,10 +126,9 @@ The following are in the Record class:
         <xs:attribute name="lang"
                       type="xs:language"/>
         <xs:attribute name="restriction"
-        type="iodef:restriction-type" default="private"/>
-        <!-- CHANGE - added attribute to mark sets of indicators -->
+                      type="iodef:restriction-type" default="private"/>
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -264,7 +263,6 @@ The following are in the Record class:
       </xs:complexType>
     </xs:element>
     <xs:element name="CampaignID" type="xs:string"/>
-
 
   <!--
    ==================================================================
@@ -441,17 +439,10 @@ The following are in the Record class:
                       type="iodef:action-type" use="required"/>
         <xs:attribute name="ext-action"
         type="xs:string" use="optional"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-          used to connect indicators in different representations
-        -->
         <xs:attribute name="indicator-uid"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE: Including an indicator set ID that may be used
-          to detail changes int he history class as it relates to 
-          indicators or sets.
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -479,16 +470,11 @@ The following are in the Record class:
         <xs:attribute name="action"
                       type="iodef:action-type" default="other"/>
         <xs:attribute name="ext-action"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE - adding indicator set id to connect the 
-             reference to the appropriate set of indicators -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-          used to connect indicators in different representations
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -533,12 +519,9 @@ The following are in the Record class:
              in products?
         -->
         <xs:attribute name="indicator-set-id"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-          used to connect indicators in different representations
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
-        type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
         <!-- Adding in Attack Type -->
         <xs:attribute name="attacktype" type="att-type" 
                       use="required">
@@ -576,20 +559,11 @@ The following are in the Record class:
           </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="restriction"
-        type="iodef:restriction-type"/>
-        <!-- CHANGE: Including an indicator set ID for indicators, 
-             may be used to connect indicators in different 
-             representations
-        -->
+                      type="iodef:restriction-type"/>
         <xs:attribute name="indicator-set-id"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-          used to connect indicators in different representations.
-          May need separate confidence ratings for different 
-          indicators.
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:element name="Impact">
@@ -722,10 +696,11 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="restriction"
-        type="iodef:restriction-type" default="default"/>
-        <!-- CHANGE - added attribute to mark sets of indicators -->
+                      type="iodef:restriction-type" 
+                      default="default"/>
+
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -794,18 +769,10 @@ The following are in the Record class:
              indicators -->
         <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
-        <xs:attribute name="spoofed"
-                      default="unknown">
-          <xs:simpleType>
-            <xs:restriction base="xs:NMTOKEN">
-              <xs:enumeration value="unknown"/>
-              <xs:enumeration value="yes"/>
-              <xs:enumeration value="no"/>
-            </xs:restriction>
-          </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="virtual" type="yes-no-type"
-                      use="optional" default="no"/>
+        <xs:attribute name="spoofed" type="yes-no-unknown-type"
+                      default="unknown" />
+        <xs:attribute name="virtual" type="yes-no-unknown-type"
+                      use="optional" default="unknown"/>
         <xs:attribute name="ownership">
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
@@ -891,12 +858,10 @@ The following are in the Record class:
                           type="xs:string"/>
             <xs:attribute name="vlan-num"
                           type="xs:integer"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-             used to connect indicators in different representations
-        -->
             <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-
+                          type="xs:string" use="optional"/>
+           <xs:attribute name="indicator-set-id"
+                          type="xs:string" use="optional"/>
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
@@ -1001,13 +966,9 @@ The following are in the Record class:
           used to connect indicators in different representations
         -->
         <xs:attribute name="indicator-uid"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE: Including an indicator set ID that may be used
-          to detail changes int he history class as it relates to 
-          indicators or sets.
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:simpleType name="PortlistType">
@@ -1195,7 +1156,11 @@ The following are in the Record class:
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="ext-category"
-      type="xs:string" use="optional"/>
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="indicator-set-id"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="indicator-uid"
+                    type="xs:string" use="optional"/>
      </xs:extension>
     </xs:simpleContent>
    </xs:complexType>
@@ -1249,15 +1214,9 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="restriction"
-        type="iodef:restriction-type"/>
-        <!-- CHANGE: Including a unique ID for an indicator.
-        -->
+                      type="iodef:restriction-type"/>
         <xs:attribute name="indicator-uid"
-          type="xs:string" use="optional"/>
-        <!-- CHANGE: Including a unique ID for sets of indicators,
-             may be used to connect indicators in different 
-             representations
-        -->
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
       </xs:complexType>
@@ -1335,13 +1294,10 @@ The following are in the Record class:
            </xs:complexType>
          </xs:element>
        </xs:sequence>
-         <!-- CHANGE: Including a unique ID for indicators, may be
-              used to connect indicators in different representations
-         -->
-         <xs:attribute name="indicator-uid"
-                   type="xs:string" use="optional"/>
-         <xs:attribute name="indicator-set-id"
-                       type="xs:string" use="optional"/>
+       <xs:attribute name="indicator-uid"
+                     type="xs:string" use="optional"/>
+       <xs:attribute name="indicator-set-id"
+                     type="xs:string" use="optional"/>
      </xs:complexType>
 <!-- CHANGE: Should this be broken out as another class
      for WindowsRegistryKeyModified and add attributes
@@ -1404,8 +1360,6 @@ The following are in the Record class:
       <!-- Adding a boolean yes/no, 0/1option to indicate if the
         signature or hash is valid -->
       <xs:attribute name="valid" type="xs:boolean" use="optional" />
-      <!-- Indicator-uid and indicator-set-id to connect to the 
-           related file or email indicators outside of this class -->
       <xs:attribute name="indicator-uid"
                     type="xs:string" use="optional"/>
       <xs:attribute name="indicator-set-id"
@@ -1506,6 +1460,14 @@ The following are in the Record class:
       </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="yes-no-unknown-type">
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="yes"/>
+        <xs:enumeration value="no"/>
+        <xs:enumeration value="unknown"/>
+      </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="restriction-type">
       <xs:restriction base="xs:NMTOKEN">
         <xs:enumeration value="default"/>
@@ -1602,4 +1564,4 @@ The following are in the Record class:
           <xs:enumeration value="ext-value"/>
         </xs:restriction>
       </xs:simpleType>
-  </xs:schema>
+  </xs:schema>		

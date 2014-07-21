@@ -1,12 +1,12 @@
 editorial = just the text was changed
 schema = schema was modified
 
-** (schema) Added Contact/ContactTitle to describe the title of the contact (Issue #35)
-** (schema) Added System/AssetId to represent an opaque asset identifier (Issue #33)
-** (schema) Added RelatedActivity/{ThreadActor, Campaign, Confidence, Description, AdditionalData} (Issue #31 and partial #22)
-** (schema) Changed cardinality of Incident/RelatedActivity to be 0..many in Incident (needed for Issue #31)
-** (schema) Added System@virtual to convey whether a device is physical or virtual (Issue #16)
-** (schema) Added Incident@purpose={watch} (Issue #17)
-** (schema) Added System@ownership to describe asset ownership (Issue #34)
-** (schema) Various fixes to schema to make it valid 
-** (editorial) Minor spelling fixes
+
+** (editorial) Minor text changes
+** (editorial) Addressed many issues from Jerome Athias's review (http://www.ietf.org/mail-archive/web/mile/current/msg01252.html)  
+** (editorial) Addressed many issues from Tim Freestone's review (http://www.ietf.org/mail-archive/web/mile/current/msg01263.html)
+** (schema) Added System@virtual="unknown" enumerated value
+** (schema) Added a "yes-no-unknown" type used by System@spoofed and @virtual
+** (schema) Added Address@indicator-set-id to schema to be consistent with the text
+** (schema) Added DomainData@{indicator-uid, indicator-set-uid} (Issue #30)
+
