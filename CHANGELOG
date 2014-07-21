@@ -1,12 +1,30 @@
 editorial = just the text was changed
 schema = schema was modified
 
-
-** (editorial) Minor text changes
-** (editorial) Addressed many issues from Jerome Athias's review (http://www.ietf.org/mail-archive/web/mile/current/msg01252.html)  
-** (editorial) Addressed many issues from Tim Freestone's review (http://www.ietf.org/mail-archive/web/mile/current/msg01263.html)
-** (schema) Added System@virtual="unknown" enumerated value
-** (schema) Added a "yes-no-unknown" type used by System@spoofed and @virtual
-** (schema) Added Address@indicator-set-id to schema to be consistent with the text
-** (schema) Added DomainData@{indicator-uid, indicator-set-uid} (Issue #30)
-
+** (schema) Removed Incident/ReportId from the schema per WG discussion (Issue #15)
+** (schema) Reference EmailInfo with a ref in Service class
+** (schema) Reference WindowsRegistryKeysModified with a ref in the RecordData class
+** (schema) Rename EmailInfo/{Email,X-Mailer} to {EmailFrom,EmailX-Mailer}
+** (schema) Added a missing @indicator-set-id to EmailInfo
+** (schema) Added @indicator-id to Incident and EventData
+** (schema) Renamed HashInformation@ext-category to @ext-type to fix a typo
+** (schema) Renamed HashSigDetails complexType to HashInformation
+** (schema) Reference HashInformation with a ref in the RecordData class
+** (schema) Fixed schema error introduced in the -01 draft.  RecordData should have a HashInformation child class not FileInfo and ds:Reference
+** (schema) Added Node/PostalAddress and rewrote text for Node/Location (Issue #11)
+** (schema) Added AdditionalData@dtype="bytes" value
+** (schema) Added Service/ApplicationHeader (Issue #26)
+** (schema) Renamed WindowsRegistryKeysAction/Key/Value to KeyValue to be consistent with KeyName
+** (schema) Renamed WindowsRegistryKeysAction/Key@ext-category to @ext-registryaction to fix typo
+** (schema) Added IODEF-Document/AdditionalData
+** (schema) Added {Expectation,HistoryItem}/DefinedCOA and @action="defined-coa" (Issue #32)
+** (schema) Renamed RelatedDNS@ext-category to @ext-RecordType
+** (editorial) Use xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0" in the namespace
+** (editorial) Added text to Security Considerations to carefully parse executable content
+** (editorial) Renamed Section 3.22 as WindowsRegistryKeysModified and corrected cardinality of aggregated classes
+** (editorial) Removed @indicator-uid and @indicator-set-id from the text describing Key since they belong in the parent WindowsRegistryKeysModified
+** (editorial) Changed RFC2822 reference to RFC5322
+** (editorial) Added reference to registry keys for WindowsRegistryKeysAction
+** (editorial) Consistently left aligned all diagrams
+** (editorial) Added at least blank sections for all previously undocumented classes in the schema
+** (editorial) Use reference names instead of numbers

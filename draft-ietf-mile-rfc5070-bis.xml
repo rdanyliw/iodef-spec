@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-03" 
+     docName="draft-ietf-mile-rfc5070-bis-04" 
      obsoletes="5070" 
      category="std">
 	
@@ -10,7 +10,7 @@
 <?rfc toc='yes'?>
 <?rfc subcompact='no'?>
 <?rfc sortrefs='no'?>
-<?rfc symrefs='no'?>
+<?rfc symrefs='yes'?>
 <?rfc iprnotified='yes' ?>
 
 <front>
@@ -59,6 +59,8 @@ The Incident Object Description Exchange Format v2</title>
 <keyword>security data sharing</keyword>
 <keyword>Computer Network Defense Service Provider</keyword>
 <keyword>CNDSP</keyword>
+<keyword>information sharing</keyword>
+<keyword>cyber indicators</keyword>
 
 <abstract>
 <t>The Incident Object Description Exchange Format (IODEF) defines a data representation that provides a framework for sharing information commonly exchanged by Computer Security Incident Response Teams (CSIRTs) about computer security incidents.  This document describes the information model for the 
@@ -130,7 +132,7 @@ This document contains changes with respect to its predecessor RFC5070.
 			
 <section title="Terminology" anchor="terminology">
 <t>
-The key words "MUST," "MUST NOT," "REQUIRED," "SHALL," "SHALL NOT," "SHOULD," "SHOULD NOT," "RECOMMENDED," "MAY," and "OPTIONAL" in this document are to be interpreted as described in <xref target="refs.rfc2119">RFC2119</xref>.
+The key words "MUST," "MUST NOT," "REQUIRED," "SHALL," "SHALL NOT," "SHOULD," "SHOULD NOT," "RECOMMENDED," "MAY," and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119" />.
 </t>
 <t>
 Definitions for some of the common computer security-related terminology used in this document can be found in Section 2 of <xref target="refs.requirements" />.
@@ -170,7 +172,7 @@ The domain of security analysis is not fully standardized and must rely on free-
 </t>
 
 <t>
-The IODEF is only one of several security relevant data representations being standardized.  Attempts were made to ensure they were complementary.  The data model of the <xref target="refs.IDMEF">Intrusion Detection Message Exchange Format</xref> influenced the design of the IODEF.
+The IODEF is only one of several security relevant data representations being standardized.  Attempts were made to ensure they were complementary.  The data model of the Intrusion Detection Message Exchange Format <xref target="RFC4765" /> influenced the design of the IODEF.
 </t>
 
 </list>
@@ -182,7 +184,7 @@ The IODEF is only one of several security relevant data representations being st
 
 <section title="About the IODEF Implementation" anchor="about_implement">
 
-<t>The IODEF implementation is specified as an <xref target="refs.xml">Extensible Markup Language (XML)</xref> <xref target="refs.schema">Schema</xref> in <xref target="schema" />.
+<t>The IODEF implementation is specified as an Extensible Markup Language (XML) <xref target="W3C.XML" /> Schema <xref target="W3C.SCHEMA" />.
 </t>
 
 <t>
@@ -194,27 +196,27 @@ Implementing the IODEF in XML provides numerous advantages.  Its extensibility m
 
 <section title="IODEF Data Types" anchor="iodef_data_types">
 <t>
-The various data elements of the IODEF data model are typed.  This section discusses these data types.  When possible, native Schema data types were adopted, but for more complicated formats, regular expressions (see <xref target="refs.schemadtypes">Appendix F of</xref>) or external standards were used.
+The various data elements of the IODEF data model are typed.  This section discusses these data types.  When possible, native Schema data types were adopted, but for more complicated formats, regular expressions (see Appendix F of <xref target="W3C.SCHEMA.DTYPES" />) or external standards were used.
 </t>
 
 <section title="Integers" anchor="dt_integers">
 <t>An integer is represented by the INTEGER data type.  Integer data MUST be encoded in Base 10.</t>
 
-<t>The INTEGER data type is implemented as an <xref target="refs.schemadtypes">"xs:integer"</xref> in the schema.</t>
+<t>The INTEGER data type is implemented as an "xs:integer" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 
 </section>
 
 <section title="Real Numbers" anchor="dt_real_numbers">
 <t>Real (floating-point) attributes are represented by the REAL data type.  Real data MUST be encoded in Base 10.</t>
 
-<t>The REAL data type is implemented as an <xref target="refs.schemadtypes">"xs:float"</xref> in the schema.</t>
+<t>The REAL data type is implemented as an "xs:float" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 
 </section>
 
 <section title="Characters and Strings" anchor="dt_char_strings">
 <t>A single character is represented by the CHARACTER data type.  A character string is represented by the STRING data type.  Special characters must be encoded using entity references.  See <xref target="encoding" />.</t>
 
-<t>The CHARACTER and STRING data types are implement as an <xref target="refs.schemadtypes">"xs:string"</xref> in the schema.</t>
+<t>The CHARACTER and STRING data types are implement as an "xs:string" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 
 </section>
 
@@ -227,13 +229,13 @@ The various data elements of the IODEF data model are typed.  This section discu
 <section title="Bytes" anchor="dt_bytes">
 <t>A binary octet is represented by the BYTE data type.  A sequence of binary octets is represented by the BYTE[] data type.  These octets are encoded using base64.</t>
 
-<t>The BYTE data type is implemented as an <xref target="refs.schemadtypes">"xs:base64Binary"</xref> in the schema.</t>
+<t>The BYTE data type is implemented as an "xs:base64Binary" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 </section>
 
 <section title="Hexadecimal Bytes" anchor="dt_hexbin">
 <t>A binary octet is represented by the HEXBIN (and HEXBIN[]) data type.  This octet is encoded as a character tuple consisting of two hexadecimal digits.</t>
 
-<t>The HEXBIN data type is implemented as an <xref target="refs.schemadtypes">"xs:hexBinary"</xref> in the schema.</t>
+<t>The HEXBIN data type is implemented as an "xs:hexBinary" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 </section>
 
 <?rfc needLines="10" ?>
@@ -247,15 +249,15 @@ The various data elements of the IODEF data model are typed.  This section discu
 <section title="Date-Time Strings" anchor="dt_date_time">
 <t>Date-time strings are represented by the DATETIME data type.  Each date-time string identifies a particular instant in time; ranges are not supported.</t>
 
-<t>Date-time strings are formatted according to a subset of <xref target="refs.iso8601">ISO 8601:2000</xref> documented in <xref target="refs.rfc3339">RFC 3339</xref>.</t>
+<t>Date-time strings are formatted according to a subset of <xref target="ISO8601" /> documented in <xref target="RFC3339" />.</t>
 
-<t>The DATETIME data type is implemented as an <xref target="refs.schemadtypes">"xs:dateTime"</xref> in the schema.</t>
+<t>The DATETIME data type is implemented as an "xs:dateTime" in the schema.</t>
 </section>
 
 <section title="Timezone String" anchor="dt_timezone">
 <t>A timezone offset from UTC is represented by the TIMEZONE data type.  It is formatted according to the following regular expression: "Z|[\+\-](0[0-9]|1[0-4]):[0-5][0-9]".
 </t>
-<t>The TIMEZONE data type is implemented as an "xs:string" with a regular expression constraint in the schema.  This regular expression is identical to the timezone representation implemented in an "xs:dateTime".</t>
+<t>The TIMEZONE data type is implemented as an "xs:string" with a regular expression constraint in <xref target="W3C.SCHEMA.DTYPES" />.  This regular expression is identical to the timezone representation implemented in an "xs:dateTime".</t>
 </section>  <!-- TIMEZONE DT -->
 
 
@@ -268,31 +270,31 @@ The various data elements of the IODEF data model are typed.  This section discu
 <?rfc needLines="10" ?>
 <section title="Postal Address" anchor="dt_postal_address">
 
-<t>A postal address is represented by the POSTAL data type.  This data type is an ML_STRING whose format is documented in Section 2.23 of <xref target="refs.rfc4519">RFC 4519</xref>.  It defines a postal address as a free-form multi-line string separated by the "$" character.
+<t>A postal address is represented by the POSTAL data type.  This data type is an ML_STRING whose format is documented in Section 2.23 of <xref target="RFC4519" />.  It defines a postal address as a free-form multi-line string separated by the "$" character.
 </t>
 <t>The POSTAL data type is implemented as an "xs:string" in the schema.</t>
 </section>  <!-- Postal Address DT -->
 
 <section title="Person or Organization" anchor="dt_person">
-<t>The name of an individual or organization is represented by the NAME data type.  This data type is an ML_STRING whose format is documented in Section 2.3 of <xref target="refs.rfc4519">RFC 4519</xref>.
+<t>The name of an individual or organization is represented by the NAME data type.  This data type is an ML_STRING whose format is documented in Section 2.3 of <xref target="RFC4519" />.
 </t>
 <t>The NAME data type is implemented as an "xs:string" in the schema.</t>
 </section>  <!-- Person DT -->
 
 <section title="Telephone and Fax Numbers" anchor="dt_phone">
-<t>A telephone or fax number is represented by the PHONE data type.  The format of the PHONE data type is documented in Section 2.35 of <xref target="refs.rfc4519">RFC 4519</xref>.
+<t>A telephone or fax number is represented by the PHONE data type.  The format of the PHONE data type is documented in Section 2.35 of <xref target="RFC4519" />.
 </t>
 <t>The PHONE data type is implemented as an "xs:string" in the schema.</t>
 </section>  <!-- Telephone DT -->
 
 <section title="Email String" anchor="dt_email">
-<t>An email address is represented by the EMAIL data type.  The format of the EMAIL data type is documented in Section 3.4.1 <xref target="refs.rfc2822">RFC 2822</xref>
+<t>An email address is represented by the EMAIL data type.  The format of the EMAIL data type is documented in Section 3.4.1 <xref target="RFC5322" />.
 </t>
 <t>The EMAIL data type is implemented as an "xs:string" in the schema.</t>
 </section>  <!-- Email DT -->
 
 <section title="Uniform Resource Locator strings" anchor="dt_url">
-<t>A uniform resource locator (URL) is represented by the URL data type.  The format of the URL data type is documented in <xref target="refs.url">RFC 2396</xref>.
+<t>A uniform resource locator (URL) is represented by the URL data type.  The format of the URL data type is documented in <xref target="RFC3986" />.
 </t>
 <t>The URL data type is implemented as an "xs:anyURI" in the schema.</t>
 </section>  <!-- URL DT -->
@@ -315,8 +317,8 @@ The IODEF-Document class is the top level class in the IODEF data model.  All IO
 +-----------------+       
 | IODEF-Document  |
 +-----------------+
-| STRING version  |<>--{1..*}--[ Incident     ]
-| ENUM lang       |
+| STRING version  |<>--{1..*}--[ Incident       ]
+| ENUM lang       |<>--{0..*}--[ AdditionalData ]
 | STRING formatid |
 +-----------------+
 		]]></artwork>
@@ -326,6 +328,7 @@ The IODEF-Document class is the top level class in the IODEF data model.  All IO
 <t>The aggregate class that constitute IODEF-Document is:
 <list style="hanging">
 <t hangText="Incident"><vspace/>One or more.  The information related to a single incident.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.</t>
 </list>
 </t>
 
@@ -333,7 +336,7 @@ The IODEF-Document class is the top level class in the IODEF data model.  All IO
 <list style="hanging">
 <t hangText="version"><vspace/>Required.  STRING.  The IODEF specification version number to which this IODEF document conforms.  The value of this attribute MUST be "2.00"</t>
 
-<t hangText="lang"><vspace/>Required.  ENUM.  A valid language code per <xref target="refs.rfc4646">RFC 4646</xref> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Required.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 <t hangText="formatid"><vspace/>Optional.  STRING.  A free-form string to convey processing instructions to the recipient of the document.  Its semantics must be negotiated out-of-band.</t>
 	</list></t>
@@ -356,8 +359,8 @@ Every incident is represented by an instance of the Incident class.  This class 
 | STRING ext-purpose      |<>--{0..1}--[ AlternativeID   ]
 | ENUM lang               |<>--{0..*}--[ RelatedActivity ]
 | ENUM restriction        |<>--{0..1}--[ DetectTime      ]
-| STRING indicator-set-id |<>--{0..1}--[ StartTime       ]
-|                         |<>--{0..1}--[ EndTime         ]
+| STRING indicator-uid    |<>--{0..1}--[ StartTime       ]
+| STRING indicator-set-id |<>--{0..1}--[ EndTime         ]
 |                         |<>----------[ ReportTime      ]
 |                         |<>--{0..*}--[ Description     ]
 |                         |<>--{1..*}--[ Assessment      ]
@@ -387,7 +390,6 @@ Every incident is represented by an instance of the Incident class.  This class 
 <t hangText="EndTime"><vspace/>Zero or one.  The time the incident ended.</t>
 
 <t hangText="ReportTime"><vspace/>One.  The time the incident was reported.</t>
-
 
 <t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form textual description of the incident.</t>
 
@@ -429,10 +431,24 @@ This attribute is defined as an enumerated list:
 
 <t hangText="ext-purpose"><vspace/>Optional.  STRING.  A means by which to extend the purpose attribute.  See <xref target="extending_enums" />.</t>
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="refs.rfc4646">RFC 4646</xref> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
-<t hangText="restriction"><vspace/>
-Optional.  ENUM.  This attribute indicates the disclosure guidelines to which the sender expects the recipient to adhere for the information represented in this class and its children.  This guideline provides no security since there are no specified technical means to ensure that the recipient of the document handles the information as the sender requested.
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
+
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+						
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+
+</list></t>
+
+</section>  <!-- Incident class -->
+
+<section title="Common Attributes" anchor="common_attributes">
+<t>There are a number of recurring attributes used by the data model.  They are documented in this section.</t>
+
+<section title="restriction Attribute" anchor="restriction">
+<t>
+The restriction attribute indicates the disclosure guidelines to which the sender expects the recipient to adhere for the information represented in this class and its children.  This guideline provides no security since there are no specified technical means to ensure that the recipient of the document handles the information as the sender requested.
 </t>
 <t>
 The value of this attribute is logically inherited by the children of this class.  That is to say, the disclosure rules applied to this class, also apply to its children.  
@@ -454,11 +470,24 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t>amber. Same as 'need-to-know'.</t>
 <t>red. Same as 'private'.</t>
 </list></t>
-								
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+</section> <!-- @restriction -->
 
-</list></t>
-</section>  <!-- Incident class -->
+<section title="Indicator Attributes" anchor="indicator_attributes">
+<t>For data elements that are commonly used as indicators, the data model uses four attributes to facilitate their ... </t>  
+
+<t>
+<list style="hanging">
+<t hangText="indicator-uid"><vspace/>STRING.  See <xref target="indicator_attributes" />.</t>
+						
+<t hangText="indicator-set-id"><vspace/>STRING.  See <xref target="indicator_attributes" />.</t>
+</list>
+</t>
+
+
+
+</section> <!-- indicator attributes -->
+
+</section> <!-- Common Attributes -->
 
 <section title="IncidentID Class" anchor="IncidentID">
 <t>The IncidentID class represents an incident tracking number that is unique in the context of the CSIRT and identifies the activity characterized in an IODEF Document.  This identifier would serve as an index into the CSIRT incident handling system.  The combination of the name attribute and the string in the element content MUST be a globally unique identifier describing the activity.  Documents generated by a given CSIRT MUST NOT reuse the same value unless they are referencing the same incident.</t>
@@ -483,7 +512,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t hangText="instance"><vspace/>Optional.  STRING.  An identifier referencing a subset of the named incident.</t>
 
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.  The default value is "public".</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.  The default value is "public".</t>
 
 	</list>
 	</t>
@@ -496,12 +525,12 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t>
 	<figure title="The AlternativeID Class" anchor="figure_AlternativeID_class">
 		<artwork><![CDATA[
-      +------------------+
-      | AlternativeID    |
-      +------------------+
-      | ENUM restriction |<>--{1..*}--[ IncidentID ]
-      |                  |
-      +------------------+
++------------------+
+| AlternativeID    |
++------------------+
+| ENUM restriction |<>--{1..*}--[ IncidentID ]
+|                  |
++------------------+
       ]]></artwork></figure></t>
 	
 	<t>The aggregate class that constitutes AlternativeID is:
@@ -525,17 +554,17 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t>
 <figure title="RelatedActivity Class" anchor="figure_RelatedActivity_class">
 <artwork><![CDATA[
-      +------------------+
-      | RelatedActivity  |
-      +------------------+
-      | ENUM restriction |<>--{0..*}--[ IncidentID     ]
-      |                  |<>--{0..*}--[ URL            ]
-      |                  |<>--{0..*}--[ ThreatActor    ]
-      |                  |<>--{0..*}--[ Campaign       ]
-      |                  |<>--{0..1}--[ Confidence     ]
-      |                  |<>--{0..*}--[ Description    ]
-      |                  |<>--{0..*}--[ AdditionalData ]
-      +------------------+
++------------------+
+| RelatedActivity  |
++------------------+
+| ENUM restriction |<>--{0..*}--[ IncidentID     ]
+|                  |<>--{0..*}--[ URL            ]
+|                  |<>--{0..*}--[ ThreatActor    ]
+|                  |<>--{0..*}--[ Campaign       ]
+|                  |<>--{0..1}--[ Confidence     ]
+|                  |<>--{0..*}--[ Description    ]
+|                  |<>--{0..*}--[ AdditionalData ]
++------------------+
       ]]></artwork></figure>
 	</t>
 
@@ -562,7 +591,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>The RelatedActivity class has one attribute:
 <list style="hanging">
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 </list></t>
 
    </section> <!-- RelatedActivity class -->
@@ -574,13 +603,13 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t>
 <figure title="ThreatActor Class" anchor="figure_ThreatActor_class">
 <artwork><![CDATA[
-      +------------------+
-      | Actor            |
-      +------------------+
-      | ENUM restriction |<>--{0..1}--[ ThreatActorID  ]
-      |                  |<>--{0..*}--[ Description    ]
-      |                  |<>--{0..*}--[ AdditionalData ]
-      +------------------+
++------------------+
+| Actor            |
++------------------+
+| ENUM restriction |<>--{0..1}--[ ThreatActorID  ]
+|                  |<>--{0..*}--[ Description    ]
+|                  |<>--{0..*}--[ AdditionalData ]
++------------------+
       ]]></artwork></figure>
 	</t>
 
@@ -599,7 +628,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>The ThreatActor class has one attribute:
 <list style="hanging">
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 </list></t>
 
 </section> <!-- ThreatActor class -->
@@ -611,13 +640,13 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t>
 <figure title="Campaign Class" anchor="figure_Campaign_class">
 <artwork><![CDATA[
-      +------------------+
-      | Campaign         |
-      +------------------+
-      | ENUM restriction |<>--{0..1}--[ CampaignID     ]
-      |                  |<>--{0..*}--[ Description    ]
-      |                  |<>--{0..*}--[ AdditionalData ]
-      +------------------+
++------------------+
+| Campaign         |
++------------------+
+| ENUM restriction |<>--{0..1}--[ CampaignID     ]
+|                  |<>--{0..*}--[ Description    ]
+|                  |<>--{0..*}--[ AdditionalData ]
++------------------+
       ]]></artwork></figure>
 	</t>
 
@@ -636,14 +665,14 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>The Campaign class has one attribute:
 <list style="hanging">
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 </list></t>
 
 </section> <!-- Campaign class -->
 
 	
 <section title="AdditionalData Class" anchor="AdditionalData">
-<t> The AdditionalData class serves as an extension mechanism for information not otherwise represented in the data model.  For relatively simple information, atomic data types (e.g., integers, strings) are provided with a mechanism to annotate their meaning.  The class can also be used to extend the data model (and the associated Schema) to support proprietary extensions by encapsulating entire XML documents conforming to another Schema (e.g., IDMEF).  A detailed discussion for extending the data model and the schema can be found in <xref target="extending" />.
+<t> The AdditionalData class serves as an extension mechanism for information not otherwise represented in the data model.  For relatively simple information, atomic data types (e.g., integers, strings) are provided with a mechanism to annotate their meaning.  The class can also be used to extend the data model (and the associated Schema) to support proprietary extensions by encapsulating entire XML documents conforming to another Schema.  A detailed discussion for extending the data model and the schema can be found in <xref target="extending" />.
 </t>
 
 <t>Unlike XML, which is self-describing, atomic data must be documented to convey its meaning.  This information is described in the 'meaning' attribute.  Since these description are outside the scope of the specification, some additional coordination may be required to ensure that a recipient of a document using the AdditionalData classes can make sense of the custom extensions.
@@ -675,9 +704,13 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>byte.  The element content is of type BYTE.</t>
 
+<t>bytes.  The element content is of type HEXBIN.</t>
+
 <t>character.  The element content is of type CHARACTER.</t>
 
 <t>date-time.  The element content is of type DATETIME.</t>	
+
+<t>ntpstamp.  Same as date-time.</t>
 
 <t>integer.  The element content is of type INTEGER.</t>
 
@@ -689,6 +722,8 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>file.  The element content is a base64 encoded binary file encoded as a BYTE[] type.</t>
 
+<t>path.  The element content is a file-system path encoded as a STRING type. </t>
+
 <t>frame.  The element content is a layer-2 frame encoded as a HEXBIN type.</t>
 
 <t>packet.  The element content is a layer-3 packet encoded as a HEXBIN type. </t>
@@ -697,15 +732,13 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t>ipv6-packet.  The element content is an IPv6 packet encoded as a HEXBIN type. </t>
 
-<t>path.  The element content is a file-system path encoded as a STRING type. </t>
-
 <t>url.  The element content is of type URL.</t>
 
-<t>csv.  The element content is a common separated value (CSV) list per Section 2 of <xref target="refs.csv" /> encoded as a STRING type.</t>
+<t>csv.  The element content is a common separated value (CSV) list per Section 2 of <xref target="RFC4180" /> encoded as a STRING type.</t>
 
 <t>winreg.  The element content is a Windows registry key encoded as a STRING type.</t>
 
-<t>xml.  The element content is XML (see <xref target="extending" />).</t>
+<t>xml.  The element content is XML.  See <xref target="extending" />.</t>
 
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
@@ -717,7 +750,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 <t hangText="formatid"><vspace/>Optional.  STRING.  An identifier referencing the format and semantics of the element content.
 </t>
 
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in 	<xref target="Incident" />.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 </list>
 </t>
 </section>  <!-- AdditionalData class -->
@@ -879,7 +912,7 @@ the handle belongs.   The possible values are:
 <list style="hanging">
 <t hangText="meaning"><vspace/>Optional.  ENUM.  A free-form description of the element content.</t>
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="refs.rfc4646">RFC 4646</xref> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 </list>
 </t>
 </section> <!-- PostalAddress class -->
@@ -953,19 +986,19 @@ The element content of each class is a timestamp formatted according to the DATE
 ]]></artwork>
 </figure></t>
 
-	<section title="StartTime" anchor="StartTime">
+	<section title="StartTime Class" anchor="StartTime">
 	<t>The StartTime class represents the time the incident began.</t>
 	</section>
 
-	<section title="EndTime" anchor="EndTime">
+	<section title="EndTime Class" anchor="EndTime">
 	<t>The EndTime class represents the time the incident ended.</t>
 	</section>
 
-	<section title="DetectTime" anchor="DetectTime">
+	<section title="DetectTime Class" anchor="DetectTime">
 	<t>The DetectTime class represents the time the first activity of the incident was detected.</t>
 	</section>
 
-	<section title="ReportTime" anchor="ReportTime">
+	<section title="ReportTime Class" anchor="ReportTime">
 	<t>The ReportTime class represents the time the incident was reported.  This timestamp MUST be the time at which the IODEF document was generated.
 	</t>
 	</section>
@@ -1041,8 +1074,8 @@ description of the methodology used by the intruder.
 <list style="hanging">								
 <t hangText="attacktype"><vspace/>Optional.  ENUM.  TODO.</t>
 <t hangText="ext-attacktype"><vspace/>Optional.  STRING.  A mechanism by which to extend the Attack Type.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 </list>
 </t>
 </list>
@@ -1054,22 +1087,22 @@ description of the methodology used by the intruder.
 <section title="Assessment Class" anchor="Assessment">
 <t>The Assessment class describes the technical and non-technical repercussions of the incident on the CSIRT's constituency.</t>
 
-<t>This class was derived from the IDMEF<xref target="refs.IDMEF" />.
-	</t>
+<t>This class was derived from <xref target="RFC4765" />.
+</t>
   
 <t> 
 <figure title="Assessment Class" anchor="figure_assessment_class">
 <artwork><![CDATA[
- +-------------------------+
- | Assessment              |
- +-------------------------+ 
- | ENUM occurrence         |<>--{0..*}--[ Impact         ]
- | ENUM restriction        |<>--{0..*}--[ TimeImpact     ]
- | STRING indicator-uid    |<>--{0..*}--[ MonetaryImpact ]
- | STRING indicator-set-id |<>--{0..*}--[ Counter        ]
- |                         |<>--{0..1}--[ Confidence     ]
- |                         |<>--{0..*}--[ AdditionalData ]
- +-------------------------+
++-------------------------+
+| Assessment              |
++-------------------------+ 
+| ENUM occurrence         |<>--{0..*}--[ Impact         ]
+| ENUM restriction        |<>--{0..*}--[ TimeImpact     ]
+| STRING indicator-uid    |<>--{0..*}--[ MonetaryImpact ]
+| STRING indicator-set-id |<>--{0..*}--[ Counter        ]
+|                         |<>--{0..1}--[ Confidence     ]
+|                         |<>--{0..*}--[ AdditionalData ]
++-------------------------+
 ]]></artwork>
 </figure>
 </t>
@@ -1110,8 +1143,8 @@ description of the methodology used by the intruder.
 </t>
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 
 </list></t>
 
@@ -1119,7 +1152,7 @@ description of the methodology used by the intruder.
 
 <t>The Impact class allows for categorizing and describing the technical impact of the incident on the network of an organization.</t>
 
-<t>This class is based on the IDMEF <xref target="refs.IDMEF" />.
+<t>This class is based on <xref target="RFC4765" />.
 </t>
 
 <t>
@@ -1147,7 +1180,7 @@ description of the methodology used by the intruder.
 <t>The Impact class has five attributes:
 <list style="hanging">
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="refs.rfc4646">RFC 4646</xref> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 <t hangText="severity"><vspace />Optional.  ENUM.  An estimate of the relative severity of the activity.  The permitted values are shown below.  There is no default value.
 <list style="numbers">
@@ -1192,17 +1225,17 @@ description of the methodology used by the intruder.
 <figure title="TimeImpact Class" anchor="figure_time_impact_class">
 <artwork>
 <![CDATA[
-      +---------------------+
-      | TimeImpact          |
-      +---------------------+ 
-      | REAL                |
-      |                     |
-      | ENUM severity       |
-      | ENUM metric         |
-      | STRING ext-metric   |
-      | ENUM duration       |
-      | STRING ext-duration |
-      +---------------------+
++---------------------+
+| TimeImpact          |
++---------------------+ 
+| REAL                |
+|                     |
+| ENUM severity       |
+| ENUM metric         |
+| STRING ext-metric   |
+| ENUM duration       |
+| STRING ext-duration |
++---------------------+
 		]]></artwork>
 	</figure></t>
 
@@ -1255,14 +1288,14 @@ The element content is a positive, floating point (REAL) number specifying a uni
 <t>
 <figure title="MonetaryImpact Class" anchor="figure_monetary_impact_class">
 <artwork><![CDATA[
-      +------------------+
-      | MonetaryImpact   |
-      +------------------+ 
-      | REAL             |
-      |                  |
-      | ENUM severity    |
-      | STRING currency  |
-      +------------------+
++------------------+
+| MonetaryImpact   |
++------------------+ 
+| REAL             |
+|                  |
+| ENUM severity    |
+| STRING currency  |
++------------------+
 ]]></artwork>
 </figure></t>
 	
@@ -1281,8 +1314,7 @@ The element content is a positive, floating point number (REAL) specifying a uni
 		<t>high. High severity</t>
 	</list></t>
 
-<t hangText="currency"><vspace />Optional.  STRING.  Defines the currency in which the monetary impact is expressed.  The permitted values are defined in 
-<xref target="refs.iso4217">ISO 4217:2001, Codes for the representation of currencies and funds</xref>.  There is no default value.</t>
+<t hangText="currency"><vspace />Optional.  STRING.  Defines the currency in which the monetary impact is expressed.  The permitted values are defined in "Codes for the representation of currencies and funds" of <xref target="ISO4217" />.  There is no default value.</t>
 </list></t>
 
 </section> <!-- MoneyImpact -->
@@ -1292,20 +1324,20 @@ The element content is a positive, floating point number (REAL) specifying a uni
 <t>The Confidence class represents a best estimate of the validity and accuracy of the described impact (see <xref target="Assessment" />) of the incident activity.  This estimate can be expressed as a category or a numeric calculation.
 </t>
 
-<t>This class if based upon the IDMEF <xref target="refs.IDMEF" />).
+<t>This class if based upon <xref target="RFC4765" />.
 </t>
 
 <t>
 <figure title="Confidence Class" anchor="figure_confidence_class">
 <artwork>
 <![CDATA[
-      +------------------+
-      | Confidence       |
-      +------------------+ 
-      | REAL             |
-      |                  |
-      | ENUM rating      |
-      +------------------+
++------------------+
+| Confidence       |
++------------------+ 
+| REAL             |
+|                  |
+| ENUM rating      |
++------------------+
 		]]></artwork>
 </figure></t>
 
@@ -1395,6 +1427,8 @@ The element content is a positive, floating point number (REAL) specifying a uni
 <t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form textual description of the action or event.
 </t> 
 
+<t hangText="DefinedCOA"><vspace/>Zero or many.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
+
 <t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
 </list>
 </t>
@@ -1402,7 +1436,7 @@ The element content is a positive, floating point number (REAL) specifying a uni
 <t>The HistoryItem class has five attributes:
 <list style="hanging">
 
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 
 <t hangText="action"><vspace/>Required.  ENUM.  Classifies a performed
 action or occurrence documented in this history log entry.  As
@@ -1411,8 +1445,8 @@ conveyed expectation or internal investigation, this attribute is
 identical to the category attribute of the Expectation class.  The difference is only one of tense.  When an action is in this class, it has been completed.  See <xref target="Expectation" />.</t>
 
 <t hangText="ext-action"><vspace/>Optional.  STRING.  A means by which to extend the action attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 
 </list>
 </t>
@@ -1431,8 +1465,8 @@ identical to the category attribute of the Expectation class.  The difference is
 | EventData               |
 +-------------------------+
 | ENUM restriction        |<>--{0..*}--[ Description    ]
-| STRING indicator-set-id |<>--{0..1}--[ DetectTime     ]
-|                         |<>--{0..1}--[ StartTime      ]
+| STRING indicator-uid    |<>--{0..1}--[ DetectTime     ]
+| STRING indicator-set-id |<>--{0..1}--[ StartTime      ]
 |                         |<>--{0..1}--[ EndTime        ]
 |                         |<>--{0..*}--[ Contact        ]
 |                         |<>--{0..1}--[ Assessment     ]
@@ -1481,7 +1515,8 @@ data not explicitly represented in the data model.</t>
 <t>The EventData class has two attributes:
 <list style="hanging">
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.  The default value is "default".</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 	
 					</list></t>
 
@@ -1532,10 +1567,10 @@ For example, an EventData class might be used to describe two machines involved 
 | Expectation             |
 +-------------------------+ 
 | ENUM restriction        |<>--{0..*}--[ Description ]
-| ENUM severity           |<>--{0..1}--[ StartTime   ]
-| ENUM action             |<>--{0..1}--[ EndTime     ]
-| STRING ext-action       |<>--{0..1}--[ Contact     ]
-| STRING indicator-uid    |
+| ENUM severity           |<>--{0..*}--[ DefinedCOA  ]
+| ENUM action             |<>--{0..1}--[ StartTime   ]
+| STRING ext-action       |<>--{0..1}--[ EndTime     ]
+| STRING indicator-uid    |<>--{0..1}--[ Contact     ]
 | STRING indicator-set-id |
 +-------------------------+
 		]]></artwork>
@@ -1546,6 +1581,8 @@ For example, an EventData class might be used to describe two machines involved 
 
 <list style="hanging">
 <t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form description of the desired action(s).</t>
+
+<t hangText="DefinedCOA"><vspace/>Zero or many.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
 
 <t hangText="StartTime"><vspace/>Zero or one.  The time at which the sender would like the action performed.  A timestamp that is earlier than the ReportTime specified in the Incident class denotes that the sender would like the action performed as soon as possible.  The absence of this element indicates no expections of when the recipient would like the action performed.</t>
 
@@ -1587,13 +1624,14 @@ action requested.  This attribute is an enumerated list with a default value of 
 <t>status-triage.  Conveys receipts and the triaging of an incident.</t>
 <t>status-new-info.  Conveys that new information was received for this incident.</t>
 <t>watch-and-report.  Watch for the described activity and share if seen.</t>
+<t>defined-coa.  Perform a predefined course of action (COA).  The COA is named in the DefinedCOA class.</t>
 <t>other.  Perform some custom action described in the Description class.</t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
 
 <t hangText="ext-action"><vspace/>Optional.  STRING.  A means by which to extend the action attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 
 </list></t>
 	
@@ -1685,7 +1723,7 @@ The System class describes a system or network involved in an event.  The system
 </t>
 
 <t hangText="ext-category"><vspace/>Optional. STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 
 <t hangText="interface"><vspace/>Optional.  STRING.  Specifies the interface on which the event(s) on this System originated.  If the Node class specifies a network rather than a host, this attribute has no meaning.
 </t>
@@ -1732,7 +1770,7 @@ The System class describes a system or network involved in an event.  The system
 <section title="Node Class" anchor="Node">
 <t>The Node class names an asset or network.</t>
 
-<t>This class was derived from the IDMEF <xref target="refs.IDMEF"/>.</t>
+<t>This class was derived from <xref target="RFC4765"/>.</t>
 
 <t>
 <figure title="The Node Class" anchor="figure_node_class">
@@ -1740,13 +1778,14 @@ The System class describes a system or network involved in an event.  The system
 +---------------+
 | Node          |
 +---------------+
-|               |<>--{0..*}--[ NodeName   ]
-|               |<>--{0..*}--[ DomainData ]
-|               |<>--{0..*}--[ Address    ]
-|               |<>--{0..1}--[ Location   ]
-|               |<>--{0..1}--[ DateTime   ]
-|               |<>--{0..*}--[ NodeRole   ]
-|               |<>--{0..*}--[ Counter    ]
+|               |<>--{0..*}--[ NodeName      ]
+|               |<>--{0..*}--[ DomainData    ]
+|               |<>--{0..*}--[ Address       ]
+|               |<>--{0..1}--[ PostalAddress ]
+|               |<>--{0..1}--[ Location      ]
+|               |<>--{0..1}--[ DateTime      ]
+|               |<>--{0..*}--[ NodeRole      ]
+|               |<>--{0..*}--[ Counter       ]
 +---------------+
 ]]></artwork>
 </figure></t>
@@ -1754,17 +1793,20 @@ The System class describes a system or network involved in an event.  The system
 <t>The aggregate classes that constitute Node are:
 <list style="hanging">
 
-<t hangText="NodeName"><vspace/>Zero or more.  ML_STRING.  The name of the Node (e.g., fully qualified domain name).  This information MUST be provided if no Address information is given.
+<t hangText="NodeName"><vspace/>Zero or more.  ML_STRING.  The name of the Node (e.g., fully qualified domain name).  This information MUST be provided if no Address or DomainData information is given.
 </t>
 
-<t hangText="DomainData"><vspace/>Zero or more.  The DomainData Class and Subclasses from RFC 5901.
+<t hangText="DomainData"><vspace/>Zero or more.  TODO. The DomainData Class and Subclasses from RFC 5901.
 </t>
 
-<t hangText="Address"><vspace/>Zero or more.  The hardware, network, or application address of the Node.  If a NodeName is not provided, at least one Address MUST be specified.
+<t hangText="Address"><vspace/>Zero or more.  The hardware, network, or application address of the Node.  If a NodeName or DomainData is not provided, at least one Address MUST be specified.
 
 </t>
 
-<t hangText="Location"><vspace/>Zero or one.  ML_STRING.  A free-from description of the physical location of the equipment.
+<t hangText="PostalAddress"><vspace/>Zero or one.  The postal address of the asset.
+</t>
+
+<t hangText="Location"><vspace/>Zero or one.  ML_STRING.  A free-from description of the physical location of the Node.  This description may provide a more detailed description of where in the PostalAddress this Node is found (e.g., room number, rack number, slot number in a chassis).
 </t>
 
 <t hangText="DateTime"><vspace/>Zero or one.  A timestamp of when the resolution between the name and address was performed.  This information MAY be provided if both an Address and NodeName are specified.
@@ -1777,11 +1819,131 @@ The System class describes a system or network involved in an event.  The system
 </t>
 <t>The Node class has no attributes.</t>
 
+<section title="Address Class" anchor="Address">
+<t>The Address class represents a hardware (layer-2), network (layer-3), or application (layer-7) address.
+</t>
+
+<t>This class was derived from <xref target="RFC4765" />.
+	</t>
+<t>
+<figure title="The Address Class" anchor="figure_address_class">
+<artwork><![CDATA[
++-------------------------+
+| Address                 |
++-------------------------+  
+| ENUM category           |
+| STRING ext-category     |
+| STRING vlan-name        |
+| INTEGER vlan-num        |
+| STRING indicator-uid    |
+| STRING indicator-set-id |
++-------------------------+
+]]></artwork>
+</figure></t>
+
+<t>The Address class has five attributes:
+<list style="hanging">
+<t hangText="category"><vspace/>Optional.  ENUM.  The type of address represented.  The permitted values for this attribute are shown below.  The default value is "ipv4-addr".
+
+<list style="numbers">
+<t>asn.  Autonomous System Number</t>
+<t>atm.  Asynchronous Transfer Mode (ATM) address</t>
+<t>e-mail.   Electronic mail address (RFC 822)</t>
+<t>ipv4-addr.  IPv4 host address in dotted-decimal notation (a.b.c.d)</t>
+<t>ipv4-net.  IPv4 network address in dotted-decimal notation, slash, significant bits (a.b.c.d/nn)</t>
+<t>ipv4-net-mask.  IPv4 network address in dotted-decimal notation, slash, network mask in dotted-decimal notation (a.b.c.d/w.x.y.z)</t>
+<t>ipv6-addr.  IPv6 host address</t>
+<t>ipv6-net.  IPv6 network address, slash, significant bits</t>
+<t>ipv6-net-mask.  IPv6 network address, slash, network mask</t>
+<t>mac.  Media Access Control (MAC) address</t>
+<t>site-uri.  A URL or URI for a resource.</t>									
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+
+</list>
+</t>
+<t hangText="ext-category"><vspace/>Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t>
+<t hangText="vlan-name"><vspace/>Optional.  STRING.  The name of the Virtual LAN to which the address belongs.</t>
+<t hangText="vlan-num"><vspace/>Optional.  STRING.  The number of the Virtual LAN to which the address belongs.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+</list>
+</t>
+</section> <!-- Address class -->
+
+<section title="NodeRole Class" anchor="NodeRole">
+<t>The NodeRole class describes the intended function performed by a particular host.</t>
+
+<t>
+<figure title="The NodeRole Class" anchor="figure_noderole_class">
+<artwork><![CDATA[
++---------------------+
+| NodeRole            |
++---------------------+
+| ENUM category       |
+| STRING ext-category |
+| ENUM lang           |
++---------------------+
+]]></artwork>
+</figure></t>
+
+<t>The NodeRole class has three attributes:</t>
+
+<t>
+<list style="hanging">
+<t hangText="category"><vspace />Required.  ENUM.  Functionality provided by a node. 
+<list style="numbers">
+<t>client.  Client computer</t>
+<t>client-enterprise.  Client computer on the enterprise network</t>
+<t>client-partner.  Client computer on network of a partner</t>
+<t>client-remote.  Client computer remotely connected to the enterprise network</t>
+<t>client-kiosk.  Client computer is serves as a kiosk</t>
+<t>client-mobile.  Client is a mobile device</t>
+<t>server-internal.  Server with internal services</t>
+<t>server-public.  Server with public services</t>
+<t>www.  WWW server</t>
+<t>mail.  Mail server</t>
+<t>messaging.  Messaging server (e.g., NNTP, IRC, IM)</t>
+<t>streaming.  Streaming-media server</t>
+<t>voice.  Voice server (e.g., SIP, H.323)</t>
+<t>file.  File server (e.g., SMB, CVS, AFS)</t>
+<t>ftp.  FTP server</t>
+<t>p2p.  Peer-to-peer node</t>
+<t>name.  Name server (e.g., DNS, WINS)</t>
+<t>directory.  Directory server (e.g., LDAP, finger, whois)</t>
+<t>credential.  Credential server (e.g., domain controller, Kerberos)</t>
+<t>print.  Print server</t>
+<t>application.  Application server</t>
+<t>database.  Database server</t>
+<t>backup.  Backup server</t>
+<t>dhcp.  DHCP server</t>
+<t>infra.  Infrastructure server (e.g., router, firewall, DHCP)</t>
+<t>infra-firewall.  Firewall</t>
+<t>infra-router.  Router</t>
+<t>infra-switch.  Switch</t>
+<t>camera.  Camera server</t>
+<t>proxy.  Proxy server</t>
+<t>remote-access.  Remote access server</t>
+<t>log.  Log server (e.g., syslog)</t>
+<t>virtualization.  Server running virtual machines</t>
+<t>pos.  Point-of-sale device</t>
+<t>scada. Supervisory control and data acquisition system</t>
+<t>scada-supervisory. Supervisory system for a SCADA</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list></t>	
+
+<t hangText="ext-category"><vspace />Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t> 
+
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+
+</list>
+</t>
+
+</section> <!-- NodeRole class -->
+
 <section title="Counter Class" anchor="Counter">
 <t>The Counter class summarize multiple occurrences of some event, or conveys counts or rates on various features (e.g., packets, sessions, events).
 </t>
 
-<?rfc needLines="5" ?>
 <t>The value of the counter is the element content with its units represented in the type attribute.  A rate for a given feature can be expressed by setting the duration attribute.  The complete semantics are entirely context dependant based on the class in which the Counter is aggregated.</t>
 
 <t>
@@ -1835,127 +1997,76 @@ The System class describes a system or network involved in an event.  The system
 
 </section> <!-- Counter -->
 
-<section title="Address Class" anchor="Address">
-<t>The Address class represents a hardware (layer-2), network (layer-3), or application (layer-7) address.
-</t>
-
-<t>This class was derived from the IDMEF <xref target="refs.IDMEF" />.
-	</t>
-<t>
-<figure title="The Address Class" anchor="figure_address_class">
-<artwork><![CDATA[
-+-------------------------+
-| Address                 |
-+-------------------------+  
-| ENUM category           |
-| STRING ext-category     |
-| STRING vlan-name        |
-| INTEGER vlan-num        |
-| STRING indicator-uid    |
-| STRING indicator-set-id |
-+-------------------------+
-]]></artwork>
-</figure></t>
-
-<t>The Address class has five attributes:
-<list style="hanging">
-<t hangText="category"><vspace/>Optional.  ENUM.  The type of address represented.  The permitted values for this attribute are shown below.  The default value is "ipv4-addr".
-
-<list style="numbers">
-<t>asn.  Autonomous System Number</t>
-<t>atm.  Asynchronous Transfer Mode (ATM) address</t>
-<t>e-mail.   Electronic mail address (RFC 822)</t>
-<t>ipv4-addr.  IPv4 host address in dotted-decimal notation (a.b.c.d)</t>
-<t>ipv4-net.  IPv4 network address in dotted-decimal notation, slash, significant bits (a.b.c.d/nn)</t>
-<t>ipv4-net-mask.  IPv4 network address in dotted-decimal notation, slash, network mask in dotted-decimal notation (a.b.c.d/w.x.y.z)</t>
-<t>ipv6-addr.  IPv6 host address</t>
-<t>ipv6-net.  IPv6 network address, slash, significant bits</t>
-<t>ipv6-net-mask.  IPv6 network address, slash, network mask</t>
-<t>mac.  Media Access Control (MAC) address</t>
-<t>site-uri.  A URL or URI for a site.</t>									
-<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
-
-</list>
-</t>
-<t hangText="ext-category"><vspace/>Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="vlan-name"><vspace/>Optional.  STRING.  The name of the Virtual LAN to which the address belongs.</t>
-<t hangText="vlan-num"><vspace/>Optional.  STRING.  The number of the Virtual LAN to which the address belongs.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-</list>
-</t>
-</section> <!-- Address class -->
-
-<section title="NodeRole Class" anchor="NodeRole">
-<t>The NodeRole class describes the intended function performed by a particular host.</t>
-
-<t>
-<figure title="The NodeRole Class" anchor="figure_noderole_class">
-<artwork><![CDATA[
-      +---------------------+
-      | NodeRole            |
-      +---------------------+
-      | ENUM category       |
-      | STRING ext-category |
-      | ENUM lang           |
-      +---------------------+
-]]></artwork>
-</figure></t>
-
-<t>The NodeRole class has three attributes:</t>
-
-<t>
-<list style="hanging">
-<t hangText="category"><vspace />Required.  ENUM.  Functionality provided by a node. 
-<list style="numbers">
-<t>client.  Client computer</t>
-<t>client-enterprise.  Client computer on the enterprise network</t>
-<t>client-partner.  Client computer on network of a partner</t>
-<t>client-remote.  Client computer remotely connected to the enterprise network</t>
-<t>client-kiosk.  Client computer is serves as a kiosk</t>
-<t>client-mobile.  Client is a mobile device</t>
-<t>server-internal.  Server with internal services</t>
-<t>server-public.  Server with public services</t>
-<t>www.  WWW server</t>
-<t>mail.  Mail server</t>
-<t>messaging.  Messaging server (e.g., NNTP, IRC, IM)</t>
-<t>streaming.  Streaming-media server</t>
-<t>voice.  Voice server (e.g., SIP, H.323)</t>
-<t>file.  File server (e.g., SMB, CVS, AFS)</t>
-<t>ftp.  FTP server</t>
-<t>p2p.  Peer-to-peer node</t>
-<t>name.  Name server (e.g., DNS, WINS)</t>
-<t>directory.  Directory server (e.g., LDAP, finger, whois)</t>
-<t>credential.  Credential server (e.g., domain controller, Kerberos)</t>
-<t>print.  Print server</t>
-<t>application.  Application server</t>
-<t>database.  Database server</t>
-<t>backup.  Backup server</t>
-<t>dhcp.  DHCP server</t>
-<t>infra.  Infrastructure server (e.g., router, firewall, DHCP)</t>
-<t>infra-firewall.  Firewall</t>
-<t>infra-router.  Router</t>
-<t>infra-switch.  Switch</t>
-<t>camera.  Camera server</t>
-<t>proxy.  Proxy server</t>
-<t>remote-access.  Remote access server</t>
-<t>log.  Log server (e.g., syslog)</t>
-<t>virtualization.  Server running virtual machines</t>
-<t>pos.  Point-of-sale device</t>
-<t>scada. Supervisory control and data acquisition system</t>
-<t>scada-supervisory. Supervisory system for a SCADA</t>
-<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
-</list></t>	
-
-<t hangText="ext-category"><vspace />Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t> 
-
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="refs.rfc4646">RFC 4646</xref> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
-
-</list>
-</t>
-
-</section> <!-- NodeRole class -->
-
 </section> <!-- Node class-->
+
+<section title="DomainData Class" anchor="DomainData">
+<t>...TODO...
+</t>
+<t>
+<figure title="The DomainData Class" anchor="figure_domaindata_class">
+<artwork><![CDATA[
++-------------------------+
+| DomainData              |
++-------------------------+
+| ENUM SystemStatus       |<>----------[ Name                 ]
+| ENUM DomainStatus       |<>--{0..1}--[ DateDomainWasChecked ]
+| STRING indicator-uid    |<>--{0..1}--[ RegistrationDate     ]
+| STRING indicator-set-id |<>--{0..1}--[ ExpirationDate       ]
+|                         |<>--{0..*}--[ RelatedDNS           ]
+|                         |<>--{0..*}--[ Nameservers          ]
+|                         |<>--{0..1}--[ DomainContacts       ]
+|                         |
++-------------------------+
+]]></artwork></figure></t>
+
+<section title="RelatedDNS" anchor="RelatedDNS">
+<t>...TODO...</t>
+<t>
+<figure title="The RelatedDNS Class" anchor="figure_relateddns_class">
+<artwork><![CDATA[
++---------------------+
+| RelatedDNS          |
++---------------------+
+| STRING              |
+|                     |
+| ENUM RecordType     |
+| ENUM ext-RecordType |
++---------------------+
+]]></artwork></figure></t>
+
+</section> <!-- RelatedDNS -->
+
+<section title="Nameservers Class" anchor="Nameservers">
+<t>...TODO...</t>
+<t>
+<figure title="The Nameservers Class" anchor="figure_nameservers_class">
+<artwork><![CDATA[
++--------------------+
+| Nameservers        |
++--------------------+
+|                    |<>----------[ Server  ]
+|                    |<>--{1..*}--[ Address ]
++--------------------+
+]]></artwork></figure></t>
+
+</section> <!-- Nameservers -->
+
+<section title="DomainContacts Class" anchor="DomainContacts">
+<t>...TODO...</t>
+<t>
+<figure title="The DomainContacts Class" anchor="figure_domaincontacts_class">
+<artwork><![CDATA[
++--------------------+
+| DomainContacts     |
++--------------------+
+|                    |<>--{0..1}--[ SameDomainContact ]
+|                    |<>--{1..*}--[ Contact ]
++--------------------+
+]]></artwork></figure></t>
+
+</section> <!-- DomainContacts -->
+
+</section> <!-- DomainData class -->
 
 <section title="Service Class" anchor="Service">
 <t>The Service class describes a network service of a host or network.  The service is identified by specific port or list of ports, along with the application listening on that port.
@@ -1964,7 +2075,7 @@ The System class describes a system or network involved in an event.  The system
 When Service occurs as an aggregate class of a System that is a source, then this service is the one from which activity of interest is originating.  Conversely, when Service occurs as an aggregate class of a System that is a target, then that service is the one to which activity of interest is directed.
 </t>
 <t>
-This class was derived from the IDMEF <xref target="refs.IDMEF" />.
+This class was derived from <xref target="RFC4765" />.
 </t>
 
 
@@ -1974,12 +2085,14 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 +-------------------------+
 | Service                 |
 +-------------------------+
-| INTEGER ip_protocol     |<>--{0..1}--[ Port        ]
-| STRING indicator-uid    |<>--{0..1}--[ Portlist    ]
-| STRING indicator-set-id |<>--{0..1}--[ ProtoCode   ]
-|                         |<>--{0..1}--[ ProtoType   ]
-|                         |<>--{0..1}--[ ProtoField  ]
-|                         |<>--{0..1}--[ Application ]
+| INTEGER ip_protocol     |<>--{0..1}--[ Port              ]
+| STRING indicator-uid    |<>--{0..1}--[ Portlist          ]
+| STRING indicator-set-id |<>--{0..1}--[ ProtoCode         ]
+|                         |<>--{0..1}--[ ProtoType         ]
+|                         |<>--{0..1}--[ ProtoField        ]
+|                         |<>--{0..*}--[ ApplicationHeader ]
+|                         |<>--{0..1}--[ EmailInfo         ]
+|                         |<>--{0..1}--[ Application       ]
 +-------------------------+
 ]]></artwork></figure></t>
 
@@ -1991,16 +2104,22 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t hangText="Portlist"><vspace/>Zero or one.  PORTLIST.  A list of port numbers formatted according to <xref target="dt_port_list" />.
 </t>
 
-<t hangText="ProtoCode"><vspace/>Zero or one.  INTEGER.  A layer-4 protocol-specific code field (e.g., ICMP code field).
+<t hangText="ProtoCode"><vspace/>Zero or one.  INTEGER.  A transport layer (layer 4) protocol-specific code field (e.g., ICMP code field).
 </t>
 
-<t hangText="ProtoType"><vspace/>Zero or one.  INTEGER.  A layer-4 protocol specific type field (e.g., ICMP type field).
+<t hangText="ProtoType"><vspace/>Zero or one.  INTEGER.  A transport layer (layer 4) protocol specific type field (e.g., ICMP type field). 
 </t>
 
-<t hangText="ProtoField"><vspace/>Zero or one.  INTEGER.  A layer-4 protocol specific flag field (e.g., TCP flag field).
+<t hangText="ProtoField"><vspace/>Zero or one.  INTEGER.  A transport layer (layer 4) protocol specific flag field (e.g., TCP flag field).
 </t>
 
-<t hangText="Application"><vspace/>Zero or one.  The application bound to the specified Port or Portlist.
+<t hangText="ApplicationHeader"><vspace/>Zero or many.  An application layer (layer 7) protocol header.  See <xref target="ApplicationHeader" />.
+</t>
+
+<t hangText="EmailInfo"><vspace/>Zero or one.  TODO.  See <xref target="EmailInfo" />.
+</t>
+
+<t hangText="Application"><vspace/>Zero or one.  The application bound to the specified Port or Portlist.  See <xref target="Application" />.
 </t>
 </list>
 </t>
@@ -2013,10 +2132,72 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t>
 <list style="hanging">
 <t hangText="ip_protocol"><vspace />Required. INTEGER.   The IANA protocol number.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>	
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
 </list>
 </t>
+
+<section title="ApplicationHeader Class" anchor="ApplicationHeader">
+<t>The ApplicationHeader class allows the representation of arbitrary fields from an application layer protocol header and its  corresponding value.</t>
+
+<t>
+<figure title="The ApplicationHeader Class" anchor="figure_applicationheader_class">
+<artwork><![CDATA[
++--------------------------+
+| ApplicationHeader        |
++--------------------------+
+| ANY                      |
+|                          |
+| INTEGER proto            |
+| STRING field             |
+| ENUM dtype               |
+| STRING indicator-uid     |
+| STRING indicator-set-uid |
++--------------------------+
+]]></artwork></figure></t>
+
+<t>The ApplicationHeader class has five attributes:</t>
+<t>
+<list style="hanging">
+<t hangText="proto"><vspace />Required. INTEGER.   The IANA protocol number from xxx corrending to the protocol whose field will be represented.</t>
+<t hangText="field"><vspace />Required. STRING.   The name of the protocol field whose value will be found in the element body.</t>
+<t hangText="dtype"><vspace/>Required.  ENUM.  The data type of the element content.  The permitted values for this attribute are shown below. The default value is "string".
+<list style="numbers">
+<t>boolean.  The element content is of type BOOLEAN.</t>
+
+<t>byte.  The element content is of type BYTE.</t>
+
+<t>bytes.  The element content is of type HEXBIN.</t>
+
+<t>character.  The element content is of type CHARACTER.</t>
+
+<t>date-time.  The element content is of type DATETIME.</t>	
+
+<t>integer.  The element content is of type INTEGER.</t>
+
+<t>portlist.  The element content is of type PORTLIST.</t>
+
+<t>real.  The element content is of type REAL.</t>
+
+<t>string.  The element content is of type STRING.</t>
+
+<t>file.  The element content is a base64 encoded binary file encoded as a BYTE[] type.</t>
+
+<t>path.  The element content is a file-system path encoded as a STRING type. </t>
+
+<t>xml.  The element content is XML.  See <xref target="extending" />.</t>
+
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list></t>
+
+<t hangText="ext-dtype"><vspace/>Optional.  STRING.  A means by which to extend the dtype attribute.  See <xref target="extending_enums" />.</t>
+
+
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
+</list>
+</t>
+</section> <!-- ApplicationHeader -->
 
 <section title="Application Class" anchor="Application">
 <t>The Application class describes an application running on a System providing a Service.
@@ -2068,6 +2249,41 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 </t>
 </section> <!-- OperatingSystem class -->
 
+<section title="EmailInfo Class" anchor="EmailInfo">
+<t>The EmailInfo class describes common headers from email messages.</t>
+
+<t>
+<figure title="EmailInfo Class" anchor="figure_emailinfo_class">
+<artwork><![CDATA[
++-------------------------+
+| EmailInfo               |
++-------------------------+
+| STRING indicator-uid    |<>--{0..1}--[ EmailFrom        ]
+| STRING indicator-set-id |<>--{0..1}--[ EmailSubject     ]
+|                         |<>--{0..1}--[ EmailX-Mailer    ]
+|                         |<>--{0..*}--[ EmailHeaderField ]
++-------------------------+
+]]></artwork>
+</figure></t>
+
+<t>The aggregate class that constitutes EmailInfo are:
+<list style="hanging">
+
+<t hangText="EmailFrom"><vspace/>Zero or one.  The value of the "From:" header field in an email.  See Section 3.6.2 of <xref target="RFC5322" />.</t>
+<t hangText="EmailSubject"><vspace/>Zero or one.  The value of the "Subject:" header field in an email.  See Section 3.6.4 of <xref target="RFC5322" />.</t>
+<t hangText="EmailX-Mailer"><vspace/>Zero or one.  The value of the "X-Mailer:" header field in an email.</t>
+</list>
+</t>
+
+<t>The EmailInfo class has two attributes:</t>
+<t>
+<list style="hanging">
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
+</list>
+</t>
+
+</section> <!-- EmailInfo Class" -->
 
 <section title="Record Class" anchor="Record">
 <t>The Record class is a container class for log and audit data that provides supportive information about the incident.  The source of this data will often be the output of monitoring tools.  These logs substantiate the activity described in the document.</t>
@@ -2135,15 +2351,14 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 
 <t>The RecordData class has three attribute:
 <list style="hanging">
-<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 
 </list>
 </t>
 </section> <!-- RecordData -->
 
-<?rfc needLines="10" ?>
 <section title="RecordPattern Class" anchor="RecordPattern">
 <t>The RecordPattern class describes where in the content of the RecordItem relevant information can be found.  It provides a way to reference subsets of information, identified by a pattern, in a large log file, audit trail, or forensic data.
 </t>
@@ -2172,9 +2387,9 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t hangText="type"><vspace />Required.  ENUM.  Describes the type of pattern being specified in the element content.  The default is "regex".
 
 <list style="numbers">
-<t>regex.  regular expression, per Appendix F of <xref target="refs.schemadtypes"/>.</t>
+<t>regex.  regular expression, per Appendix F of <xref target="W3C.SCHEMA.DTYPES"/>.</t>
 <t>binary. Binhex encoded binary pattern, per the HEXBIN data type.</t>
-<t>xpath.  XML Path (XPath) <xref target="refs.xpath" /></t>
+<t>xpath.  XML Path (XPath) <xref target="W3C.XPATH" /></t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list>		
 </t>
@@ -2206,53 +2421,59 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 
 </section> <!-- Record -->
 
-<section title="RegistryKeyModified Class" anchor="RegistryKeyModified">
-<t>The Registry Key Modified class represents operating system registry keys that have been modified as part and may constitue an indicator of compromise.
+<section title="WindowsRegistryKeysModified Class" anchor="WindowsRegistryKeysModified">
+<t>The WindowsRegistryKeysModified class describes Windows operating system registry keys and the operations that were performed on them.  This class was derived from <xref target="RFC5901" />.
 </t>
 <t>
-<figure title="The RegistryKeyModified Class" anchor="figure_registrykeymodified_class">
+<figure title="The WindowsRegistryKeysModified Class" anchor="figure_windowsregistrykeysmodified_class">
 <artwork><![CDATA[
-   +-----------------------+
-   | RegistryKeyModified   |
-   +-----------------------+
-   |                       |<>----------[ Key ]
-   +-----------------------+
++-----------------------------+
+| WindowsRegistryKeysModified |
++-----------------------------+
+| STRING indicator-uid        |<>--{1..*}--[ Key ]
+| STRING indicator-set-id     |
++-----------------------------+
 ]]></artwork>
 </figure></t>
-<t>The aggregate class that constitutes the Registry Key Modified class is:
+<t>The aggregate class that constitutes the WindowsRegistryKeysModified class is:
 <list style="hanging">
-<t hangText="Key"><vspace/>One.  The Window Registry Key.</t>
+<t hangText="Key"><vspace/>One or many.  The Window registry key.</t>
+</list>
+</t>
+<t>The WindowsRegistryKeysModified class has two attributes:</t>
+<t>
+<list style="hanging">
+<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
 </list>
 </t>
 
 <section title="Key Class" anchor="Key">
-<t>The Key class shows name and value pairs representing an operating system registry key and its value.  The key and value are encoded as in Microsoft .reg files.
+<t>The Key class describes a particular Windows operating system registry key name and value pair, and the operation performed on it.
 </t>
 <t>
-<figure title="The Registry Key Modified Class" anchor="figure_key_class">
+<figure title="The Key Class" anchor="figure_key_class">
 <artwork><![CDATA[
-   +--------------------------+
-   | Key                      |
-   +--------------------------+
-   | ENUM regsitryaction      |<>--{0..*}--[ KeyName ]
-   | STRING ext-category      |<>--{0..*}--[ Value ]
-   | ENUM type                |
-   | STRING ext-type          |
-   | STRING indicator-uid     |
-   | STRING inidicator-set-id |
-   +--------------------------+
++---------------------------+
+| Key                       |
++---------------------------+
+| ENUM registryaction       |<>----------[ KeyName ]
+| STRING ext-registryaction |<>--{0..1}--[ KeyValue ]
+| ENUM type                 |
+| STRING ext-type           |
++---------------------------+
 ]]></artwork>
 </figure></t>
 <t>The aggregate classes that constitutes Key are:
 <list style="hanging">
-<t hangText="KeyName"><vspace/>Zero or more.  STRING.  The name of the registry key.</t>
-<t hangText="Value"><vspace/>Zero or more.  STRING.  The value of the registry key.</t>
+<t hangText="KeyName"><vspace/>One.  STRING.  The name of the Windows operating system registry key (e.g.,[HKEY_LOCAL_MACHINE\Software\Test\KeyName])</t>
+<t hangText="KeyValue"><vspace/>Zero or one.  STRING.  The value of the associated registry key encoded as in Microsoft .reg files <xref target="KB310516" />.</t>
 </list></t>
 
-<t>The Key class has six attributes:</t>
+<t>The Key class has four attributes:</t>
 <t>
 <list style="hanging">
-<t hangText="registryaction"><vspace />Optional.  ENUM.  The type of action.
+<t hangText="registryaction"><vspace />Optional.  ENUM.  The type of action taken on the registry key.
 <list style="numbers">
 <t>add-key.  Registry key added.</t>
 <t>add-value.  Value added to registry key.</t>
@@ -2262,14 +2483,16 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t>modify-value.  Value modified for registry key.</t>
 <t>ext-value.  External value.</t>
 </list></t>
-<t hangText="ext-category"><vspace />Optional.  Extension category.</t>
-<t hangText="type"><vspace /> Optional.  Type
+<t hangText="ext-registryaction"><vspace />Optional.  A means by which to extend the registryaction attribute.  See <xref target="extending_enums" />.</t>
+
+<t hangText="type"><vspace /> Optional.  TODO.
 <list style="numbers">
 <t>watchlist.  Registry key information that is provided in a watchlist.</t>
 <t>ext-value.  Registry key information from an external source.</t>
 </list></t>
-<t hangText="indicator-uid"><vspace />Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. The indicator set ID is used to group related indicators.</t>
+<t hangText="ext-type"><vspace />Optional.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
+<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
 </list>
 </t>
 </section> <!-- Key -->
@@ -2279,17 +2502,17 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <section title="HashInformation Class" anchor="HashInformation">
 <t>This class are the hash and signature details that are needed for providing context for indicators.</t>
 <t>
-<figure title="The Hash Sig Details Class" anchor="figure_hashinformation_class">
+<figure title="The HashInformation Class" anchor="figure_hashinformation_class">
 <artwork><![CDATA[
-   +--------------------------+
-   | HashInformation          |
-   +--------------------------+
-   | ENUM type                |<>--{0..*}--[ FileName     ]
-   | STRING ext-category      |<>--{0..*}--[ FileSize     ]
-   | BOOL valid               |<>--{0..*}--[ ds:Signature ]
-   | STRING indicator-uid     |<>--{0..*}--[ ds:KeyInfo   ]
-   | STRING inidicator-set-id |<>--{0..*}--[ ds:Reference ]
-   +--------------------------+
++--------------------------+
+| HashInformation          |
++--------------------------+
+| ENUM type                |<>--{0..*}--[ FileName     ]
+| STRING ext-type          |<>--{0..*}--[ FileSize     ]
+| BOOL valid               |<>--{0..*}--[ ds:Signature ]
+| STRING indicator-uid     |<>--{0..*}--[ ds:KeyInfo   ]
+| STRING indicator-set-id  |<>--{0..*}--[ ds:Reference ]
++--------------------------+
 ]]></artwork>
 </figure></t>
 
@@ -2300,7 +2523,7 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t hangText="FileSize"><vspace />Zero or more.  INTEGER.  The size of the file in bytes.</t>
 <t hangText="ds:Signature"><vspace />Zero or more. </t>
 <t hangText="ds:KeyInfo"><vspace />Zero or more.</t>
-<t hangText="ds:Reference"><vspace />Zero or more.  The algorithm identification and value of a hash computed over the malware executable.  This entire element is imported from [RFC3275].  Refer to RFC 5901.</t>
+<t hangText="ds:Reference"><vspace />Zero or more.  The algorithm identification and value of a hash computed over a file.  This element is defined in <xref target="RFC3275" />.  Refer to RFC 5901.</t>
 </list></t>
 
 <t>The HashInformation class has five attributes:</t>
@@ -2320,10 +2543,12 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t>email-hash.  An email hash.</t>
 <t>file-hash-watchlist.  Watchlist of file hashes</t>
 <t>email-hash-watchlist.  Watchlist of email hashes</t>
-<t>ext-value.  Extension value.</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
-<t hangText="indicator-uid"><vspace />Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. The indicator set ID is used to group related indicators.</t>
+<t hangText="ext-type"><vspace />Optional.  STRING.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
+<t hangText="valid"><vspace />Optional.  BOOLEAN.  Indicates if the signature or hash is valid.</t>
+<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
 </list></t>
 </section> <!-- HashInformation -->
 
@@ -2350,7 +2575,7 @@ When a character encoding is specified, the XML declaration will read like the f
 	&lt;?xml version="1.0" encoding="charset" ?&gt;
 	<vspace blankLines='1' />
 
-Where "charset" is the name of the character encoding as registered with the Internet Assigned Numbers Authority (IANA), see <xref target="refs.iana" />.
+Where "charset" is the name of the character encoding as registered with the Internet Assigned Numbers Authority (IANA), see <xref target="RFC2978" />.
 </t>
 
 
@@ -2362,15 +2587,15 @@ The following characters have special meaning in XML and MUST be escaped with th
 
 <section title="IODEF Namespace" anchor="ns">
 <t>
-The IODEF schema declares a namespace of "urn:ietf:params:xml:ns:iodef-1.0" and registers it per <xref target="refs.xmlns" />.  Each IODEF
+The IODEF schema declares a namespace of "urn:ietf:params:xml:ns:iodef-2.0" and registers it per <xref target="W3C.XMLNS" />.  Each IODEF
 document MUST include a valid reference to the IODEF schema using the
 "xsi:schemaLocation" attribute.  An example of such a declaration would
 look as follows:<figure>
 <artwork><![CDATA[
 <IODEF-Document 
    version="2.00" lang="en-US"
-   xmlns:iodef="urn:ietf:params:xml:ns:iodef-1.0"
-   xsi:schemaLocation="urn:ietf:params:xmls:schema:iodef-1.0"
+   xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0"
+   xsi:schemaLocation="urn:ietf:params:xmls:schema:iodef-2.0"
 ]]></artwork>
 </figure>
 </t>
@@ -2383,9 +2608,9 @@ The IODEF documents MUST be well-formed XML.  It is RECOMMENDED that recipients 
 <list style="symbols">
 <t>The elements or attributes that are defined as POSTAL, NAME, PHONE, and EMAIL data-types are implemented as "xs:string", but more rigid formatting requirements are specified in the text.</t>
 
-<t>The IODEF-Document@lang and MLStringType@lang attributes are declared as an "xs:language" that constrains values with a regular expression.  However, the value of this attribute still needs to be validated against the list of possible enumerated values is defined in <xref target="refs.rfc4646" />.</t>
+<t>The IODEF-Document@lang and MLStringType@lang attributes are declared as an "xs:language" that constrains values with a regular expression.  However, the value of this attribute still needs to be validated against the list of possible enumerated values is defined in <xref target="RFC4646" />.</t>
 
-<t>The MonetaryImpact@currency attribute is declared as an "xs:string", but the list of valid values as defined in <xref target="refs.iso4217" />.</t>
+<t>The MonetaryImpact@currency attribute is declared as an "xs:string", but the list of valid values as defined in <xref target="ISO4217" />.</t>
 
 <t>All of the aggregated classes Contact and EventData are optional in the schema, but at least one of these aggregated classes MUST be present.</t>
 
@@ -2524,7 +2749,7 @@ The following XML excerpt demonstrates the use of the above schema as an extensi
 </t>
 
 <t>
-Since IODEF is implemented as an XML Schema, it implicitly supports all the different character encodings, such as UTF-8 and UTF-16, possible with XML.  Additionally, each IODEF document MUST specify the language in which their contents are encoded.  The language can be specified with the attribute "xml:lang" (per Section 2.12 of <xref target="refs.xml" />) in the top-level element (i.e., IODEF-Document@lang) and letting all other elements inherit that definition.  All IODEF classes with a free-form text definition (i.e., all those defined of type iodef:MLStringType) can also specify a language different from the rest of the document.  The valid language codes for the "xml:lang" attribute are described in <xref target="refs.rfc4646">RFC 4646</xref>.  
+Since IODEF is implemented as an XML Schema, it implicitly supports all the different character encodings, such as UTF-8 and UTF-16, possible with XML.  Additionally, each IODEF document MUST specify the language in which their contents are encoded.  The language can be specified with the attribute "xml:lang" (per Section 2.12 of <xref target="W3C.XML" />) in the top-level element (i.e., IODEF-Document@lang) and letting all other elements inherit that definition.  All IODEF classes with a free-form text definition (i.e., all those defined of type iodef:MLStringType) can also specify a language different from the rest of the document.  The valid language codes for the "xml:lang" attribute are described in <xref target="RFC4646" />.  
 </t>
 
 <t>
@@ -2874,14 +3099,14 @@ This section provides examples of an incident encoded in the IODEF.  These examp
 <section title="The IODEF Schema" anchor="schema">
 <t>
 <figure><artwork><![CDATA[
-  <xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-2.0"
-             xmlns="urn:ietf:params:xml:ns:iodef-2.0"
-             xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0"
-             xmlns:xs="http://www.w3.org/2001/XMLSchema"
-             xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-             elementFormDefault="qualified"
-             attributeFormDefault="unqualified">
-  <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
+<xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-2.0"
+           xmlns="urn:ietf:params:xml:ns:iodef-2.0"
+           xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+<xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
      schemaLocation="http://www.w3.org/TR/2002/
 REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
   <xs:annotation>
@@ -2931,6 +3156,8 @@ The following are in the Record class:
         <xs:sequence>
           <xs:element ref="iodef:Incident"
                       maxOccurs="unbounded"/>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>                     
         </xs:sequence>
         <xs:attribute name="version"
                       type="xs:string" fixed="2.00"/>
@@ -2948,17 +3175,7 @@ The following are in the Record class:
     <xs:element name="Incident">
       <xs:complexType>
         <xs:sequence>
-          <xs:choice>
-            <xs:element ref="iodef:IncidentID"/>
-            <!-- CHANGE - the incidentID can still be used, 
-              but when you have a set of indicators or include
-              a watch list, a ReportID may be preferred.  If 
-              this is agreed upon, do we make them both unique
-              so the same key can be used in databases?  This 
-              should not be used as your index value unless you
-              are the issuing entity. -->
-            <xs:element name="ReportID" type="IncidentIDType"/>
-          </xs:choice>
+          <xs:element ref="iodef:IncidentID"/>
           <xs:element ref="iodef:AlternativeID"
                       minOccurs="0"/>
           <xs:element ref="iodef:RelatedActivity"
@@ -3003,6 +3220,8 @@ The following are in the Record class:
                       type="xs:language"/>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" default="private"/>
+        <xs:attribute name="indicator-uid"
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
       </xs:complexType>
@@ -3306,6 +3525,9 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="DefinedCOA"
+                      type="iodef:MLStringType"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:AdditionalData"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
@@ -3331,6 +3553,9 @@ The following are in the Record class:
         <xs:sequence>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="DefinedCOA"
+                      type="iodef:MLStringType"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:StartTime"
                       minOccurs="0"/>
           <xs:element ref="iodef:EndTime"
@@ -3347,9 +3572,9 @@ The following are in the Record class:
                       type="iodef:action-type" default="other"/>
         <xs:attribute name="ext-action"
                       type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
+                      type="xs:string" use="optional"/>
+        <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
@@ -3394,9 +3619,9 @@ The following are in the Record class:
              you have a way to limit who you share that data with
              in products?
         -->
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
+                      type="xs:string" use="optional"/>
+        <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
         <!-- Adding in Attack Type -->
         <xs:attribute name="attacktype" type="att-type" 
@@ -3436,9 +3661,9 @@ The following are in the Record class:
         </xs:attribute>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-uid"
+                      type="xs:string" use="optional"/>
+        <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
@@ -3574,7 +3799,8 @@ The following are in the Record class:
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" 
                       default="default"/>
-
+        <xs:attribute name="indicator-uid"
+                      type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
                       type="xs:string" use="optional"/>
       </xs:complexType>
@@ -3588,7 +3814,6 @@ The following are in the Record class:
          target watchlist is in use, otherwise only one system entry 
          is expected. 
       -->
-
     <xs:element name="Flow">
       <xs:complexType>
         <xs:sequence>
@@ -3680,20 +3905,12 @@ The following are in the Record class:
             <!-- CHANGE - added DomainData class and subclasses from
                  RFC5901 -->
             <xs:element ref="iodef:DomainData" minOccurs="0"
-              maxOccurs="unbounded"/>
-
+                        maxOccurs="unbounded"/>
             <xs:element ref="iodef:Address"
                         minOccurs="0" maxOccurs="unbounded"/>
-            <!-- Proposed CHANGE: include a URI indicator.
-                 Common complaint that URIs were only in the 
-                 IODEF schema as references and not part of the
-                 incident or included indicators. 
-                 Included right now as an address type, below is a 
-                 second option for how to add it.
-            <xs:element ref="iodef:URL"
-                        minOccurs="0" maxOccurs="unbounded"/>
-            -->
           </xs:choice>
+          <xs:element ref="iodef:PostalAddress"
+                      minOccurs="0"/>
           <xs:element ref="iodef:Location"
                       minOccurs="0"/>
           <xs:element ref="iodef:DateTime"
@@ -3722,7 +3939,6 @@ The following are in the Record class:
                   <xs:enumeration value="ipv6-addr"/>
                   <xs:enumeration value="ipv6-net"/>
                   <xs:enumeration value="ipv6-net-mask"/>
-                  <!-- CHANGE - added uri type for site url/uris -->
                   <xs:enumeration value="site-uri"/>
                   <xs:enumeration value="ext-value"/>
                 </xs:restriction>
@@ -3791,10 +4007,9 @@ The following are in the Record class:
               </xs:simpleType>
             </xs:attribute>
             <xs:attribute name="ext-category"
-            type="xs:string" use="optional"/>
+                          type="xs:string" use="optional"/>
             <xs:attribute name="attacktype" type="att-type" 
                           use="optional"/>
-
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
@@ -3819,8 +4034,8 @@ The following are in the Record class:
                       type="xs:integer" minOccurs="0"/>
           <xs:element name="ProtoField"
                       type="xs:integer" minOccurs="0"/>
-          <xs:element ref="iodef:Application"
-                      minOccurs="0"/>
+          <xs:element ref="iodef:ApplicationHeader" 
+                      minOccurs="0" maxOccurs="unbounded"/>
 <!-- CHANGE - email from address indicator, may be better as a sub 
               class? Would only make sense with the service set to 
               email ports or none at all here or a new class. -->
@@ -3829,18 +4044,16 @@ The following are in the Record class:
                       type="iodef:MLStringType" minOccurs="0"/>
           <xs:element name="X-Mailer"
                       type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element name="EmailInfo" 
-                      type="EmailDetails" minOccurs="0"/>
+          <xs:element ref="EmailInfo" minOccurs="0"/>
           <!-- CHANGE - added DomainData class and subclasses from 
                RFC5901 -->
           <xs:element ref="iodef:DomainData" minOccurs="0"
-            maxOccurs="unbounded"/>
+                      maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Application"
+                      minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="ip_protocol"
-        type="xs:integer" use="required"/>
-        <!-- CHANGE: Including a unique ID for indicators, may be
-          used to connect indicators in different representations
-        -->
+                      type="xs:integer" use="required"/>
         <xs:attribute name="indicator-uid"
                       type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
@@ -3893,7 +4106,7 @@ The following are in the Record class:
 
   <!--
    ==================================================================
-   ==  EMailDetails class                                          ==
+   ==  EMailInfo class                                             ==
    ==================================================================
   -->
     <!-- CHANGE: added the email details in a subclass for use when 
@@ -3901,18 +4114,47 @@ The following are in the Record class:
       RFC5901 or ARF extensions.  No extension mechanism here, is it 
       needed? Possible to create an IANA table to extend this class 
       if needed in the future outside of schema edit cycles -->
-   <xs:complexType name="EmailDetails">
-     <xs:sequence>
-    <!-- Email is the From email -->
-    <xs:element ref="Email" minOccurs="0"/>
-    <xs:element name="EmailSubject"
-      type="iodef:MLStringType" minOccurs="0"/>
-    <xs:element name="X-Mailer"
-    type="iodef:MLStringType" minOccurs="0"/>
-     </xs:sequence>
-     <xs:attribute name="indicator-uid"
-       type="xs:string" use="optional"/>
-   </xs:complexType>
+   <xs:element name="EmailInfo">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element name="EmailFrom" 
+                     type="iodef:MLStringType" minOccurs="0"/>
+         <xs:element name="EmailSubject"
+                     type="iodef:MLStringType" minOccurs="0"/>
+         <xs:element name="EmailX-Mailer"
+                     type="iodef:MLStringType" minOccurs="0"/>
+       </xs:sequence>
+       <xs:attribute name="indicator-uid"
+                     type="xs:string" use="optional"/>
+       <xs:attribute name="indicator-set-id"
+                     type="xs:string" use="optional"/>
+     </xs:complexType>
+   </xs:element>
+
+  <!--
+   ==================================================================
+   ==  ApplicationHeadr class                                        ==
+   ==================================================================
+  -->
+   <xs:element name="ApplicationHeader">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:any namespace="##any" processContents="lax"
+                 minOccurs="0" maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="proto"
+                     type="xs:integer" use="required"/>
+       <xs:attribute name="field"
+                     type="xs:string" use="required"/>                     
+       <xs:attribute name="dtype"
+                     type="iodef:proto-dtype-type" 
+                     use="required"/>                     
+       <xs:attribute name="indicator-uid"
+                     type="xs:string" use="optional"/>
+       <xs:attribute name="indicator-set-id"
+                     type="xs:string" use="optional"/>
+     </xs:complexType>
+   </xs:element>
 
   <!--
    ==================================================================
@@ -3922,14 +4164,17 @@ The following are in the Record class:
   <xs:element name="DomainData">
     <xs:complexType id="DomainData.type">
       <xs:sequence>
-        <xs:element maxOccurs="1"
-                  name="Name" type="iodef:MLStringType"/>
-        <xs:element maxOccurs="1" minOccurs="0"
-                  name="DateDomainWasChecked" type="xs:dateTime"/>
+        <xs:element name="Name"
+                    type="iodef:MLStringType" maxOccurs="1" />
+        <xs:element name="DateDomainWasChecked"
+                    type="xs:dateTime"
+                    maxOccurs="1" minOccurs="0" />
         <xs:element name="RegistrationDate"  
-                  type="xs:dateTime" maxOccurs="1" minOccurs="0"/>
-        <xs:element maxOccurs="1" minOccurs="0" name="ExpirationDate"
-                  type="xs:dateTime"/>
+                    type="xs:dateTime" 
+                    maxOccurs="1" minOccurs="0" />
+        <xs:element name="ExpirationDate"
+                    type="xs:dateTime"
+                    maxOccurs="1" minOccurs="0" />
         <xs:element name="RelatedDNS" 
                     type="iodef:RelatedDNSEntryType" 
                     maxOccurs="unbounded" minOccurs="0" />
@@ -3979,11 +4224,15 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attribute name="indicator-uid"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="indicator-set-id"
+                    type="xs:string" use="optional"/>
     </xs:complexType>
   </xs:element>
 
     <xs:element name="RelatedDNS"
-    type="iodef:RelatedDNSEntryType"/>
+                type="iodef:RelatedDNSEntryType"/>
     <xs:complexType name="RelatedDNSEntryType">
      <xs:simpleContent>
       <xs:extension base="xs:string">
@@ -4031,11 +4280,7 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="ext-category"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-uid"
+      <xs:attribute name="ext-RecordType"
                     type="xs:string" use="optional"/>
      </xs:extension>
     </xs:simpleContent>
@@ -4069,22 +4314,9 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:RecordItem"
                       maxOccurs="unbounded"/>
-
-           <!-- CHANGE: File name and hash of file indicator 
-                information -->
-            <xs:element name="FileName"
-                        type="iodef:MLStringType" minOccurs="0"/>
-           <!-- Represent file hash information via digsig schema 
-                Reference class -->
-            <xs:element ref="ds:Reference" minOccurs="0"/>
-           <!-- CHANGE: Windows Registry Key Modifications:
-                Here, we include the classes from iodef-phish, to
-                prevent the need to pull in the full schema.
-                Ensure reference to RFC5901 Section 5.9.7 remains
-                included in UML description.
-           -->
-          <xs:element name="WindowsRegistryKeysModified" 
-                      type="RegistryKeyModified"
+          <xs:element ref="iodef:HashInformation"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:WindowsRegistryKeysModified"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:AdditionalData"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -4141,7 +4373,8 @@ The following are in the Record class:
    ==  Class to describe Windows Registry Keys                     ==
    ==================================================================
   -->
-    <xs:complexType name="RegistryKeyModified">
+    <xs:element name="WindowsRegistryKeysModified">
+    <xs:complexType>
       <xs:sequence>
         <xs:element name="Key" maxOccurs="unbounded">
           <xs:complexType>
@@ -4165,7 +4398,7 @@ The following are in the Record class:
                 </xs:restriction>
               </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name="ext-category" 
+            <xs:attribute name="ext-registryaction" 
                           type="xs:string" use="optional"/>
            </xs:complexType>
          </xs:element>
@@ -4175,6 +4408,7 @@ The following are in the Record class:
        <xs:attribute name="indicator-set-id"
                      type="xs:string" use="optional"/>
      </xs:complexType>
+     </xs:element>
 <!-- CHANGE: Should this be broken out as another class
      for WindowsRegistryKeyModified and add attributes
      for indicator_ID and action - add_value, removes_value, etc.
@@ -4189,7 +4423,8 @@ The following are in the Record class:
    ==  so it does not need to be maintained here.                  ==
    ==================================================================
   -->
-  <xs:complexType name="HashSigDetails">
+  <xs:element name="HashInformation">
+  <xs:complexType>
     <xs:sequence>
         <xs:element name="FileName" type="iodef:MLStringType"
                     minOccurs="0" maxOccurs="unbounded"/>
@@ -4231,18 +4466,18 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="ext-category"
+      <xs:attribute name="ext-type"
                     type="xs:string" use="optional"/>
-      <!-- Adding a boolean yes/no, 0/1option to indicate if the
-        signature or hash is valid -->
-      <xs:attribute name="valid" type="xs:boolean" use="optional" />
+      <xs:attribute name="valid" 
+                    type="xs:boolean" use="optional" />
       <xs:attribute name="indicator-uid"
                     type="xs:string" use="optional"/>
       <xs:attribute name="indicator-set-id"
                     type="xs:string" use="optional"/>
       <xs:attribute name="restriction"
                     type="iodef:restriction-type"/>
-    </xs:complexType>                   
+    </xs:complexType>
+    </xs:element>         
         
   <!--
    ==================================================================
@@ -4395,6 +4630,7 @@ The following are in the Record class:
         <xs:enumeration value="status-triage"/>
         <xs:enumeration value="status-new-info"/>
         <xs:enumeration value="watch-and-report"/>
+        <xs:enumeration value="defined-coa"/>
         <xs:enumeration value="other"/>
         <xs:enumeration value="ext-value"/>
       </xs:restriction>
@@ -4404,6 +4640,7 @@ The following are in the Record class:
       <xs:restriction base="xs:NMTOKEN">
         <xs:enumeration value="boolean"/>
         <xs:enumeration value="byte"/>
+        <xs:enumeration value="bytes"/>
         <xs:enumeration value="character"/>
         <xs:enumeration value="date-time"/>
         <xs:enumeration value="integer"/>
@@ -4424,6 +4661,21 @@ The following are in the Record class:
         <xs:enumeration value="ext-value"/>
       </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="proto-dtype-type">
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="boolean"/>
+        <xs:enumeration value="byte"/>
+        <xs:enumeration value="bytes"/>
+        <xs:enumeration value="character"/>
+        <xs:enumeration value="date-time"/>
+        <xs:enumeration value="integer"/>
+        <xs:enumeration value="real"/>
+        <xs:enumeration value="string"/>
+        <xs:enumeration value="xml"/>
+        <xs:enumeration value="ext-value"/>
+      </xs:restriction>
+    </xs:simpleType>
     
       <xs:simpleType name="att-type">
         <xs:restriction base="xs:NMTOKEN">
@@ -4440,7 +4692,7 @@ The following are in the Record class:
           <xs:enumeration value="ext-value"/>
         </xs:restriction>
       </xs:simpleType>
-  </xs:schema>		
+</xs:schema>		
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
@@ -4451,12 +4703,14 @@ The IODEF data model itself does not directly introduce security issues.
 Rather, it simply defines a representation for incident information.  As the data encoded by the IODEF might be considered privacy sensitive by the parties exchanging the information or by those described by it, care needs to be taken in ensuring the appropriate disclosure during both document exchange and subsequent processing.  The former must be handled by a messaging format, but the latter risk must be addressed by the systems that process, store, and archive IODEF documents and information derived from them.
 </t>
 
+<t>Executable content could be embedded into the IODEF document directly or through an extension.  The IODEF parser should handle this content with care to prevent unintentional automated execution.</t>
+
 <t>
 The contents of an IODEF document may include a request for action or an IODEF parser may independently have logic to take certain actions based on information that it finds.  For this reason, care must be taken by the parser to properly authenticate the recipient of the document and ascribe an appropriate confidence to the data prior to action.
 </t>
 
 <t>
-The underlying messaging format and protocol used to exchange instances of the IODEF MUST provide appropriate guarantees of confidentiality, integrity, and authenticity.  The use of a standardized security protocol is encouraged.  The <xref target="refs.rid">Real-time Inter-network Defense (RID) protocol</xref> and its associated transport binding <xref target="refs.ridhttp">IODEF/RID over HTTP/TLS</xref> provide such security.
+The underlying messaging format and protocol used to exchange instances of the IODEF MUST provide appropriate guarantees of confidentiality, integrity, and authenticity.  The use of a standardized security protocol is encouraged.  The Real-time Inter-network Defense (RID) protocol <xref target="RFC6545" /> and its associated transport binding IODEF/RID over HTTP/TLS <xref target="RFC6546" /> provide such security.
 </t>
 
 <t>
@@ -4468,7 +4722,7 @@ In order to suggest data processing and handling guidelines of the encoded infor
 
 
 <section title="IANA Considerations" anchor="iana_considerations">
-<t>This document uses URNs to describe an XML namespace and schema conforming to a registry mechanism described in <xref target="refs.rfc3688" /></t>
+<t>This document uses URNs to describe an XML namespace and schema conforming to a registry mechanism described in <xref target="RFC3688" /></t>
 
 <t>Registration for the IODEF namespace:
 <list style="symbols">
@@ -4492,15 +4746,10 @@ In order to suggest data processing and handling guidelines of the encoded infor
 The following groups and individuals, listed alphabetically, contributed substantially to this document and should be recognized for their efforts. 
 
 <list style="symbols">
-<t>Patrick Cain, Cooper-Cain Group, Inc.</t>
-<t>The eCSIRT.net Project</t>
-<t>The Incident Object Description and Exchange Format Working-Group of the TERENA task-force (TF-CSIRT)</t>
-<t>Glenn Mansfield Keeni, Cyber Solutions, Inc.</t>
-<t>Hiroyuki Kido, NARA Institute of Science and Technology</t>
 <t>Kathleen Moriarty, EMC Corporation</t>
 <t>Brian Trammell, ETH Zurich</t>
-<t>Jan Meijer, SURFnet bv</t>
-<t>Yuri Demchenko, University of Amsterdam</t>									
+<t>Patrick Cain, Cooper-Cain Group, Inc.</t>
+<t>... TODO many more to add ...</t>
 </list>
 </t>
 </section>  <!-- Acknowledgment -->
@@ -4511,19 +4760,18 @@ The following groups and individuals, listed alphabetically, contributed substan
 
 <references title="Normative References">
 
-<reference anchor="refs.xml" target="http://www.w3.org/TR/2000/REC-xml-20001006">
+<reference anchor="W3C.XML" target="http://www.w3.org/TR/2000/REC-xml-20001006">
 <front>
 	<title>Extensible Markup Language (XML) 1.0 (Second Edition)</title>
 	<author>
 	<organization abbrev="W3C">World Wide Web Consortium</organization>
 	</author>
 	<date month="October" day="6" year="2000" />
-
 </front>
 <seriesInfo name="W3C Recommendation" value="" />
 </reference>
 
-<reference anchor="refs.schema" target="http://www.w3.org/TR/xmlschema-1/">
+<reference anchor="W3C.SCHEMA" target="http://www.w3.org/TR/xmlschema-1/">
 <front>
 	<title>XML XML Schema Part 1: Structures Second Edition</title>
 	<author>
@@ -4534,7 +4782,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="W3C Recommendation" value="" />
 </reference>
 
-<reference anchor="refs.schemadtypes" target="http://www.w3.org/TR/xmlschema-2/">
+<reference anchor="W3C.SCHEMA.DTYPES" target="http://www.w3.org/TR/xmlschema-2/">
 <front>
 	<title>XML Schema Part 2: Datatypes Second Edition</title>
 	<author>
@@ -4545,7 +4793,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="W3C Recommendation" value="" />
 </reference>
 
-<reference anchor="refs.xmlns" target="http://www.w3.org/TR/REC-xml-names/">
+<reference anchor="W3C.XMLNS" target="http://www.w3.org/TR/REC-xml-names/">
 <front>
 	<title>Namespaces in XML</title>
 	<author>
@@ -4556,7 +4804,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="W3C Recommendation" value="" />
 </reference>
 
-<reference anchor="refs.xpath" target="http://www.w3.org/TR/xpath20/">
+<reference anchor="W3C.XPATH" target="http://www.w3.org/TR/xpath20/">
 <front>
 	<title>XML Path Language (XPath) 2.0</title>
 	<author>
@@ -4567,7 +4815,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="W3C Candidate Recommendation" value="" />
 </reference>
 
-<reference anchor="refs.rfc2119">
+<reference anchor="RFC2119">
 <front>
 	<title>Key words for use in RFCs to Indicate Requirement Levels</title>
 	<author initials="S." surname="Bradner">
@@ -4578,7 +4826,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="2119" />
 </reference>	
 
-<reference anchor="refs.rfc4646">
+<reference anchor="RFC4646">
 <front>
 	<title>Tags for Identifying of Languages</title>
 	<author initials="A." surname="Philips">
@@ -4592,7 +4840,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="4646" />
 </reference>	
 
-<reference anchor="refs.url">
+<reference anchor="RFC3986">
 <front>
 	<title>Uniform Resource Identifiers (URI): Generic Syntax</title>
 	<author initials="T." surname="Berners-Lee">
@@ -4609,7 +4857,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="3986" />
 </reference>	
 
-<reference anchor="refs.iana">
+<reference anchor="RFC2978">
 <front>
 	<title>IANA Charset Registration Procedures</title>
 	<author initials="N." surname="Freed">
@@ -4623,7 +4871,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="BCP" value="2978" />
 </reference>
 
-<reference anchor="refs.rfc4519">
+<reference anchor="RFC4519">
 <front>
 	<title>Schema for User Applications</title>
 	<author initials="A." surname="Sciberras">
@@ -4634,18 +4882,18 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="4519" />
 </reference>
 
-<reference anchor="refs.rfc2822">
+<reference anchor="RFC5322">
 <front>
 	<title>Internet Message Format</title>
 	<author initials="P." surname="Resnick">
 	  <organization />
 	</author>
-	<date month="April" year="2001" />
+	<date month="October" year="2008" />
 </front>
-<seriesInfo name="RFC" value="2822" />
+<seriesInfo name="RFC" value="5322" />
 </reference>
 
-<reference anchor="refs.rfc3339">
+<reference anchor="RFC3339">
 <front>
 	<title>Date and Time on the Internet: Timestamps</title>
 	<author initials="G." surname="Klyne">
@@ -4659,7 +4907,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="3339" />
 </reference>
 
-<reference anchor="refs.iso8601">
+<reference anchor="ISO8601">
 <front>
 	<title>International Standard: Data elements and interchange formats - Information interchange - Representation of dates and times</title> 
 	<author>
@@ -4670,7 +4918,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="ISO" value="8601, Second Edition" />
 </reference>
 
-<reference anchor="refs.iso4217">
+<reference anchor="ISO4217">
 <front>
 	<title>International Standard: Codes for the representation of currencies and funds, ISO 4217:2001</title>
 	<author>
@@ -4682,7 +4930,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="ISO" value="4217:2001" />
 </reference>
 
-<reference anchor="refs.rfc3688">
+<reference anchor="RFC3688">
 <front>
 	<title>The IETF XML Registry</title>
 	<author initials="M." surname="Mealling">
@@ -4691,6 +4939,23 @@ The following groups and individuals, listed alphabetically, contributed substan
 	<date month="January" year="2004" />
 </front>
 <seriesInfo name="RFC" value="3688" />
+</reference>
+
+<reference anchor="RFC3275">
+<front>
+	<title>(Extensible Markup Language) XML-Signature Syntax and Processing</title>
+	<author initials="D." surname="Eastlake">
+		  <organization />
+	</author>
+	<author initials="J." surname="Reagle">
+		  <organization />
+	</author>
+	<author initials="D." surname="Solo">
+		  <organization />
+	</author>
+	<date month="March" year="2002" />
+</front>
+<seriesInfo name="RFC" value="3275" />
 </reference>
 
 </references>
@@ -4714,7 +4979,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="Work in" value="Progress" />
 </reference>
 
-<reference anchor="refs.IDMEF">
+<reference anchor="RFC4765">
 <front>
 <title>Intrusion Detection Message Exchange Format</title>
 	<author initials="H." surname="Debar">
@@ -4736,7 +5001,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="4765" />
 </reference>	
 
-<reference anchor="refs.rid">
+<reference anchor="RFC6545">
 <front>
 	<title>Real-time Inter-network Defense (RID)</title>
 	<author initials="K." surname="Moriarty">
@@ -4747,7 +5012,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="6545" />
 </reference>	
 
-<reference anchor="refs.ridhttp">
+<reference anchor="RFC6546">
 <front>
 	<title>Transport of Real-time Inter-network Defense (RID) Messages over HTTP/TLS</title>
 	<author initials="B." surname="Trammell">
@@ -4758,7 +5023,31 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="6546" />
 </reference>	
 
-<reference anchor="refs.csv">
+<reference anchor="RFC5901">
+<front>
+	<title>Extensions to the IODEF-Document Class for Reporting Phishing</title>
+	<author initials="P." surname="Cain">
+		  <organization />
+	</author>
+	<author initials="D." surname="Jevans">
+		  <organization />
+	</author>
+	<date month="July" year="2010" />
+</front>
+<seriesInfo name="RFC" value="5901" />
+</reference>	
+
+<reference anchor="KB310516">
+<front>
+<title>How to add, modify, or delete registry subkeys and values by using a registration entries (.reg) file</title>
+	<author initials="" surname="">
+	  <organization>Microsoft Corporation</organization>
+	</author>
+	<date month="December" year="2007" />
+</front>
+</reference>
+
+<reference anchor="RFC4180">
 <front>
 <title>Common Format and MIME Type for Comma-Separated Values (CSV) File
 </title>
