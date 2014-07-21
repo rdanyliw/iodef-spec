@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-05" 
+     docName="draft-ietf-mile-rfc5070-bis-06" 
      obsoletes="5070" 
      category="std">
 	
@@ -15,7 +15,7 @@
 
 <front>
 
-<title abbrev="IODEF">
+<title abbrev="IODEFv2">
 The Incident Object Description Exchange Format v2</title>
 
 <author initials="R." surname="Danyliw" fullname="Roman Danyliw">
@@ -44,7 +44,7 @@ The Incident Object Description Exchange Format v2</title>
     </author>
        
     
-<date month="January" year="2014"/>
+<date month="February" year="2014"/>
 <area>Security</area>
 <workgroup>MILE Working Group</workgroup>
 <keyword>STD</keyword>
@@ -119,14 +119,18 @@ This document contains changes with respect to its predecessor RFC5070.
 <list style="symbols">
 <t>All of the RFC5070 Errata was implemented.</t>	
 <t>Imported the xmlns:ds namespace to include digital signature hash classes.</t>
-<t>The attributes @indicator-uid and @indicator-set-id were added to various classes to reference commonly shared indicators.</t>		
-<t>The following classes and attributes were added to the Service class:  Email, EmailSubject, X-Mailer, DomainData, AssetID, @virtual, and @ownership.</t>
-<t>The following classes were added to the Record class:  FileName, ds:Reference, and WindowsRegistryKeysModified.</t>
+<t>The @indicator-* attributes were added to various classes to reference commonly shared indicators.</t>		
+<t>The following classes were added to IODEF-Document: AdditionalData.</t>
+<t>The following classes were added to Incident and EventData: Discovery.</t>
+<t>The following classes and attributes were added to the Service class:  EmailData, DomainData, AssetID, ApplicationHeader @virtual, and @ownership.  Service@ip_protocol was renamed to @ip-protocol.</t>
+<t>The following classes were added to the Record class:  FileName and WindowsRegistryKeysModified.</t>
 <t>The following classes were added to the RelatedActivity class: ThreatActor, Campaign, Confidence, Description, and AdditionalData.</t>
-<t>The following classes were added to Node: PostalAddress</t>
+<t>The following classes were added to Assessment: BusinessImpact.</t>
+<t>The following classes were added to Node: PostalAddress and DomainData.  The following classes were removed from Node: Removed NodeName and DateTime.</t>
 <t>The following classes were added to the Contact class: ContactTitle.</t>
+<t>The following classes were added to Expectation and HistoryItem: DefinedCOA.</t>
 <t>(for consideration) The following attributes was added to the SoftwareType complexType: user-agent.</t>
-<t>Additional enumerated values were added to the following attributes: @restriction, {Expectation, HistoryItem}@action, NodeRole@category, Incident@purpose.</t>
+<t>Additional enumerated values were added to the following attributes: @restriction, {Expectation, HistoryItem}@action, NodeRole@category, Incident@purpose, Contact@role, AdditionalData@dtype, System@spoofed.</t>
 </list></t>	
 </section>  <!-- Changes -->
 			
@@ -363,6 +367,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 | STRING indicator-set-id |<>--{0..1}--[ EndTime         ]
 |                         |<>----------[ ReportTime      ]
 |                         |<>--{0..*}--[ Description     ]
+|                         |<>--{0..*}  [ Discovery       ]
 |                         |<>--{1..*}--[ Assessment      ]
 |                         |<>--{0..*}--[ Method          ]
 |                         |<>--{1..*}--[ Contact         ]
@@ -381,7 +386,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 
 <t hangText="AlternativeID"><vspace/>Zero or one.  The incident tracking numbers used by other CSIRTs to refer to the incident described in the document.</t>
 
-<t hangText="RelatedActivity"><vspace/>Zero or many.  Related activity and attribution of this activity.</t>
+<t hangText="RelatedActivity"><vspace/>Zero or more.  Related activity and attribution of this activity.</t>
 
 <t hangText="DetectTime"><vspace/>Zero or one.  The time the incident was first detected.</t>
 
@@ -392,6 +397,8 @@ Every incident is represented by an instance of the Incident class.  This class 
 <t hangText="ReportTime"><vspace/>One.  The time the incident was reported.</t>
 
 <t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form textual description of the incident.</t>
+
+<t hangText="Discovery"><vspace/>Zero or more.  The means by which this incident was detected.</t>
 
 <t hangText="Assessment"><vspace/>One or more.  A characterization of the impact of the incident.</t>
 
@@ -581,9 +588,9 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t hangText="Confidence"><vspace/>Zero or one.  An estimate of the confidence in attributing this RelatedActivity to the event described in the document.</t> 
 
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A description of how these relationships were derived.</t> 
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A description of how these relationships were derived.</t> 
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.</t> 
 
 </list></t>
 
@@ -620,7 +627,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t hangText="Description"><vspace/>One or more.  ML_STRING.  A description of the ThreatActor.</t> 
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.</t> 
 
 </list></t>
 
@@ -657,7 +664,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 
 <t hangText="Description"><vspace/>One or more.  ML_STRING.  A description of the Campaign.</t> 
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.</t> 
 
 </list></t>
 
@@ -795,23 +802,23 @@ Contact class logically inherits contact information from its ancestors.
 
 <t hangText="ContactTitle"><vspace/>Zero or one.  ML_STRING.  The title for the individual named in the ContactName.</t>
 
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form description of this contact.  In the case of a person, this is often the organizational title of the individual.</t>
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form description of this contact.  In the case of a person, this is often the organizational title of the individual.</t>
 
-<t hangText="RegistryHandle"><vspace/>Zero or many.  A handle name into the registry of the contact.</t>
+<t hangText="RegistryHandle"><vspace/>Zero or more.  A handle name into the registry of the contact.</t>
 
 <t hangText="PostalAddress"><vspace/>Zero or one.  The postal address of the contact.</t>
 
-<t hangText="Email"><vspace/>Zero or many.  The email address of the contact. </t>
+<t hangText="Email"><vspace/>Zero or more.  The email address of the contact. </t>
 
-<t hangText="Telephone"><vspace/>Zero or many.  The telephone number of the contact.</t>
+<t hangText="Telephone"><vspace/>Zero or more.  The telephone number of the contact.</t>
 
 <t hangText="Fax"><vspace/>Zero or one.  The facsimile telephone number of the contact.</t>
 
 <t hangText="Timezone"><vspace/>Zero or one.  TIMEZONE. The timezone in which the contact resides formatted according to <xref target="dt_timezone" />.</t>
 
-<t hangText="Contact"><vspace/>Zero or many. A Contact instance contained within another Contact instance inherits the values of the parent(s).  This recursive definition can be used to group common data pertaining to multiple points of contact and is especially useful when listing multiple contacts at the same organization.</t>
+<t hangText="Contact"><vspace/>Zero or more. A Contact instance contained within another Contact instance inherits the values of the parent(s).  This recursive definition can be used to group common data pertaining to multiple points of contact and is especially useful when listing multiple contacts at the same organization.</t>
 
-<t hangText="AdditionalData"><vspace/>Zero or many. A mechanism by which to extend the data model.</t>
+<t hangText="AdditionalData"><vspace/>Zero or more. A mechanism by which to extend the data model.</t>
 
 </list>
 </t>
@@ -839,6 +846,7 @@ Contact class logically inherits contact information from its ancestors.
 <t>cc.  An entity that is to be kept informed about the events related to an asset or organization.</t>
 <t>cc-irt.  A CSIRT or information sharing organization coordinating activity related to an asset or organization.</t>
 <t>le.  A law enforcement entity supporting the investigation of activity affecting an asset or organization.</t>
+<t>vendor.  The vendor that produces an asset.</t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
 
@@ -1018,8 +1026,105 @@ The element content of each class is a timestamp formatted according to the DATE
 
 	</section>  <!-- Time classes -->
 
+<section title="Discovery Class" anchor="Discovery">
+<t>The Discovery class describes how an incident was detected.
+
+<figure title="The Discovery Class" anchor="figure_discovery_class">
+<artwork><![CDATA[
++-------------------+
+| Discovery         |
++-------------------+
+| ENUM source       |<>--{0..*}--[ Description      ]
+| STRING ext-source |<>--{0..*}--[ Contact          ]
+| ENUM restriction  |<>--{0..*}--[ DetectionPattern ]
++-------------------+
+]]></artwork>
+</figure>
+</t>
+<t>The Discovery class is composed of three aggregate classes.
+
+<list style="hanging">
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text 
+description of how this incident was detected.</t>
+
+<t hangText="Contact"><vspace/>Zero or more.  Contact information for the party that discovered the incident.</t> 
+
+<t hangText="DetectionPattern"><vspace/>Zero or more.  Describes an application-specific configuration that detected the incident. 
+</t>
+</list></t>
+
+<t>The Discovery class has three attribute:
+<list style="hanging">
+
+<t hangText="source"><vspace />Optional.  ENUM.  Categorizes the techniques used to discover the incident.  These values are partially derived from Table 3-1 of <xref target="NIST800.61rev2" />.
+
+<list style="numbers">
+<t>idps.  Intrusion Detection or Prevention system.</t>
+<t>siem.  Security Information and Event Management System.</t>
+<t>av.  Antivirus or and antispam software.</t>
+<t>file-integrity.  File integrity checking software.</t>
+<t>third-party-monitoring.  Contracted third-party monitoring service.</t>
+<t>os-log.  Operating system logs.</t>
+<t>application-log.  Application logs.</t>
+<t>device-log.  Network device logs.</t>
+<t>network-flow.  Network flow analysis.</t>
+<t>investigation.  Manual investigation initiated based on timely notification of a new vulnerability or exploit.</t>
+<t>internal-notification.  A party within the organization discovered the activity</t>
+<t>external-notification.  A party outside of the organization discovered the activity.</t>
+<t>unknown.  Unknown detection approach.</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
+
+<t hangText="ext-source"><vspace />Optional.  STRING.  A means by which to extend the source attribute.  See <xref target="extending_enums" />.</t>
+
+<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.</t>
+
+</list></t>
+
+
+<section title="DetectionPattern Class" anchor="DetectionPattern">
+<t>The DetectionPattern class describes a configuration or signature that can be used by an IDS/IPS, SIEM, anti-virus, end-point protection, network analysis, malware analysis, or host forensics tool to identify a particular phenomenon.  This class requires the identification of the target application and allows the configuration to be describes in either free-form or machine readable form.
+
+<figure title="The DetectionPattern Class" anchor="figure_detectionpattern_class">
+<artwork><![CDATA[
++------------------+
+| DetectionPattern |
++------------------+
+| ENUM restriction |<>----------[ Application            ]
+|                  |<>--{0..*}--[ Description            ]
+|                  |<>--{0..*}--[ DetectionConfiguration ]
++------------------+
+]]></artwork>
+</figure>
+</t>
+<t>The DetectionPattern class is composed of three aggregate classes.
+
+<list style="hanging">
+<t hangText="Application"><vspace/>.  One.  The application for which the DetectionConfiguration or Description is being provided.
+</t>
+
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text 
+description of how to use the Application or provided DetectionConfiguration.
+</t>
+
+<t hangText="DetectionConfiguration"><vspace/>Zero or more.  STRING.  A machine consumable configuration to find a pattern of activity. 
+</t>
+</list></t>
+
+<t>Either an instance of the Description or DetectionConfiguration class MUST be present.</t>
+
+<t>The Method class has one attribute:
+<list style="hanging">
+	<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in 	<xref target="Incident" />.</t>
+</list></t>
+</section> <!-- DetectionPattern -->
+
+</section> <!-- Discovery -->
+
+
 <section title="Method Class" anchor="Method">
-<t>The Method class describes the methodology used by the intruder to perpetrate the events of the incident.  This class consists of a list of references describing the attack method and a free form description of the technique.
+<t>The Method class describes the tactics, techniques, or procedures used by the intruder in the incident.  This class consists of both a list of references describing the attack method and a free form description.
 
 <figure title="The Method Class" anchor="figure_method_class">
 <artwork><![CDATA[
@@ -1036,14 +1141,14 @@ The element content of each class is a timestamp formatted according to the DATE
 <t>The Method class is composed of three aggregate classes.
 
 <list style="hanging">
-<t hangText="Reference"><vspace/>Zero or many.  A reference to a vulnerability, malware sample, advisory, or analysis of an attack technique.
+<t hangText="Reference"><vspace/>Zero or more.  A reference to a vulnerability, malware sample, advisory, or analysis of an attack technique.
 </t>
 
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form text 
-description of the methodology used by the intruder.
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text 
+description of techniques, tactics, or procedures used by the intruder.
 </t>
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model. 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model. 
 </t>
 </list></t>
 
@@ -1057,7 +1162,7 @@ description of the methodology used by the intruder.
 <section title="Reference Class" anchor="Reference">
 <t>The Reference class is a reference to a vulnerability, IDS alert, malware sample, advisory, or attack technique.  A reference consists of a name, a URL to this reference, and an optional description.
  
-<figure title="The Reference Class" anchor="figure_referece_class">
+<figure title="The Reference Class" anchor="figure_reference_class">
 <artwork><![CDATA[
 +-------------------------+
 | Reference               |
@@ -1075,9 +1180,9 @@ description of the methodology used by the intruder.
 <list style="hanging">
 <t hangText="ReferenceName"><vspace/>One.  ML_STRING.  Name of the reference.</t>
 
-<t hangText="URL"><vspace/>Zero or many.  URL.  A URL associated with the reference.</t>
+<t hangText="URL"><vspace/>Zero or more.  URL.  A URL associated with the reference.</t>
 
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form text description of this reference.</t>
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text description of this reference.</t>
 							
 <t> The Reference class has 4 attributes.
 <list style="hanging">								
@@ -1116,16 +1221,16 @@ description of the methodology used by the intruder.
 
 <t>The aggregate classes that constitute Assessment are:
 <list style="hanging">
-<t hangText="Impact"><vspace/>Zero or many.  Technical characterization of the impact of the activity on the victim's enterprise.
+<t hangText="Impact"><vspace/>Zero or more.  Technical characterization of the impact of the activity on the victim's enterprise.
 </t> 
 
-<t hangText="BusinessImpact"><vspace/>Zero or many.  Impact of the activity on the business functions of the victim organization.
+<t hangText="BusinessImpact"><vspace/>Zero or more.  Impact of the activity on the business functions of the victim organization.
 </t> 
 
-<t hangText="TimeImpact"><vspace/>Zero or many.  Impact of the activity measured with respect to time.
+<t hangText="TimeImpact"><vspace/>Zero or more.  Impact of the activity measured with respect to time.
 </t> 
 
-<t hangText="MonetaryImpact"><vspace/>Zero or many.  Impact of the activity measured with respect to financial loss.
+<t hangText="MonetaryImpact"><vspace/>Zero or more.  Impact of the activity measured with respect to financial loss.
 </t> 
 
 <t hangText="Counter"><vspace/>Zero or more.  A counter with which to summarize the magnitude of the activity.</t>
@@ -1133,7 +1238,7 @@ description of the methodology used by the intruder.
 <t hangText="Confidence"><vspace/>Zero or one.  An estimate of confidence in the assessment.
 </t> 
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.
 </t> 
 
 </list>
@@ -1256,7 +1361,7 @@ description of the methodology used by the intruder.
 <t>The BusinessImpact class has four attributes:
 <list style="hanging">
 
-<t hangText="severity"><vspace />Optional.  ENUM.  Characeterizes the severity of the incident on business functions.  The permitted values are shown below.  They were derived from Table 3-2 of <xref target="NIST800.61rev2" />. The default value is "unknown".
+<t hangText="severity"><vspace />Optional.  ENUM.  Characterizes the severity of the incident on business functions.  The permitted values are shown below.  They were derived from Table 3-2 of <xref target="NIST800.61rev2" />. The default value is "unknown".
 <list style="numbers">
 <t>none.  No effect to the organization's ability to provide all services to all users.</t>
 <t>low.  Minimal effect as the organization can still provide all critical services to all users but has lost efficiency.</t>
@@ -1271,7 +1376,7 @@ description of the methodology used by the intruder.
 
 <t hangText="type"><vspace />Required.  ENUM.  Characterizes the effect this incident had on the business.Classifies the malicious activity into incident categories.  The permitted values are shown below.  There is no default value.
 <list style="numbers">
-<t>breach-proprietary.  Senstive or proprietary information was accessed or exfiltrated.</t>
+<t>breach-proprietary.  Sensitive or proprietary information was accessed or exfiltrated.</t>
 <t>breach-privacy.  Personally identifiable information was accessed or exfiltrated.</t>
 <t>loss-of-integrity.  Sensitive or proprietary information was changed or deleted.</t>
 <t>loss-of-service. Service delivery was disrupted.</t>
@@ -1495,12 +1600,12 @@ The element content is a positive, floating point number (REAL) specifying a uni
 <t hangText="Contact"><vspace/>Zero or One.  Provides contact information for the person that performed the action documented in this class.
 </t> 
 
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form textual description of the action or event.
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form textual description of the action or event.
 </t> 
 
-<t hangText="DefinedCOA"><vspace/>Zero or many.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
+<t hangText="DefinedCOA"><vspace/>Zero or more.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.</t> 
 </list>
 </t>
 
@@ -1540,6 +1645,7 @@ identical to the category attribute of the Expectation class.  The difference is
 | STRING indicator-set-id |<>--{0..1}--[ StartTime      ]
 |                         |<>--{0..1}--[ EndTime        ]
 |                         |<>--{0..*}--[ Contact        ]
+|                         |<>--{0..*}--[ Discovery      ]
 |                         |<>--{0..1}--[ Assessment     ]
 |                         |<>--{0..*}--[ Method         ]
 |                         |<>--{0..*}--[ Flow           ]
@@ -1562,6 +1668,8 @@ identical to the category attribute of the Expectation class.  The difference is
 <t hangText="EndTime"><vspace/>Zero or one.  The time the event ended.</t>
 
 <t hangText="Contact"><vspace/>Zero or more.  Contact information for the parties involved in the event.</t>
+
+<t hangText="Discovery"><vspace/>Zero or more.  The means by which the event was detected.</t>
 
 <t hangText="Assessment"><vspace/>Zero or one.  The impact of the event on the target and the actions taken.</t>
 
@@ -1651,9 +1759,9 @@ For example, an EventData class might be used to describe two machines involved 
 
 
 <list style="hanging">
-<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form description of the desired action(s).</t>
+<t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form description of the desired action(s).</t>
 
-<t hangText="DefinedCOA"><vspace/>Zero or many.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
+<t hangText="DefinedCOA"><vspace/>Zero or more.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
 
 <t hangText="StartTime"><vspace/>Zero or one.  The time at which the sender would like the action performed.  A timestamp that is earlier than the ReportTime specified in the Incident class denotes that the sender would like the action performed as soon as possible.  The absence of this element indicates no expectations of when the recipient would like the action performed.</t>
 
@@ -1691,6 +1799,8 @@ action requested.  This attribute is an enumerated list with a default value of 
 <t>rate-limit-host.  Rate-limit the traffic from the machine(s) listed as sources in the event.</t>
 <t>rate-limit-network. Rate-limit the traffic from the network(s) lists as sources in the event.</t>
 <t>rate-limit-port. Rate-limit the port(s) listed as sources in the event.</t>
+<t>upgrade-software.  Upgrade or patch the software or firmware on an asset.</t>
+<t>rebuild-asset.  Reinstall the operating system and applications on an asset.</t>
 <t>remediate-other. Remediate the activity in a way other than by rate limiting or blocking.</t>
 <t>status-triage.  Conveys receipts and the triaging of an incident.</t>
 <t>status-new-info.  Conveys that new information was received for this incident.</t>
@@ -1849,7 +1959,6 @@ The System class describes a system or network involved in an event.  The system
 +---------------+
 | Node          |
 +---------------+
-|               |<>--{0..*}--[ NodeName      ]
 |               |<>--{0..*}--[ DomainData    ]
 |               |<>--{0..*}--[ Address       ]
 |               |<>--{0..1}--[ PostalAddress ]
@@ -1864,13 +1973,10 @@ The System class describes a system or network involved in an event.  The system
 <t>The aggregate classes that constitute Node are:
 <list style="hanging">
 
-<t hangText="NodeName"><vspace/>Zero or more.  ML_STRING.  The name of the Node (e.g., fully qualified domain name).  This information MUST be provided if no Address or DomainData information is given.
+<t hangText="DomainData"><vspace/>Zero or more.  The detailed domain (DNS) information associated with this Node.  If an Address is not provided, at least one DomainData MUST be specified.
 </t>
 
-<t hangText="DomainData"><vspace/>Zero or more.  The detailed domain (DNS) information associated with this Node.
-</t>
-
-<t hangText="Address"><vspace/>Zero or more.  The hardware, network, or application address of the Node.  If a NodeName or DomainData is not provided, at least one Address MUST be specified.
+<t hangText="Address"><vspace/>Zero or more.  The hardware, network, or application address of the Node.  If a DomainData is not provided, at least one Address MUST be specified.
 
 </t>
 
@@ -1878,9 +1984,6 @@ The System class describes a system or network involved in an event.  The system
 </t>
 
 <t hangText="Location"><vspace/>Zero or one.  ML_STRING.  A free-from description of the physical location of the Node.  This description may provide a more detailed description of where in the PostalAddress this Node is found (e.g., room number, rack number, slot number in a chassis).
-</t>
-
-<t hangText="DateTime"><vspace/>Zero or one.  A timestamp of when the resolution between the name and address was performed.  This information MAY be provided if both an Address and NodeName are specified.
 </t>
 
 <t hangText="NodeRole"><vspace/>Zero or more.  The intended purpose of the Node.</t>
@@ -2042,7 +2145,7 @@ The System class describes a system or network involved in an event.  The system
 <list style="numbers">
 <t>byte.  Count of bytes.</t>
 <t>packet.  Count of packets.</t>
-<t>flow.  Count of flow (e.g., NetFlow records).</t>
+<t>flow.  Count of network flow records.</t>
 <t>session.  Count of sessions.</t>
 <t>alert.  Count of notifications generated by another system (e.g., IDS or SIM).</t>
 <t>message.  Count of messages (e.g., mail messages).</t>
@@ -2209,7 +2312,7 @@ The System class describes a system or network involved in an event.  The system
 <t>The aggregate classes that constitute DomainContacts are:
 <list style="hanging">
 
-<t hangText="SameDomainContact"><vspace/>Zero or one.  ML_STRING.  A domain name already cited in this document or through previous exchange that contains the identical contact information as the domain name in question.  The domain contact information associated with this domain should be used in liue of explicit definition with the Contact class.</t>
+<t hangText="SameDomainContact"><vspace/>Zero or one.  ML_STRING.  A domain name already cited in this document or through previous exchange that contains the identical contact information as the domain name in question.  The domain contact information associated with this domain should be used in lieu of explicit definition with the Contact class.</t>
 
 <t hangText="Contact"><vspace/>One or more.  Contact information for the domain. See <xref target="contact" />.</t>
 </list>
@@ -2236,7 +2339,7 @@ This class was derived from <xref target="RFC4765" />.
 +-------------------------+
 | Service                 |
 +-------------------------+
-| INTEGER ip_protocol     |<>--{0..1}--[ Port              ]
+| INTEGER ip-protocol     |<>--{0..1}--[ Port              ]
 | STRING indicator-uid    |<>--{0..1}--[ Portlist          ]
 | STRING indicator-set-id |<>--{0..1}--[ ProtoCode         ]
 |                         |<>--{0..1}--[ ProtoType         ]
@@ -2264,7 +2367,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="ProtoField"><vspace/>Zero or one.  INTEGER.  A transport layer (layer 4) protocol specific flag field (e.g., TCP flag field).
 </t>
 
-<t hangText="ApplicationHeader"><vspace/>Zero or many.  An application layer (layer 7) protocol header.  See <xref target="ApplicationHeader" />.
+<t hangText="ApplicationHeader"><vspace/>Zero or more.  An application layer (layer 7) protocol header.  See <xref target="ApplicationHeader" />.
 </t>
 
 <t hangText="EmailData"><vspace/>Zero or one.  Headers associated with an email.  See <xref target="EmailData" />.
@@ -2282,7 +2385,7 @@ This class was derived from <xref target="RFC4765" />.
 <t>The Service class has three attributes:</t>
 <t>
 <list style="hanging">
-<t hangText="ip_protocol"><vspace />Required. INTEGER.   The IANA assigned IP protocol number per <xref target="IANA.Protocols" />.</t>
+<t hangText="ip-protocol"><vspace />Required. INTEGER.   The IANA assigned IP protocol number per <xref target="IANA.Protocols" />.</t>
 <t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 <t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
 </list>
@@ -2780,6 +2883,19 @@ The IODEF documents MUST be well-formed XML.  It is RECOMMENDED that recipients 
 </list>
 </t>
 </section> <!-- Validation -->
+
+<section title="Incompatibilities with v1" anchor="differencesfromv1">
+<t>
+Version 2 of the IODEF data model makes a number of changes to <xref target="RFC5070" />.  Largely, these changes were additive in nature -- classes and enumerated values were added.  The following is a list of incompatibilities where the data model has changed between versions:
+
+<list style="symbols">
+<t>Renames the Service@ip_protocol attribute to @ip-protocol.</t>
+<t>Removes the Node/NodeName in favor of representing domain names with Node/DomainData/Name.  Node/DataTime was also removed so that Node/DomainData/DateDomainWasChecked can represent the time at which the name to address resolution occured.</t>
+</list>
+
+</t>
+</section> <!-- Differences from v1 -->
+
 </section> <!-- Processing Considerations -->
 
 <section title="Extending the IODEF" anchor="extending">
@@ -3271,37 +3387,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
 
   <!--
    ==================================================================
-   ==  List of changes                                             ==
-   ==================================================================
-
-   CHANGE - new indicator values in the schema
-
-   The purpose of the proposed changes is to include commonly shared
-   indicators in the base IODEF schema.  This class will contain
-   indicators from the list below that are not represented elsewhere
-   in the schema.  IODEF extensions or embedded schemas via the SCI
-   classes will be required to include additional data types.
-   A table could be maintained through IANA to extend or change this
-   class in between IODEF revisions.
-   
-  RFC5901 provides a method to include an entire email, the following
-  included indicators are ones commonly used when you do not need the
-  entire email
-The following are in the Service Class:
-      Email address
-      Email subject
-      X-Mailer
-The following are in the Record class:
-      File Name
-      File Hash - 5.9.5.2 - using ds:reference
-      WindowsRegistryKey - using method from RFC5901
-  The following are now in the Node class as a proposed location.
-      URL
-  HTTPUserAgent is included as a SoftwareType
-      HTTP User Agent String
-  -->
-  <!--
-   ==================================================================
    == IODEF-Document class                                         ==
    ==================================================================
   -->
@@ -3342,6 +3427,8 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:ReportTime"/>
           <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Discovery"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Assessment"
                       maxOccurs="unbounded"/>
@@ -3567,6 +3654,7 @@ The following are in the Record class:
               <xs:enumeration value="cc"/>
               <xs:enumeration value="cc-irt"/>
               <xs:enumeration value="le"/>
+              <xs:enumeration value="vendor"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
           </xs:simpleType>
@@ -3741,6 +3829,65 @@ The following are in the Record class:
                       type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
+
+  <!--
+   ==================================================================
+   ==  Discovery class                                             ==
+   ==================================================================
+  -->
+    <xs:element name="Discovery">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Contact" 
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:DetectionPattern"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="source"
+                      use="optional" default="unknown">
+          <xs:simpleType>
+            <xs:restriction base="xs:NMTOKEN">
+              <xs:enumeration value="idps"/>
+              <xs:enumeration value="siem"/>
+              <xs:enumeration value="av"/>
+              <xs:enumeration value="file-integrity"/>
+              <xs:enumeration value="third-party-monitoring"/>
+              <xs:enumeration value="os-log"/>
+              <xs:enumeration value="application-log"/>
+              <xs:enumeration value="device-log"/>
+              <xs:enumeration value="network-flow"/>
+              <xs:enumeration value="investigation"/>
+              <xs:enumeration value="internal-notification"/>
+              <xs:enumeration value="external-notification"/>
+              <xs:enumeration value="unknown"/>
+              <xs:enumeration value="ext-value"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ext-source"
+                      type="xs:string" use="optional"/>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DetectionPattern">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:Application"/>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="DetectionConfiguration"
+                      type="xs:string"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
   <!--
    ==================================================================
    ==  Method class                                                ==
@@ -3775,13 +3922,6 @@ The following are in the Record class:
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <!-- CHANGE: Do we want an indicator_set_id here to connect 
-             data in the reference class to specific indicators? 
-             is there a better way to do this? 
-             Should the indicator_uid be used to mark data so that
-             you have a way to limit who you share that data with
-             in products?
-        -->
         <xs:attribute name="indicator-uid"
                       type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
@@ -3985,6 +4125,8 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:Contact"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Discovery"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Assessment"
                       minOccurs="0"/>
           <xs:element ref="iodef:Method"
@@ -4049,9 +4191,7 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="restriction"
-                     type="iodef:restriction-type"/>
-        <xs:attribute name="interface"
-                      type="xs:string"/>
+                      type="iodef:restriction-type"/>
         <xs:attribute name="category">
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
@@ -4068,12 +4208,10 @@ The following are in the Record class:
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="ext-category"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE - adding an attribute to mark sets of 
-             indicators -->
-        <xs:attribute name="indicator-set-id"
+        <xs:attribute name="ext-category" 
                       type="xs:string" use="optional"/>
+        <xs:attribute name="interface"
+                      type="xs:string"/>
         <xs:attribute name="spoofed" type="yes-no-unknown-type"
                       default="unknown" />
         <xs:attribute name="virtual" type="yes-no-unknown-type"
@@ -4104,10 +4242,6 @@ The following are in the Record class:
       <xs:complexType>
         <xs:sequence>
           <xs:choice maxOccurs="unbounded">
-            <xs:element name="NodeName"
-                        type="iodef:MLStringType" minOccurs="0"/>
-            <!-- CHANGE - added DomainData class and subclasses from
-                 RFC5901 -->
             <xs:element ref="iodef:DomainData" minOccurs="0"
                         maxOccurs="unbounded"/>
             <xs:element ref="iodef:Address"
@@ -4116,8 +4250,6 @@ The following are in the Record class:
           <xs:element ref="iodef:PostalAddress"
                       minOccurs="0"/>
           <xs:element ref="iodef:Location"
-                      minOccurs="0"/>
-          <xs:element ref="iodef:DateTime"
                       minOccurs="0"/>
           <xs:element ref="iodef:NodeRole"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -4241,23 +4373,11 @@ The following are in the Record class:
           <xs:element name="ApplicationHeader"
                       type="iodef:ApplicationHeaderType" 
                       minOccurs="0" maxOccurs="unbounded"/>
-<!-- CHANGE - email from address indicator, may be better as a sub 
-              class? Would only make sense with the service set to 
-              email ports or none at all here or a new class. -->
-          <xs:element ref="Email" minOccurs="0"/>
-          <xs:element name="EmailSubject"
-                      type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element name="X-Mailer"
-                      type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element ref="EmailInfo" minOccurs="0"/>
-          <!-- CHANGE - added DomainData class and subclasses from 
-               RFC5901 -->
-          <xs:element ref="iodef:DomainData" minOccurs="0"
-                      maxOccurs="unbounded"/>
+          <xs:element ref="EmailData" minOccurs="0"/>
           <xs:element ref="iodef:Application"
                       minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute name="ip_protocol"
+        <xs:attribute name="ip-protocol"
                       type="xs:integer" use="required"/>
         <xs:attribute name="indicator-uid"
                       type="xs:string" use="optional"/>
@@ -4311,10 +4431,10 @@ The following are in the Record class:
 
   <!--
    ==================================================================
-   ==  EMailInfo class                                             ==
+   ==  EmailData class                                             ==
    ==================================================================
   -->
-   <xs:element name="EmailInfo">
+   <xs:element name="EmailData">
      <xs:complexType>
        <xs:sequence>
          <xs:element name="EmailFrom" 
@@ -4833,6 +4953,8 @@ The following are in the Record class:
         <xs:enumeration value="rate-limit-host"/>
         <xs:enumeration value="rate-limit-network"/>
         <xs:enumeration value="rate-limit-port"/>
+        <xs:enumeration value="upgrade-software"/>
+        <xs:enumeration value="rebuild-asset"/>
         <xs:enumeration value="remediate-other"/>
         <xs:enumeration value="status-triage"/>
         <xs:enumeration value="status-new-info"/>
@@ -4900,7 +5022,6 @@ The following are in the Record class:
         </xs:restriction>
       </xs:simpleType>
 </xs:schema>		
-
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
@@ -5189,6 +5310,24 @@ The following groups and individuals, listed alphabetically, contributed substan
 </references>
 
 <references title="Informative References">
+
+<reference anchor="RFC5070">
+<front>
+<title>Incident Object Description Exchange Format</title>
+	<author initials="R." surname="Danyliw">
+		  <organization />
+	</author>
+
+	<author initials="J." surname="Meijer">
+		  <organization />
+	</author>
+	<author initials="Y." surname="Demchenko">
+		  <organization />
+	</author>
+	<date month="December" year="2007" />
+</front>
+<seriesInfo name="RFC" value="5070" />
+</reference>	
 
 <reference anchor="refs.requirements">
 <front>

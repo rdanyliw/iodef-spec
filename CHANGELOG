@@ -1,17 +1,14 @@
 editorial = just the text was changed
 schema = schema was modified
 
-
-** (schema) Renamed DomainData@{SystemStatus,DomainStatus} to @{system-status, domain-status} 
-** (schema) Renamed RelatedDNS@RecordType to @record-type
-** (schema) Added DomainData@{ext-system-status, ext-domain-status} to allow extensibility
-** (schema) Added Assessment/BusinessImpact (Issue #36)
-** (schema) Added EmailInfo/EmailHeaderField (Issue #24 and raised in a schema comment per Issue #21)
-** (schema) Added HashInformation/AdditionalData (Issue #23)
-** (schema) Renamed HashInformation to HashData
-** (schema) Renamed EmailInfo to EmailData
-** (schema) Added enumerated values to Contact@type to track RFC5901 and other gaps
-** (editorial) Added a reference (IANA.Ports) for ApplicationHeader@proto
-** (editorial) Added a reference (IANA.Protocols) for Service@ip_protocol
-** (editorial) Added documentation for DomainData, Nameservers, and DomainContacts
-** (editorial) Removed some of the schema comments (Issue #21)
+** (schema) Sorted attributes of System to align to the text
+** (schema) Removed System@indicator-set-id
+** (schema) Removed Service/{Email,EmailSubject, X-Mailer} in favor of Service/EmailData
+** (schema) Renamed Service/EmailInfo to EmailData
+** (schema) Renamed Service@ip_protocol to @ip-protocol
+** (schema) Removed Node/{NodeName,DateTime} and Service/DomainData in favor of Node/DomainData (Issue #4)
+** (schema) Added Expectation@action={upgrade-software,rebuild-asset}
+** (schema) Added Contact@role="vendor"
+** (schema) Added {Incident,Event}/Discovery and Discovery/DetectionPattern (Issue #27)
+** (editorial) Added Section 4.4 to describe incompatable changes between rfc5070 and rfc070bis
+** (editorial) Changed text in Method class to address part (c) for Issue #22 (Issue #22)

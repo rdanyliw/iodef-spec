@@ -16,37 +16,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
 
   <!--
    ==================================================================
-   ==  List of changes                                             ==
-   ==================================================================
-
-   CHANGE - new indicator values in the schema
-
-   The purpose of the proposed changes is to include commonly shared
-   indicators in the base IODEF schema.  This class will contain
-   indicators from the list below that are not represented elsewhere
-   in the schema.  IODEF extensions or embedded schemas via the SCI
-   classes will be required to include additional data types.
-   A table could be maintained through IANA to extend or change this
-   class in between IODEF revisions.
-   
-  RFC5901 provides a method to include an entire email, the following
-  included indicators are ones commonly used when you do not need the
-  entire email
-The following are in the Service Class:
-      Email address
-      Email subject
-      X-Mailer
-The following are in the Record class:
-      File Name
-      File Hash - 5.9.5.2 - using ds:reference
-      WindowsRegistryKey - using method from RFC5901
-  The following are now in the Node class as a proposed location.
-      URL
-  HTTPUserAgent is included as a SoftwareType
-      HTTP User Agent String
-  -->
-  <!--
-   ==================================================================
    == IODEF-Document class                                         ==
    ==================================================================
   -->
@@ -87,6 +56,8 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:ReportTime"/>
           <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Discovery"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Assessment"
                       maxOccurs="unbounded"/>
@@ -312,6 +283,7 @@ The following are in the Record class:
               <xs:enumeration value="cc"/>
               <xs:enumeration value="cc-irt"/>
               <xs:enumeration value="le"/>
+              <xs:enumeration value="vendor"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
           </xs:simpleType>
@@ -486,6 +458,65 @@ The following are in the Record class:
                       type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
+
+  <!--
+   ==================================================================
+   ==  Discovery class                                             ==
+   ==================================================================
+  -->
+    <xs:element name="Discovery">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Contact" 
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:DetectionPattern"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="source"
+                      use="optional" default="unknown">
+          <xs:simpleType>
+            <xs:restriction base="xs:NMTOKEN">
+              <xs:enumeration value="idps"/>
+              <xs:enumeration value="siem"/>
+              <xs:enumeration value="av"/>
+              <xs:enumeration value="file-integrity"/>
+              <xs:enumeration value="third-party-monitoring"/>
+              <xs:enumeration value="os-log"/>
+              <xs:enumeration value="application-log"/>
+              <xs:enumeration value="device-log"/>
+              <xs:enumeration value="network-flow"/>
+              <xs:enumeration value="investigation"/>
+              <xs:enumeration value="internal-notification"/>
+              <xs:enumeration value="external-notification"/>
+              <xs:enumeration value="unknown"/>
+              <xs:enumeration value="ext-value"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ext-source"
+                      type="xs:string" use="optional"/>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DetectionPattern">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:Application"/>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="DetectionConfiguration"
+                      type="xs:string"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
   <!--
    ==================================================================
    ==  Method class                                                ==
@@ -520,13 +551,6 @@ The following are in the Record class:
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <!-- CHANGE: Do we want an indicator_set_id here to connect 
-             data in the reference class to specific indicators? 
-             is there a better way to do this? 
-             Should the indicator_uid be used to mark data so that
-             you have a way to limit who you share that data with
-             in products?
-        -->
         <xs:attribute name="indicator-uid"
                       type="xs:string" use="optional"/>
         <xs:attribute name="indicator-set-id"
@@ -730,6 +754,8 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:Contact"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:Discovery"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Assessment"
                       minOccurs="0"/>
           <xs:element ref="iodef:Method"
@@ -794,9 +820,7 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="restriction"
-                     type="iodef:restriction-type"/>
-        <xs:attribute name="interface"
-                      type="xs:string"/>
+                      type="iodef:restriction-type"/>
         <xs:attribute name="category">
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
@@ -813,12 +837,10 @@ The following are in the Record class:
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="ext-category"
-        type="xs:string" use="optional"/>
-        <!-- CHANGE - adding an attribute to mark sets of 
-             indicators -->
-        <xs:attribute name="indicator-set-id"
+        <xs:attribute name="ext-category" 
                       type="xs:string" use="optional"/>
+        <xs:attribute name="interface"
+                      type="xs:string"/>
         <xs:attribute name="spoofed" type="yes-no-unknown-type"
                       default="unknown" />
         <xs:attribute name="virtual" type="yes-no-unknown-type"
@@ -849,10 +871,6 @@ The following are in the Record class:
       <xs:complexType>
         <xs:sequence>
           <xs:choice maxOccurs="unbounded">
-            <xs:element name="NodeName"
-                        type="iodef:MLStringType" minOccurs="0"/>
-            <!-- CHANGE - added DomainData class and subclasses from
-                 RFC5901 -->
             <xs:element ref="iodef:DomainData" minOccurs="0"
                         maxOccurs="unbounded"/>
             <xs:element ref="iodef:Address"
@@ -861,8 +879,6 @@ The following are in the Record class:
           <xs:element ref="iodef:PostalAddress"
                       minOccurs="0"/>
           <xs:element ref="iodef:Location"
-                      minOccurs="0"/>
-          <xs:element ref="iodef:DateTime"
                       minOccurs="0"/>
           <xs:element ref="iodef:NodeRole"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -986,23 +1002,11 @@ The following are in the Record class:
           <xs:element name="ApplicationHeader"
                       type="iodef:ApplicationHeaderType" 
                       minOccurs="0" maxOccurs="unbounded"/>
-<!-- CHANGE - email from address indicator, may be better as a sub 
-              class? Would only make sense with the service set to 
-              email ports or none at all here or a new class. -->
-          <xs:element ref="Email" minOccurs="0"/>
-          <xs:element name="EmailSubject"
-                      type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element name="X-Mailer"
-                      type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element ref="EmailInfo" minOccurs="0"/>
-          <!-- CHANGE - added DomainData class and subclasses from 
-               RFC5901 -->
-          <xs:element ref="iodef:DomainData" minOccurs="0"
-                      maxOccurs="unbounded"/>
+          <xs:element ref="EmailData" minOccurs="0"/>
           <xs:element ref="iodef:Application"
                       minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute name="ip_protocol"
+        <xs:attribute name="ip-protocol"
                       type="xs:integer" use="required"/>
         <xs:attribute name="indicator-uid"
                       type="xs:string" use="optional"/>
@@ -1056,10 +1060,10 @@ The following are in the Record class:
 
   <!--
    ==================================================================
-   ==  EMailInfo class                                             ==
+   ==  EmailData class                                             ==
    ==================================================================
   -->
-   <xs:element name="EmailInfo">
+   <xs:element name="EmailData">
      <xs:complexType>
        <xs:sequence>
          <xs:element name="EmailFrom" 
@@ -1578,6 +1582,8 @@ The following are in the Record class:
         <xs:enumeration value="rate-limit-host"/>
         <xs:enumeration value="rate-limit-network"/>
         <xs:enumeration value="rate-limit-port"/>
+        <xs:enumeration value="upgrade-software"/>
+        <xs:enumeration value="rebuild-asset"/>
         <xs:enumeration value="remediate-other"/>
         <xs:enumeration value="status-triage"/>
         <xs:enumeration value="status-new-info"/>
