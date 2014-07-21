@@ -1,4 +1,4 @@
-iodef-spec
+IODEFv2 Draft Specifications
 ==========
 
-IODEFv2 Draft Specification
+This is the working area of the Incident Object Description Exchange Format v2 specification in the IETF MILE Working Group.
