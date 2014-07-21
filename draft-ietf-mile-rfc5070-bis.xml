@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-04" 
+     docName="draft-ietf-mile-rfc5070-bis-05" 
      obsoletes="5070" 
      category="std">
 	
@@ -119,12 +119,12 @@ This document contains changes with respect to its predecessor RFC5070.
 <list style="symbols">
 <t>All of the RFC5070 Errata was implemented.</t>	
 <t>Imported the xmlns:ds namespace to include digital signature hash classes.</t>
-<t>The attributes @indicator-uid and @indicator-set-id were added to various classes to reference commonly shared indicators.</t>						
+<t>The attributes @indicator-uid and @indicator-set-id were added to various classes to reference commonly shared indicators.</t>		
 <t>The following classes and attributes were added to the Service class:  Email, EmailSubject, X-Mailer, DomainData, AssetID, @virtual, and @ownership.</t>
 <t>The following classes were added to the Record class:  FileName, ds:Reference, and WindowsRegistryKeysModified.</t>
 <t>The following classes were added to the RelatedActivity class: ThreatActor, Campaign, Confidence, Description, and AdditionalData.</t>
+<t>The following classes were added to Node: PostalAddress</t>
 <t>The following classes were added to the Contact class: ContactTitle.</t>
-<t>(for consideration) The following class was added to the Node class: URL.</t>
 <t>(for consideration) The following attributes was added to the SoftwareType complexType: user-agent.</t>
 <t>Additional enumerated values were added to the following attributes: @restriction, {Expectation, HistoryItem}@action, NodeRole@category, Incident@purpose.</t>
 </list></t>	
@@ -328,7 +328,7 @@ The IODEF-Document class is the top level class in the IODEF data model.  All IO
 <t>The aggregate class that constitute IODEF-Document is:
 <list style="hanging">
 <t hangText="Incident"><vspace/>One or more.  The information related to a single incident.</t> 
-<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.</t>
+<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" /></t>
 </list>
 </t>
 
@@ -826,10 +826,19 @@ Contact class logically inherits contact information from its ancestors.
 <list style="numbers">
 
 <t>creator.  The entity that generate the document.</t>
-<t>admin.  An administrative contact for a host or network.</t>
-<t>tech.  A technical contact for a host or network.</t>
-<t>irt.  The CSIRT involved in handling the incident.</t>
-<t>cc.  An entity that is to be kept informed about the handling of the incident.</t>
+<t>reporter.  The entity that reported the information.</t>
+<t>admin.  An administrative contact or business owner for an asset or organization.</t>
+<t>tech.  An entity responsible for the day-to-day management of technical issues for an asset or organization.</t>
+<t>provider.  An external hosting provider for an asset.</t>
+<t>zone.  An entity with authority over a DNS zone.</t>
+<t>user.  An end-user of an asset or part of an organization.</t>
+<t>billing.  An entity responsible for billing issues for an asset or organization.</t>
+<t>legal.  An entity responsible for legal issue related to an asset or organization.</t>
+<t>irt.  An entity responsible for handling security issues for an asset or organization.</t>
+<t>abuse.  An entity responsible for handling abuse originating from an asset or organization.</t>
+<t>cc.  An entity that is to be kept informed about the events related to an asset or organization.</t>
+<t>cc-irt.  A CSIRT or information sharing organization coordinating activity related to an asset or organization.</t>
+<t>le.  A law enforcement entity supporting the investigation of activity affecting an asset or organization.</t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
 
@@ -1085,11 +1094,8 @@ description of the methodology used by the intruder.
 </section>  <!-- Method class -->
 
 <section title="Assessment Class" anchor="Assessment">
-<t>The Assessment class describes the technical and non-technical repercussions of the incident on the CSIRT's constituency.</t>
+<t>The Assessment class describes the repercussions of the incident to the victim.</t>
 
-<t>This class was derived from <xref target="RFC4765" />.
-</t>
-  
 <t> 
 <figure title="Assessment Class" anchor="figure_assessment_class">
 <artwork><![CDATA[
@@ -1097,9 +1103,10 @@ description of the methodology used by the intruder.
 | Assessment              |
 +-------------------------+ 
 | ENUM occurrence         |<>--{0..*}--[ Impact         ]
-| ENUM restriction        |<>--{0..*}--[ TimeImpact     ]
-| STRING indicator-uid    |<>--{0..*}--[ MonetaryImpact ]
-| STRING indicator-set-id |<>--{0..*}--[ Counter        ]
+| ENUM restriction        |<>--{0..*}--[ BusinessImpact ]
+| STRING indicator-uid    |<>--{0..*}--[ TimeImpact     ]
+| STRING indicator-set-id |<>--{0..*}--[ MonetaryImpact ]
+|                         |<>--{0..*}--[ Counter        ]
 |                         |<>--{0..1}--[ Confidence     ]
 |                         |<>--{0..*}--[ AdditionalData ]
 +-------------------------+
@@ -1109,7 +1116,10 @@ description of the methodology used by the intruder.
 
 <t>The aggregate classes that constitute Assessment are:
 <list style="hanging">
-<t hangText="Impact"><vspace/>Zero or many.  Technical impact of the incident on a network.
+<t hangText="Impact"><vspace/>Zero or many.  Technical characterization of the impact of the activity on the victim's enterprise.
+</t> 
+
+<t hangText="BusinessImpact"><vspace/>Zero or many.  Impact of the activity on the business functions of the victim organization.
 </t> 
 
 <t hangText="TimeImpact"><vspace/>Zero or many.  Impact of the activity measured with respect to time.
@@ -1216,6 +1226,67 @@ description of the methodology used by the intruder.
 </list></t>
 
 </section> <!-- Impact class -->
+
+<section title="BusinessImpact Class" anchor="businessimpact">
+
+<t>The BusinessImpact class describes and characterizes the degree to which the function of the organization was impacted by the Incident.</t>
+
+<t>The element body describes the impact to the organization as a free-form text string.  The two attributes characterize the impact.</t>
+
+<t>
+<figure title="BusinessImpact Class" anchor="figure_businessimpact_class">
+<artwork>
+<![CDATA[
++-------------------------+ 
+| BusinessImpact          | 
++-------------------------+ 
+| ML_STRING               | 
+|                         | 
+| ENUM severity           |
+| STRING ext-severity     |
+| ENUM type               |
+| STRING ext-type         |
++-------------------------+
+]]></artwork>
+</figure></t>
+
+<t>The element content will be a free-form textual description of the impact to the organization.
+</t>
+
+<t>The BusinessImpact class has four attributes:
+<list style="hanging">
+
+<t hangText="severity"><vspace />Optional.  ENUM.  Characeterizes the severity of the incident on business functions.  The permitted values are shown below.  They were derived from Table 3-2 of <xref target="NIST800.61rev2" />. The default value is "unknown".
+<list style="numbers">
+<t>none.  No effect to the organization's ability to provide all services to all users.</t>
+<t>low.  Minimal effect as the organization can still provide all critical services to all users but has lost efficiency.</t>
+<t>medium. The organization has lost the ability to provide a critical service to a subset of system users.</t>
+<t>high. The organization is no longer able to provide some critical services to any users.</t>
+<t>unknown.  The impact is not known.</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
+
+<t hangText="ext-severity"><vspace/>Optional. STRING.  A means by which to extend the severity attribute.  See <xref target="extending_enums" />.</t>
+
+<t hangText="type"><vspace />Required.  ENUM.  Characterizes the effect this incident had on the business.Classifies the malicious activity into incident categories.  The permitted values are shown below.  There is no default value.
+<list style="numbers">
+<t>breach-proprietary.  Senstive or proprietary information was accessed or exfiltrated.</t>
+<t>breach-privacy.  Personally identifiable information was accessed or exfiltrated.</t>
+<t>loss-of-integrity.  Sensitive or proprietary information was changed or deleted.</t>
+<t>loss-of-service. Service delivery was disrupted.</t>
+<t>loss-financial.  Money or services were stolen.</t>
+<t>degraded-reputation.  The reputation of the organization's brand was diminished.</t>
+<t>asset-damage.  A cyber-physical system was damaged.</t>
+<t>asset-manipulation.  A cyber-physical system was manipulated.</t>
+<t>legal.  Incident resulted in legal or regulatory action</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list></t>
+<t hangText="ext-type"><vspace />Optional.  STRING.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
+</list></t>
+
+</section> <!-- BusinessImpact class -->
+
 
 <section title="TimeImpact Class" anchor="timeimpact">
 <t>The TimeImpact class describes the impact of the incident on an organization as a function of time.  It provides a way to convey down time and recovery time.
@@ -1522,7 +1593,7 @@ data not explicitly represented in the data model.</t>
 
 <section title="Relating the Incident and EventData Classes" anchor="Incident_Event">
 
-<t>There is substantial overlap in the Incident and EventData classes. Nevertheless, the semantics of these classes are quite different.  The Incident class provides summary information about the entire incident, while the EventData class provides information about the individual events comprising the incident.  In the most common case, the EventData class will provide more specific information for the general description provided in the Incident class.  However, it may also be possible that the overall summarized information about the incident conflicts with some individual information in an EventData class when there is a substantial composition of various events in the incident.  In such a case, the interpretation of the more specific EventData MUST supersede the more generic information provided in IncidentData.
+<t>There is substantial overlap in the Incident and EventData classes. Nevertheless, the semantics of these classes are quite different.  The Incident class provides summary information about the entire incident, while the EventData class provides information about the individual events comprising the incident.  In the most common case, the EventData class will provide more specific information for the general description provided in the Incident class.  However, it may also be possible that the overall summarized information about the incident conflicts with some individual information in an EventData class when there is a substantial composition of various events in the incident.  In such a case, the interpretation of the more specific EventData MUST supersede the more generic information provided in Incident.
 </t>
 </section>
 
@@ -1584,7 +1655,7 @@ For example, an EventData class might be used to describe two machines involved 
 
 <t hangText="DefinedCOA"><vspace/>Zero or many.  ML_STRING.  A unique identifier meaningful to the sender and recipient of this document that references a course of action.  This class MUST be present if the action attribute is set to "defined-coa".</t>
 
-<t hangText="StartTime"><vspace/>Zero or one.  The time at which the sender would like the action performed.  A timestamp that is earlier than the ReportTime specified in the Incident class denotes that the sender would like the action performed as soon as possible.  The absence of this element indicates no expections of when the recipient would like the action performed.</t>
+<t hangText="StartTime"><vspace/>Zero or one.  The time at which the sender would like the action performed.  A timestamp that is earlier than the ReportTime specified in the Incident class denotes that the sender would like the action performed as soon as possible.  The absence of this element indicates no expectations of when the recipient would like the action performed.</t>
 
 <t hangText="EndTime"><vspace/>Zero or one.  The time by which the sender expects the recipient to complete the action.  If the recipient cannot complete the action before EndTime, the recipient MUST NOT carry out the action.  Because of transit delays, clock drift, and so on, the sender MUST be prepared for the recipient to have carried out the action, even if it completes past EndTime.</t>
 
@@ -1597,7 +1668,7 @@ For example, an EventData class might be used to describe two machines involved 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in 
 <xref target="Incident" />.  The default value is "default".</t>
 <t hangText="severity"><vspace/>Optional.  ENUM.  Indicates the desired priority
-of the action.   This attribute is an enumerated list with no default value, and the semantics of these relative measures are context dependant.
+of the action.   This attribute is an enumerated list with no default value, and the semantics of these relative measures are context dependent.
 
 <list style="numbers">
 <t>low.  Low priority</t>
@@ -1796,7 +1867,7 @@ The System class describes a system or network involved in an event.  The system
 <t hangText="NodeName"><vspace/>Zero or more.  ML_STRING.  The name of the Node (e.g., fully qualified domain name).  This information MUST be provided if no Address or DomainData information is given.
 </t>
 
-<t hangText="DomainData"><vspace/>Zero or more.  TODO. The DomainData Class and Subclasses from RFC 5901.
+<t hangText="DomainData"><vspace/>Zero or more.  The detailed domain (DNS) information associated with this Node.
 </t>
 
 <t hangText="Address"><vspace/>Zero or more.  The hardware, network, or application address of the Node.  If a NodeName or DomainData is not provided, at least one Address MUST be specified.
@@ -1944,7 +2015,7 @@ The System class describes a system or network involved in an event.  The system
 <t>The Counter class summarize multiple occurrences of some event, or conveys counts or rates on various features (e.g., packets, sessions, events).
 </t>
 
-<t>The value of the counter is the element content with its units represented in the type attribute.  A rate for a given feature can be expressed by setting the duration attribute.  The complete semantics are entirely context dependant based on the class in which the Counter is aggregated.</t>
+<t>The value of the counter is the element content with its units represented in the type attribute.  A rate for a given feature can be expressed by setting the duration attribute.  The complete semantics are entirely context dependent based on the class in which the Counter is aggregated.</t>
 
 <t>
 <figure title="The Counter Class" anchor="figure_counter_class">
@@ -2005,39 +2076,98 @@ The System class describes a system or network involved in an event.  The system
 <t>
 <figure title="The DomainData Class" anchor="figure_domaindata_class">
 <artwork><![CDATA[
-+-------------------------+
-| DomainData              |
-+-------------------------+
-| ENUM SystemStatus       |<>----------[ Name                 ]
-| ENUM DomainStatus       |<>--{0..1}--[ DateDomainWasChecked ]
-| STRING indicator-uid    |<>--{0..1}--[ RegistrationDate     ]
-| STRING indicator-set-id |<>--{0..1}--[ ExpirationDate       ]
-|                         |<>--{0..*}--[ RelatedDNS           ]
-|                         |<>--{0..*}--[ Nameservers          ]
-|                         |<>--{0..1}--[ DomainContacts       ]
-|                         |
-+-------------------------+
++--------------------------+
+| DomainData               |
++--------------------------+
+| ENUM system-status       |<>----------[ Name                 ]
+| STRING ext-system-status |<>--{0..1}--[ DateDomainWasChecked ]
+| ENUM domain-status       |<>--{0..1}--[ RegistrationDate     ]
+| STRING ext-domain-status |<>--{0..1}--[ ExpirationDate       ]
+| STRING indicator-uid     |<>--{0..*}--[ RelatedDNS           ]
+| STRING indicator-set-id  |<>--{0..*}--[ Nameservers          ]
+|                          |<>--{0..1}--[ DomainContacts       ]
+|                          |
++--------------------------+
 ]]></artwork></figure></t>
+
+<t>The aggregate classes that constitute DomainData are:
+<list style="hanging">
+
+<t hangText="Name"><vspace/>One.  ML_STRING.  The domain name of the Node (e.g., fully qualified domain name).</t>
+
+<t hangText="DateDomainWasChecked"><vspace/>Zero or one.  DATETIME.  A timestamp of when the Name was resolved.</t>
+
+<t hangText="RegistrationDate"><vspace/>Zero or one.  DATETIME.  A timestamp of when domain listed in Name was registered.</t>
+
+<t hangText="ExpirationDate"><vspace/>Zero or one.  DATETIME.  A timestamp of when the domain listed in Name is set to expire.</t>
+
+<t hangText="RelatedDNS"><vspace/>Zero or more.  ...TODO...</t>
+
+<t hangText="Nameservers"><vspace/>Zero or more.  The name servers identified for the domain listed in Name.</t>
+
+<t hangText="DomainContacts"><vspace/>Zero or one.  Contact information for the domain listed in Name supplied by the registrar or through a whois query.</t>
+
+</list>
+</t>
+
+<t>The DomainData class has six attribute:
+<list style="hanging">
+
+<t hangText="system-status"><vspace/>Required.  ENUM.  Assesses the domain's involvement in the event.
+
+<list style="numbers">
+<t>spoofed.  This domain was spoofed.</t>
+<t>fraudulent. This domain was operated with fraudulent intentions.</t>
+<t>innocent-hacked. This domain was compromised by a third party.</t>
+<t>innocent-hijacked. This domain was deliberately hijacked.</t>
+<t>unknown.  No categorization for this domain known. </t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
+<t hangText="ext-system-status"><vspace/>Optional.  STRING.  A means by which to extend the system-status attribute.  See <xref target="extending_enums" />.</t>
+
+<t hangText="domain-status"><vspace/>Required.  ENUM.  Categorizes the registry status of the domain at the time the document was generated.  These values and their associated descriptions are derived from Section 3.2.2 of <xref target="RFC3982" />.
+
+<list style="numbers">
+<t>reservedDelegation.  The domain is permanently inactive.</t>
+<t>assignedAndActive.  The domain is in a normal state.</t>
+<t>assignedAndInactive.  The domain has an assigned registration but the delegation is inactive.</t>
+<t>assignedAndOnHold.  The domain is under dispute.</t>
+<t>revoked.  The domain is in the process of being purged from the database.</t>
+<t>transferPending.  The domain is pending a change in authority.</t>
+<t>registryLock.  The domain is on hold by the registry.</t>
+<t>registrarLock.  Same as "registryLock".</t>
+<t>other.  ... TODO -- RFC 5901 has this but doesn't describe it ... </t>
+<t>unknown.  The domain has an unknown status.</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
+<t hangText="ext-domain-status"><vspace/>Optional.  STRING.  A means by which to extend the system-status attribute.  See <xref target="extending_enums" />.</t>
+
+<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+</list>
+</t>
 
 <section title="RelatedDNS" anchor="RelatedDNS">
 <t>...TODO...</t>
 <t>
 <figure title="The RelatedDNS Class" anchor="figure_relateddns_class">
 <artwork><![CDATA[
-+---------------------+
-| RelatedDNS          |
-+---------------------+
-| STRING              |
-|                     |
-| ENUM RecordType     |
-| ENUM ext-RecordType |
-+---------------------+
++----------------------+
+| RelatedDNS           |
++----------------------+
+| STRING               |
+|                      |
+| ENUM record-type     |
+| ENUM ext-record-type |
++----------------------+
 ]]></artwork></figure></t>
 
 </section> <!-- RelatedDNS -->
 
 <section title="Nameservers Class" anchor="Nameservers">
-<t>...TODO...</t>
+<t>The Nameservers class describes the name servers associated with a given domain.</t>
 <t>
 <figure title="The Nameservers Class" anchor="figure_nameservers_class">
 <artwork><![CDATA[
@@ -2049,10 +2179,22 @@ The System class describes a system or network involved in an event.  The system
 +--------------------+
 ]]></artwork></figure></t>
 
+<t>The aggregate classes that constitute Nameservers are:
+<list style="hanging">
+
+<t hangText="Server"><vspace/>One.  ML_STRING.  The domain name of the name server.</t>
+
+<t hangText="Address"><vspace/>One or more.  The address of the name server.  See <xref target="Address" />.</t>
+</list>
+</t>
+
+
 </section> <!-- Nameservers -->
 
 <section title="DomainContacts Class" anchor="DomainContacts">
-<t>...TODO...</t>
+<t>The DomainContacts class describes the contact information for a given domain provided either by the registrar or through a whois query.</t>
+
+<t> This contact information can be explicitly described through a Contact class or a reference can be provided to a domain with identical contact information.  Either a single SameDomainContact MUST be present or one or many Contact classes.</t>
 <t>
 <figure title="The DomainContacts Class" anchor="figure_domaincontacts_class">
 <artwork><![CDATA[
@@ -2063,6 +2205,15 @@ The System class describes a system or network involved in an event.  The system
 |                    |<>--{1..*}--[ Contact ]
 +--------------------+
 ]]></artwork></figure></t>
+
+<t>The aggregate classes that constitute DomainContacts are:
+<list style="hanging">
+
+<t hangText="SameDomainContact"><vspace/>Zero or one.  ML_STRING.  A domain name already cited in this document or through previous exchange that contains the identical contact information as the domain name in question.  The domain contact information associated with this domain should be used in liue of explicit definition with the Contact class.</t>
+
+<t hangText="Contact"><vspace/>One or more.  Contact information for the domain. See <xref target="contact" />.</t>
+</list>
+</t>
 
 </section> <!-- DomainContacts -->
 
@@ -2091,7 +2242,7 @@ This class was derived from <xref target="RFC4765" />.
 |                         |<>--{0..1}--[ ProtoType         ]
 |                         |<>--{0..1}--[ ProtoField        ]
 |                         |<>--{0..*}--[ ApplicationHeader ]
-|                         |<>--{0..1}--[ EmailInfo         ]
+|                         |<>--{0..1}--[ EmailData         ]
 |                         |<>--{0..1}--[ Application       ]
 +-------------------------+
 ]]></artwork></figure></t>
@@ -2116,7 +2267,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="ApplicationHeader"><vspace/>Zero or many.  An application layer (layer 7) protocol header.  See <xref target="ApplicationHeader" />.
 </t>
 
-<t hangText="EmailInfo"><vspace/>Zero or one.  TODO.  See <xref target="EmailInfo" />.
+<t hangText="EmailData"><vspace/>Zero or one.  Headers associated with an email.  See <xref target="EmailData" />.
 </t>
 
 <t hangText="Application"><vspace/>Zero or one.  The application bound to the specified Port or Portlist.  See <xref target="Application" />.
@@ -2126,19 +2277,19 @@ This class was derived from <xref target="RFC4765" />.
 
 <t>Either a Port or Portlist class MUST be specified for a given instance of a Service class.</t>
 
-<t>When a given System classes with category="source" and another with category="target" are aggregated into a single Flow class, and each of these System classes has a Service and Portlist class, an implicit relationship between these Porlists exists.  If N ports are listed for a System@category="source", and M ports are listed for System@category="target", the number of ports in N must be equal to M.  Likewise, the ports MUST be listed in an identical sequence such that the n-th port in the source corresponds to the n-th port of the target.  If N is greater than 1, a given instance of a Flow class MUST only have a single instance of a System@category="source" and System@category="target".</t>
+<t>When a given System classes with category="source" and another with category="target" are aggregated into a single Flow class, and each of these System classes has a Service and Portlist class, an implicit relationship between these Portlists exists.  If N ports are listed for a System@category="source", and M ports are listed for System@category="target", the number of ports in N must be equal to M.  Likewise, the ports MUST be listed in an identical sequence such that the n-th port in the source corresponds to the n-th port of the target.  If N is greater than 1, a given instance of a Flow class MUST only have a single instance of a System@category="source" and System@category="target".</t>
 
 <t>The Service class has three attributes:</t>
 <t>
 <list style="hanging">
-<t hangText="ip_protocol"><vspace />Required. INTEGER.   The IANA protocol number.</t>
+<t hangText="ip_protocol"><vspace />Required. INTEGER.   The IANA assigned IP protocol number per <xref target="IANA.Protocols" />.</t>
 <t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 <t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
 </list>
 </t>
 
 <section title="ApplicationHeader Class" anchor="ApplicationHeader">
-<t>The ApplicationHeader class allows the representation of arbitrary fields from an application layer protocol header and its  corresponding value.</t>
+<t>The ApplicationHeader class allows the representation of arbitrary fields from an application layer protocol header and its corresponding value.</t>
 
 <t>
 <figure title="The ApplicationHeader Class" anchor="figure_applicationheader_class">
@@ -2159,7 +2310,7 @@ This class was derived from <xref target="RFC4765" />.
 <t>The ApplicationHeader class has five attributes:</t>
 <t>
 <list style="hanging">
-<t hangText="proto"><vspace />Required. INTEGER.   The IANA protocol number from xxx corrending to the protocol whose field will be represented.</t>
+<t hangText="proto"><vspace />Required. INTEGER.   The IANA assigned port number per <xref target="IANA.Ports" /> corresponding to the application layer protocol whose field will be represented.</t>
 <t hangText="field"><vspace />Required. STRING.   The name of the protocol field whose value will be found in the element body.</t>
 <t hangText="dtype"><vspace/>Required.  ENUM.  The data type of the element content.  The permitted values for this attribute are shown below. The default value is "string".
 <list style="numbers">
@@ -2249,14 +2400,14 @@ This class was derived from <xref target="RFC4765" />.
 </t>
 </section> <!-- OperatingSystem class -->
 
-<section title="EmailInfo Class" anchor="EmailInfo">
-<t>The EmailInfo class describes common headers from email messages.</t>
+<section title="EmailData Class" anchor="EmailData">
+<t>The EmailData class describes headers from an email message.  Common headers have dedicated classes, but arbitrary headers can also be described.</t>
 
 <t>
-<figure title="EmailInfo Class" anchor="figure_emailinfo_class">
+<figure title="EmailData Class" anchor="figure_emaildata_class">
 <artwork><![CDATA[
 +-------------------------+
-| EmailInfo               |
+| EmailData               |
 +-------------------------+
 | STRING indicator-uid    |<>--{0..1}--[ EmailFrom        ]
 | STRING indicator-set-id |<>--{0..1}--[ EmailSubject     ]
@@ -2266,16 +2417,17 @@ This class was derived from <xref target="RFC4765" />.
 ]]></artwork>
 </figure></t>
 
-<t>The aggregate class that constitutes EmailInfo are:
+<t>The aggregate class that constitutes EmailData are:
 <list style="hanging">
 
 <t hangText="EmailFrom"><vspace/>Zero or one.  The value of the "From:" header field in an email.  See Section 3.6.2 of <xref target="RFC5322" />.</t>
 <t hangText="EmailSubject"><vspace/>Zero or one.  The value of the "Subject:" header field in an email.  See Section 3.6.4 of <xref target="RFC5322" />.</t>
 <t hangText="EmailX-Mailer"><vspace/>Zero or one.  The value of the "X-Mailer:" header field in an email.</t>
+<t hangText="EmailHeaderField"><vspace/>Zero or one.  The value of an arbitrary header field in the email.  See <xref target="ApplicationHeader" />.  The attributes of EmailHeaderField MUST be set as follows: proto="25" and dtype="string".  The name of the email header field MUST be set in the field attribute.</t>
 </list>
 </t>
 
-<t>The EmailInfo class has two attributes:</t>
+<t>The EmailData class has two attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
@@ -2283,7 +2435,7 @@ This class was derived from <xref target="RFC4765" />.
 </list>
 </t>
 
-</section> <!-- EmailInfo Class" -->
+</section> <!-- EmailData Class" -->
 
 <section title="Record Class" anchor="Record">
 <t>The Record class is a container class for log and audit data that provides supportive information about the incident.  The source of this data will often be the output of monitoring tools.  These logs substantiate the activity described in the document.</t>
@@ -2328,7 +2480,7 @@ This class was derived from <xref target="RFC4765" />.
 | STRING indicator-set-id |<>--{0..1}--[ Application                 ]
 |                         |<>--{0..*}--[ RecordPattern               ]
 |                         |<>--{0..*}--[ RecordItem                  ]
-|                         |<>--{0..1}--[ HashInformation             ]
+|                         |<>--{0..1}--[ HashData                    ]
 |                         |<>--{0..*}--[ WindowsRegistryKeysModified ]
 |                         |<>--{0..*}--[ AdditionalData              ]
 +-------------------------+
@@ -2342,7 +2494,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="Application"><vspace/>Zero or one.  Information about the sensor used to generate the RecordItem data.</t>
 <t hangText="RecordPattern"><vspace/>Zero or more.  A search string to precisely find the relevant data in a RecordItem.</t>
 <t hangText="RecordItem"><vspace/>Zero or more.  Log, audit, or forensic data.</t>
-<t hangText="HashInformation"><vspace/>Zero or one.  The file name and hash of a file indicator.</t>
+<t hangText="HashData"><vspace/>Zero or one.  The file name and hash of a file indicator.</t>
 <t hangText="WindowsRegistryKeysModified"><vspace/>Zero or more.  The registry keys that were modified that are indicator(s).</t>
 <t hangText="AdditionalData"><vspace/>Zero or more.  An extension mechanism for data not explicitly represented in the data model.</t>
 
@@ -2499,24 +2651,25 @@ This class was derived from <xref target="RFC4765" />.
 
 </section> <!-- RegistryKeyModified -->
 
-<section title="HashInformation Class" anchor="HashInformation">
-<t>This class are the hash and signature details that are needed for providing context for indicators.</t>
+<section title="HashData Class" anchor="HashData">
+<t>The HashData class describes files, file hashes,  ... TODO ...the hash and signature details that are needed for providing context for indicators.</t>
 <t>
-<figure title="The HashInformation Class" anchor="figure_hashinformation_class">
+<figure title="The HashData Class" anchor="figure_hashdata_class">
 <artwork><![CDATA[
 +--------------------------+
-| HashInformation          |
+| HashData                 |
 +--------------------------+
-| ENUM type                |<>--{0..*}--[ FileName     ]
-| STRING ext-type          |<>--{0..*}--[ FileSize     ]
-| BOOL valid               |<>--{0..*}--[ ds:Signature ]
-| STRING indicator-uid     |<>--{0..*}--[ ds:KeyInfo   ]
-| STRING indicator-set-id  |<>--{0..*}--[ ds:Reference ]
+| ENUM type                |<>--{0..*}--[ FileName       ]
+| STRING ext-type          |<>--{0..*}--[ FileSize       ]
+| BOOL valid               |<>--{0..*}--[ ds:Signature   ]
+| STRING indicator-uid     |<>--{0..*}--[ ds:KeyInfo     ]
+| STRING indicator-set-id  |<>--{0..*}--[ ds:Reference   ]
+|                          |<>--{0..*}--[ AdditionalData ]
 +--------------------------+
 ]]></artwork>
 </figure></t>
 
-<t>The aggregate classes that constitutes HashInformation are:
+<t>The aggregate classes that constitutes HashData are:
 
 <list style="hanging">
 <t hangText="FileName"><vspace />Zero or more.  ML_STRING.  The name of the file.</t>
@@ -2524,9 +2677,10 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="ds:Signature"><vspace />Zero or more. </t>
 <t hangText="ds:KeyInfo"><vspace />Zero or more.</t>
 <t hangText="ds:Reference"><vspace />Zero or more.  The algorithm identification and value of a hash computed over a file.  This element is defined in <xref target="RFC3275" />.  Refer to RFC 5901.</t>
+<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" /></t>
 </list></t>
 
-<t>The HashInformation class has five attributes:</t>
+<t>The HashData class has five attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="type"><vspace />Optional.  ENUM.  The Hash Type.
@@ -2550,7 +2704,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
 <t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
 </list></t>
-</section> <!-- HashInformation -->
+</section> <!-- HashData -->
 
 </section> <!-- IODEF Data Model -->
 
@@ -3400,10 +3554,19 @@ The following are in the Record class:
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
               <xs:enumeration value="creator"/>
+              <xs:enumeration value="reporter"/>
               <xs:enumeration value="admin"/>
               <xs:enumeration value="tech"/>
+              <xs:enumeration value="provider"/>
+              <xs:enumeration value="zone"/>
+              <xs:enumeration value="user"/>
+              <xs:enumeration value="billing"/>
+              <xs:enumeration value="legal"/>
+              <xs:enumeration value="abuse"/>
               <xs:enumeration value="irt"/>
               <xs:enumeration value="cc"/>
+              <xs:enumeration value="cc-irt"/>
+              <xs:enumeration value="le"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
           </xs:simpleType>
@@ -3642,6 +3805,7 @@ The following are in the Record class:
         <xs:sequence>
           <xs:choice maxOccurs="unbounded">
             <xs:element ref="iodef:Impact"/>
+            <xs:element ref="iodef:BusinessImpact"/>
             <xs:element ref="iodef:TimeImpact"/>
             <xs:element ref="iodef:MonetaryImpact"/>
           </xs:choice>
@@ -3685,9 +3849,6 @@ The following are in the Record class:
                           use="optional" default="unknown">
               <xs:simpleType>
                 <xs:restriction base="xs:NMTOKEN">
-             <!-- CHANGE question: do we want to allow multiple 
-                  values to be selected in case it is a combination? 
-               -->
                   <xs:enumeration value="admin"/>
                   <xs:enumeration value="dos"/>
                   <xs:enumeration value="extortion"/>
@@ -3709,6 +3870,49 @@ The following are in the Record class:
         </xs:simpleContent>
       </xs:complexType>
     </xs:element>
+    <xs:element name="BusinessImpact">
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="iodef:MLStringType">
+            <xs:attribute name="severity"
+                          use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                  <xs:enumeration value="none"/>
+                  <xs:enumeration value="low"/>
+                  <xs:enumeration value="medium"/>
+                  <xs:enumeration value="high"/>
+                  <xs:enumeration value="unknown"/>
+                  <xs:enumeration value="ext-value"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="ext-severity"
+                          type="xs:string" use="optional"/>
+            <xs:attribute name="type"
+                          use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                  <xs:enumeration value="breach-proprietary"/>
+                  <xs:enumeration value="breach-privacy"/>
+                  <xs:enumeration value="loss-of-integrity"/>
+                  <xs:enumeration value="loss-of-service" />
+                  <xs:enumeration value="loss-financial"/>
+                  <xs:enumeration value="degraded-reputation"/>
+                  <xs:enumeration value="asset-damage"/>
+                  <xs:enumeration value="asset-manipulation"/>
+                  <xs:enumeration value="legal"/>
+                  <xs:enumeration value="ext-value"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="ext-type"
+                          type="xs:string" use="optional"/>
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
     <xs:element name="TimeImpact">
       <xs:complexType>
         <xs:simpleContent>
@@ -4034,7 +4238,8 @@ The following are in the Record class:
                       type="xs:integer" minOccurs="0"/>
           <xs:element name="ProtoField"
                       type="xs:integer" minOccurs="0"/>
-          <xs:element ref="iodef:ApplicationHeader" 
+          <xs:element name="ApplicationHeader"
+                      type="iodef:ApplicationHeaderType" 
                       minOccurs="0" maxOccurs="unbounded"/>
 <!-- CHANGE - email from address indicator, may be better as a sub 
               class? Would only make sense with the service set to 
@@ -4109,11 +4314,6 @@ The following are in the Record class:
    ==  EMailInfo class                                             ==
    ==================================================================
   -->
-    <!-- CHANGE: added the email details in a subclass for use when 
-      you do not need all of the email details provided in the 
-      RFC5901 or ARF extensions.  No extension mechanism here, is it 
-      needed? Possible to create an IANA table to extend this class 
-      if needed in the future outside of schema edit cycles -->
    <xs:element name="EmailInfo">
      <xs:complexType>
        <xs:sequence>
@@ -4123,32 +4323,10 @@ The following are in the Record class:
                      type="iodef:MLStringType" minOccurs="0"/>
          <xs:element name="EmailX-Mailer"
                      type="iodef:MLStringType" minOccurs="0"/>
+         <xs:element name="EmailHeaderField"
+                     type="iodef:ApplicationHeaderType" 
+                     minOccurs="0"/>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
-     </xs:complexType>
-   </xs:element>
-
-  <!--
-   ==================================================================
-   ==  ApplicationHeadr class                                        ==
-   ==================================================================
-  -->
-   <xs:element name="ApplicationHeader">
-     <xs:complexType>
-       <xs:sequence>
-         <xs:any namespace="##any" processContents="lax"
-                 minOccurs="0" maxOccurs="unbounded"/>
-       </xs:sequence>
-       <xs:attribute name="proto"
-                     type="xs:integer" use="required"/>
-       <xs:attribute name="field"
-                     type="xs:string" use="required"/>                     
-       <xs:attribute name="dtype"
-                     type="iodef:proto-dtype-type" 
-                     use="required"/>                     
        <xs:attribute name="indicator-uid"
                      type="xs:string" use="optional"/>
        <xs:attribute name="indicator-set-id"
@@ -4162,42 +4340,30 @@ The following are in the Record class:
    ==================================================================
   -->
   <xs:element name="DomainData">
-    <xs:complexType id="DomainData.type">
+    <xs:complexType>
       <xs:sequence>
         <xs:element name="Name"
                     type="iodef:MLStringType" maxOccurs="1" />
         <xs:element name="DateDomainWasChecked"
                     type="xs:dateTime"
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="RegistrationDate"  
                     type="xs:dateTime" 
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="ExpirationDate"
                     type="xs:dateTime"
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="RelatedDNS" 
                     type="iodef:RelatedDNSEntryType" 
-                    maxOccurs="unbounded" minOccurs="0" />
-        <xs:element name="Nameservers"
-                    maxOccurs="unbounded" minOccurs="0">
-          <xs:complexType id="Nameservers.type">
-            <xs:sequence>
-              <xs:element name="Server" type="iodef:MLStringType"/>
-              <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:choice id="DomainContacts" maxOccurs="1" minOccurs="0">
-          <xs:element name="SameDomainContact"
-                     type="iodef:MLStringType"/>
-          <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="1"
-                        ref="iodef:Contact"/>
-          </xs:sequence>
-        </xs:choice>
+                    minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="iodef:Nameservers"
+                    minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="iodef:DomainContacts"
+                    minOccurs="0" maxOccurs="1" />
       </xs:sequence>
-      <xs:attribute name="SystemStatus">
-        <xs:simpleType id="SystemStatus.type">
+
+      <xs:attribute name="system-status">
+        <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="spoofed"/>
             <xs:enumeration value="fraudulent"/>
@@ -4207,9 +4373,10 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-
-      <xs:attribute name="DomainStatus">
-        <xs:simpleType id="DomainStatus.type">
+      <xs:attribute name="ext-system-status"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="domain-status">
+        <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="reservedDelegation"/>
             <xs:enumeration value="assignedAndActive"/>
@@ -4224,6 +4391,8 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attribute name="ext-domain-status"
+                    type="xs:string" use="optional"/>
       <xs:attribute name="indicator-uid"
                     type="xs:string" use="optional"/>
       <xs:attribute name="indicator-set-id"
@@ -4236,7 +4405,7 @@ The following are in the Record class:
     <xs:complexType name="RelatedDNSEntryType">
      <xs:simpleContent>
       <xs:extension base="xs:string">
-      <xs:attribute name="RecordType" use="optional">
+      <xs:attribute name="record-type" use="optional">
         <xs:simpleType>
           <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="A"/>
@@ -4280,11 +4449,32 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="ext-RecordType"
+      <xs:attribute name="ext-record-type"
                     type="xs:string" use="optional"/>
      </xs:extension>
     </xs:simpleContent>
    </xs:complexType>
+
+   <xs:element name="Nameservers">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element name="Server" type="iodef:MLStringType"/>
+         <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
+       </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="DomainContacts">
+     <xs:complexType>
+        <xs:choice>
+          <xs:element name="SameDomainContact"
+                      type="iodef:MLStringType"/>
+          <xs:element ref="iodef:Contact"
+                      maxOccurs="unbounded" minOccurs="1"/>
+        </xs:choice>
+     </xs:complexType>
+   </xs:element>
+
 
   <!--
    ==================================================================
@@ -4409,11 +4599,6 @@ The following are in the Record class:
                      type="xs:string" use="optional"/>
      </xs:complexType>
      </xs:element>
-<!-- CHANGE: Should this be broken out as another class
-     for WindowsRegistryKeyModified and add attributes
-     for indicator_ID and action - add_value, removes_value, etc.
-     as is demonstrated?
--->
 
  <!--
    ==================================================================
@@ -4442,7 +4627,8 @@ The following are in the Record class:
                     minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="ds:Reference" 
                     minOccurs="0" maxOccurs="unbounded"/>
-        <!-- QUESTION: Do we want an AdditionalData here? -->
+        <xs:element ref="iodef:AdditionalData"
+                    minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
       <xs:attribute name="type" use="optional">
         <xs:simpleType>
@@ -4535,6 +4721,7 @@ The following are in the Record class:
         <xs:minExclusive value="0"/>
       </xs:restriction>
     </xs:simpleType>
+
     <xs:complexType name="MLStringType">
       <xs:simpleContent>
         <xs:extension base="xs:string">
@@ -4543,6 +4730,7 @@ The following are in the Record class:
         </xs:extension>
       </xs:simpleContent>
     </xs:complexType>
+
     <xs:complexType name="ExtensionType" mixed="true">
       <xs:sequence>
         <xs:any namespace="##any" processContents="lax"
@@ -4559,6 +4747,25 @@ The following are in the Record class:
       <xs:attribute name="restriction"
                     type="iodef:restriction-type"/>
     </xs:complexType>
+
+    <xs:complexType name="ApplicationHeaderType" mixed="true">
+      <xs:sequence>
+         <xs:any namespace="##any" processContents="lax"
+                 minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="proto"
+                    type="xs:integer" use="required"/>
+      <xs:attribute name="field"
+                    type="xs:string" use="required"/>                     
+      <xs:attribute name="dtype"
+                    type="iodef:proto-dtype-type" 
+                    use="required"/>                     
+      <xs:attribute name="indicator-uid"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="indicator-set-id"
+                    type="xs:string" use="optional"/>
+    </xs:complexType>
+
   <!--
    ==================================================================
    == Global attribute type declarations                           ==
@@ -4693,6 +4900,7 @@ The following are in the Record class:
         </xs:restriction>
       </xs:simpleType>
 </xs:schema>		
+
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
@@ -4958,6 +5166,26 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="3275" />
 </reference>
 
+<reference anchor="IANA.Ports" target="http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.txt">
+<front>
+	<title>Service Name and Transport Protocol Port Number Registry</title>
+	<author>
+	<organization abbrev="IANA">Internet Assigned Numbers Authority</organization>
+	</author>
+	<date month="January" day="16" year="2014" />
+</front>
+</reference>
+
+<reference anchor="IANA.Protocols" target="http://www.iana.org/assignments/protocol-numbers/protocol-numbers.txt">
+<front>
+	<title>Assigned Internet Protocol Numbers</title>
+	<author>
+	<organization abbrev="IANA">Internet Assigned Numbers Authority</organization>
+	</author>
+	<date month="January" day="16" year="2014" />
+</front>
+</reference>
+
 </references>
 
 <references title="Informative References">
@@ -5036,6 +5264,40 @@ The following groups and individuals, listed alphabetically, contributed substan
 </front>
 <seriesInfo name="RFC" value="5901" />
 </reference>	
+
+<reference anchor="NIST800.61rev2" target="http://csrc.nist.gov/publications/nistpubs/800-61rev2/SP800-61rev2.pdf">
+<front>
+<title>NIST Special Publication 800-61 Revision 2: Computer Security Incident Handling Guide</title>
+	<author initials="P" surname="Cichonski">
+	  <organization />
+	</author>
+	<author initials="T" surname="Millar">
+	  <organization />
+	</author>
+	<author initials="T" surname="Grance">
+	  <organization />
+	</author>
+	<author initials="K" surname="Scarfone">
+	  <organization />
+	</author>
+	<date month="January" year="2012" />
+</front>
+</reference>
+
+<reference anchor="RFC3982">
+<front>
+	<title>IRIS: A Domain Registry (dreg) Type for the Internet Registry Information Service (IRIS)</title>
+	<author initials="A." surname="Newton">
+		  <organization />
+	</author>
+	<author initials="M." surname="Sanz">
+		  <organization />
+	</author>
+	<date month="January" year="2005" />
+</front>
+<seriesInfo name="RFC" value="3982" />
+</reference>
+
 
 <reference anchor="KB310516">
 <front>

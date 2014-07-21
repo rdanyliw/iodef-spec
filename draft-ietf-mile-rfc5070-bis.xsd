@@ -299,10 +299,19 @@ The following are in the Record class:
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
               <xs:enumeration value="creator"/>
+              <xs:enumeration value="reporter"/>
               <xs:enumeration value="admin"/>
               <xs:enumeration value="tech"/>
+              <xs:enumeration value="provider"/>
+              <xs:enumeration value="zone"/>
+              <xs:enumeration value="user"/>
+              <xs:enumeration value="billing"/>
+              <xs:enumeration value="legal"/>
+              <xs:enumeration value="abuse"/>
               <xs:enumeration value="irt"/>
               <xs:enumeration value="cc"/>
+              <xs:enumeration value="cc-irt"/>
+              <xs:enumeration value="le"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
           </xs:simpleType>
@@ -541,6 +550,7 @@ The following are in the Record class:
         <xs:sequence>
           <xs:choice maxOccurs="unbounded">
             <xs:element ref="iodef:Impact"/>
+            <xs:element ref="iodef:BusinessImpact"/>
             <xs:element ref="iodef:TimeImpact"/>
             <xs:element ref="iodef:MonetaryImpact"/>
           </xs:choice>
@@ -584,9 +594,6 @@ The following are in the Record class:
                           use="optional" default="unknown">
               <xs:simpleType>
                 <xs:restriction base="xs:NMTOKEN">
-             <!-- CHANGE question: do we want to allow multiple 
-                  values to be selected in case it is a combination? 
-               -->
                   <xs:enumeration value="admin"/>
                   <xs:enumeration value="dos"/>
                   <xs:enumeration value="extortion"/>
@@ -608,6 +615,49 @@ The following are in the Record class:
         </xs:simpleContent>
       </xs:complexType>
     </xs:element>
+    <xs:element name="BusinessImpact">
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="iodef:MLStringType">
+            <xs:attribute name="severity"
+                          use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                  <xs:enumeration value="none"/>
+                  <xs:enumeration value="low"/>
+                  <xs:enumeration value="medium"/>
+                  <xs:enumeration value="high"/>
+                  <xs:enumeration value="unknown"/>
+                  <xs:enumeration value="ext-value"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="ext-severity"
+                          type="xs:string" use="optional"/>
+            <xs:attribute name="type"
+                          use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                  <xs:enumeration value="breach-proprietary"/>
+                  <xs:enumeration value="breach-privacy"/>
+                  <xs:enumeration value="loss-of-integrity"/>
+                  <xs:enumeration value="loss-of-service" />
+                  <xs:enumeration value="loss-financial"/>
+                  <xs:enumeration value="degraded-reputation"/>
+                  <xs:enumeration value="asset-damage"/>
+                  <xs:enumeration value="asset-manipulation"/>
+                  <xs:enumeration value="legal"/>
+                  <xs:enumeration value="ext-value"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="ext-type"
+                          type="xs:string" use="optional"/>
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
     <xs:element name="TimeImpact">
       <xs:complexType>
         <xs:simpleContent>
@@ -933,7 +983,8 @@ The following are in the Record class:
                       type="xs:integer" minOccurs="0"/>
           <xs:element name="ProtoField"
                       type="xs:integer" minOccurs="0"/>
-          <xs:element ref="iodef:ApplicationHeader" 
+          <xs:element name="ApplicationHeader"
+                      type="iodef:ApplicationHeaderType" 
                       minOccurs="0" maxOccurs="unbounded"/>
 <!-- CHANGE - email from address indicator, may be better as a sub 
               class? Would only make sense with the service set to 
@@ -1008,11 +1059,6 @@ The following are in the Record class:
    ==  EMailInfo class                                             ==
    ==================================================================
   -->
-    <!-- CHANGE: added the email details in a subclass for use when 
-      you do not need all of the email details provided in the 
-      RFC5901 or ARF extensions.  No extension mechanism here, is it 
-      needed? Possible to create an IANA table to extend this class 
-      if needed in the future outside of schema edit cycles -->
    <xs:element name="EmailInfo">
      <xs:complexType>
        <xs:sequence>
@@ -1022,32 +1068,10 @@ The following are in the Record class:
                      type="iodef:MLStringType" minOccurs="0"/>
          <xs:element name="EmailX-Mailer"
                      type="iodef:MLStringType" minOccurs="0"/>
+         <xs:element name="EmailHeaderField"
+                     type="iodef:ApplicationHeaderType" 
+                     minOccurs="0"/>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
-     </xs:complexType>
-   </xs:element>
-
-  <!--
-   ==================================================================
-   ==  ApplicationHeadr class                                        ==
-   ==================================================================
-  -->
-   <xs:element name="ApplicationHeader">
-     <xs:complexType>
-       <xs:sequence>
-         <xs:any namespace="##any" processContents="lax"
-                 minOccurs="0" maxOccurs="unbounded"/>
-       </xs:sequence>
-       <xs:attribute name="proto"
-                     type="xs:integer" use="required"/>
-       <xs:attribute name="field"
-                     type="xs:string" use="required"/>                     
-       <xs:attribute name="dtype"
-                     type="iodef:proto-dtype-type" 
-                     use="required"/>                     
        <xs:attribute name="indicator-uid"
                      type="xs:string" use="optional"/>
        <xs:attribute name="indicator-set-id"
@@ -1061,42 +1085,30 @@ The following are in the Record class:
    ==================================================================
   -->
   <xs:element name="DomainData">
-    <xs:complexType id="DomainData.type">
+    <xs:complexType>
       <xs:sequence>
         <xs:element name="Name"
                     type="iodef:MLStringType" maxOccurs="1" />
         <xs:element name="DateDomainWasChecked"
                     type="xs:dateTime"
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="RegistrationDate"  
                     type="xs:dateTime" 
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="ExpirationDate"
                     type="xs:dateTime"
-                    maxOccurs="1" minOccurs="0" />
+                    minOccurs="0" maxOccurs="1" />
         <xs:element name="RelatedDNS" 
                     type="iodef:RelatedDNSEntryType" 
-                    maxOccurs="unbounded" minOccurs="0" />
-        <xs:element name="Nameservers"
-                    maxOccurs="unbounded" minOccurs="0">
-          <xs:complexType id="Nameservers.type">
-            <xs:sequence>
-              <xs:element name="Server" type="iodef:MLStringType"/>
-              <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:choice id="DomainContacts" maxOccurs="1" minOccurs="0">
-          <xs:element name="SameDomainContact"
-                     type="iodef:MLStringType"/>
-          <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="1"
-                        ref="iodef:Contact"/>
-          </xs:sequence>
-        </xs:choice>
+                    minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="iodef:Nameservers"
+                    minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="iodef:DomainContacts"
+                    minOccurs="0" maxOccurs="1" />
       </xs:sequence>
-      <xs:attribute name="SystemStatus">
-        <xs:simpleType id="SystemStatus.type">
+
+      <xs:attribute name="system-status">
+        <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="spoofed"/>
             <xs:enumeration value="fraudulent"/>
@@ -1106,9 +1118,10 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-
-      <xs:attribute name="DomainStatus">
-        <xs:simpleType id="DomainStatus.type">
+      <xs:attribute name="ext-system-status"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="domain-status">
+        <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="reservedDelegation"/>
             <xs:enumeration value="assignedAndActive"/>
@@ -1123,6 +1136,8 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attribute name="ext-domain-status"
+                    type="xs:string" use="optional"/>
       <xs:attribute name="indicator-uid"
                     type="xs:string" use="optional"/>
       <xs:attribute name="indicator-set-id"
@@ -1135,7 +1150,7 @@ The following are in the Record class:
     <xs:complexType name="RelatedDNSEntryType">
      <xs:simpleContent>
       <xs:extension base="xs:string">
-      <xs:attribute name="RecordType" use="optional">
+      <xs:attribute name="record-type" use="optional">
         <xs:simpleType>
           <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="A"/>
@@ -1179,11 +1194,32 @@ The following are in the Record class:
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="ext-RecordType"
+      <xs:attribute name="ext-record-type"
                     type="xs:string" use="optional"/>
      </xs:extension>
     </xs:simpleContent>
    </xs:complexType>
+
+   <xs:element name="Nameservers">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element name="Server" type="iodef:MLStringType"/>
+         <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
+       </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="DomainContacts">
+     <xs:complexType>
+        <xs:choice>
+          <xs:element name="SameDomainContact"
+                      type="iodef:MLStringType"/>
+          <xs:element ref="iodef:Contact"
+                      maxOccurs="unbounded" minOccurs="1"/>
+        </xs:choice>
+     </xs:complexType>
+   </xs:element>
+
 
   <!--
    ==================================================================
@@ -1308,11 +1344,6 @@ The following are in the Record class:
                      type="xs:string" use="optional"/>
      </xs:complexType>
      </xs:element>
-<!-- CHANGE: Should this be broken out as another class
-     for WindowsRegistryKeyModified and add attributes
-     for indicator_ID and action - add_value, removes_value, etc.
-     as is demonstrated?
--->
 
  <!--
    ==================================================================
@@ -1341,7 +1372,8 @@ The following are in the Record class:
                     minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="ds:Reference" 
                     minOccurs="0" maxOccurs="unbounded"/>
-        <!-- QUESTION: Do we want an AdditionalData here? -->
+        <xs:element ref="iodef:AdditionalData"
+                    minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
       <xs:attribute name="type" use="optional">
         <xs:simpleType>
@@ -1434,6 +1466,7 @@ The following are in the Record class:
         <xs:minExclusive value="0"/>
       </xs:restriction>
     </xs:simpleType>
+
     <xs:complexType name="MLStringType">
       <xs:simpleContent>
         <xs:extension base="xs:string">
@@ -1442,6 +1475,7 @@ The following are in the Record class:
         </xs:extension>
       </xs:simpleContent>
     </xs:complexType>
+
     <xs:complexType name="ExtensionType" mixed="true">
       <xs:sequence>
         <xs:any namespace="##any" processContents="lax"
@@ -1458,6 +1492,25 @@ The following are in the Record class:
       <xs:attribute name="restriction"
                     type="iodef:restriction-type"/>
     </xs:complexType>
+
+    <xs:complexType name="ApplicationHeaderType" mixed="true">
+      <xs:sequence>
+         <xs:any namespace="##any" processContents="lax"
+                 minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="proto"
+                    type="xs:integer" use="required"/>
+      <xs:attribute name="field"
+                    type="xs:string" use="required"/>                     
+      <xs:attribute name="dtype"
+                    type="iodef:proto-dtype-type" 
+                    use="required"/>                     
+      <xs:attribute name="indicator-uid"
+                    type="xs:string" use="optional"/>
+      <xs:attribute name="indicator-set-id"
+                    type="xs:string" use="optional"/>
+    </xs:complexType>
+
   <!--
    ==================================================================
    == Global attribute type declarations                           ==

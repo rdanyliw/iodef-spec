@@ -1,30 +1,17 @@
 editorial = just the text was changed
 schema = schema was modified
 
-** (schema) Removed Incident/ReportId from the schema per WG discussion (Issue #15)
-** (schema) Reference EmailInfo with a ref in Service class
-** (schema) Reference WindowsRegistryKeysModified with a ref in the RecordData class
-** (schema) Rename EmailInfo/{Email,X-Mailer} to {EmailFrom,EmailX-Mailer}
-** (schema) Added a missing @indicator-set-id to EmailInfo
-** (schema) Added @indicator-id to Incident and EventData
-** (schema) Renamed HashInformation@ext-category to @ext-type to fix a typo
-** (schema) Renamed HashSigDetails complexType to HashInformation
-** (schema) Reference HashInformation with a ref in the RecordData class
-** (schema) Fixed schema error introduced in the -01 draft.  RecordData should have a HashInformation child class not FileInfo and ds:Reference
-** (schema) Added Node/PostalAddress and rewrote text for Node/Location (Issue #11)
-** (schema) Added AdditionalData@dtype="bytes" value
-** (schema) Added Service/ApplicationHeader (Issue #26)
-** (schema) Renamed WindowsRegistryKeysAction/Key/Value to KeyValue to be consistent with KeyName
-** (schema) Renamed WindowsRegistryKeysAction/Key@ext-category to @ext-registryaction to fix typo
-** (schema) Added IODEF-Document/AdditionalData
-** (schema) Added {Expectation,HistoryItem}/DefinedCOA and @action="defined-coa" (Issue #32)
-** (schema) Renamed RelatedDNS@ext-category to @ext-RecordType
-** (editorial) Use xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0" in the namespace
-** (editorial) Added text to Security Considerations to carefully parse executable content
-** (editorial) Renamed Section 3.22 as WindowsRegistryKeysModified and corrected cardinality of aggregated classes
-** (editorial) Removed @indicator-uid and @indicator-set-id from the text describing Key since they belong in the parent WindowsRegistryKeysModified
-** (editorial) Changed RFC2822 reference to RFC5322
-** (editorial) Added reference to registry keys for WindowsRegistryKeysAction
-** (editorial) Consistently left aligned all diagrams
-** (editorial) Added at least blank sections for all previously undocumented classes in the schema
-** (editorial) Use reference names instead of numbers
+
+** (schema) Renamed DomainData@{SystemStatus,DomainStatus} to @{system-status, domain-status} 
+** (schema) Renamed RelatedDNS@RecordType to @record-type
+** (schema) Added DomainData@{ext-system-status, ext-domain-status} to allow extensibility
+** (schema) Added Assessment/BusinessImpact (Issue #36)
+** (schema) Added EmailInfo/EmailHeaderField (Issue #24 and raised in a schema comment per Issue #21)
+** (schema) Added HashInformation/AdditionalData (Issue #23)
+** (schema) Renamed HashInformation to HashData
+** (schema) Renamed EmailInfo to EmailData
+** (schema) Added enumerated values to Contact@type to track RFC5901 and other gaps
+** (editorial) Added a reference (IANA.Ports) for ApplicationHeader@proto
+** (editorial) Added a reference (IANA.Protocols) for Service@ip_protocol
+** (editorial) Added documentation for DomainData, Nameservers, and DomainContacts
+** (editorial) Removed some of the schema comments (Issue #21)
