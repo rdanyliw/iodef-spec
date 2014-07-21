@@ -90,10 +90,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="xs:language"/>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" default="private"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -417,10 +415,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="iodef:action-type" use="required"/>
         <xs:attribute name="ext-action"
         type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -452,10 +448,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="iodef:action-type" default="other"/>
         <xs:attribute name="ext-action"
                       type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
 
@@ -551,10 +545,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
         <!-- Adding in Attack Type -->
         <xs:attribute name="attacktype" type="att-type" 
                       use="required">
@@ -594,10 +586,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:attribute>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:element name="Impact">
@@ -774,10 +764,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" 
                       default="default"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -826,10 +814,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
             <xs:restriction base="xs:NMTOKEN">
               <xs:enumeration value="source"/>
               <xs:enumeration value="target"/>
-              <!-- CHANGE - adding two new values to cover
-                   watchlist groups -->
-              <xs:enumeration value="watchlist-source"/>
-              <xs:enumeration value="watchlist-target"/>
               <xs:enumeration value="intermediate"/>
               <xs:enumeration value="sensor"/>
               <xs:enumeration value="infrastructure"/>
@@ -915,10 +899,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                           type="xs:string"/>
             <xs:attribute name="vlan-num"
                           type="xs:integer"/>
-            <xs:attribute name="indicator-uid"
-                          type="xs:string" use="optional"/>
-           <xs:attribute name="indicator-set-id"
-                          type="xs:string" use="optional"/>
+            <xs:attribute name="observable-id"
+                          type="xs:ID" use="optional"/>
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
@@ -1008,10 +990,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:sequence>
         <xs:attribute name="ip-protocol"
                       type="xs:integer" use="required"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:simpleType name="PortlistType">
@@ -1076,10 +1056,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                      type="iodef:ApplicationHeaderType" 
                      minOccurs="0"/>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
+       <xs:attribute name="observable-id"
+                     type="xs:ID" use="optional"/>
      </xs:complexType>
    </xs:element>
 
@@ -1142,10 +1120,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
       </xs:attribute>
       <xs:attribute name="ext-domain-status"
                     type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
     </xs:complexType>
   </xs:element>
 
@@ -1253,7 +1229,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:RecordItem"
                       maxOccurs="unbounded"/>
-          <xs:element ref="iodef:HashInformation"
+          <xs:element ref="iodef:HashData"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:WindowsRegistryKeysModified"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -1262,10 +1238,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:sequence>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
 
@@ -1342,10 +1316,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
            </xs:complexType>
          </xs:element>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
+       <xs:attribute name="observable-id"
+                     type="xs:ID" use="optional"/>
      </xs:complexType>
      </xs:element>
 
@@ -1357,7 +1329,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
    ==  so it does not need to be maintained here.                  ==
    ==================================================================
   -->
-  <xs:element name="HashInformation">
+  <xs:element name="HashData">
   <xs:complexType>
     <xs:sequence>
         <xs:element name="FileName" type="iodef:MLStringType"
@@ -1384,16 +1356,10 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="PKI-email-ds"/>
             <xs:enumeration value="PKI-file-ds"/>
-            <xs:enumeration value="PKI-email-ds-watchlist"/>
-            <xs:enumeration value="PKI-file-ds-watchlist"/>
             <xs:enumeration value="PGP-email-ds"/>
             <xs:enumeration value="PGP-file-ds"/>
-            <xs:enumeration value="PGP-email-ds-watchlist"/>
-            <xs:enumeration value="PGP-file-ds-watchlist"/>
             <xs:enumeration value="file-hash"/>
             <xs:enumeration value="email-hash"/>
-            <xs:enumeration value="file-hash-watchlist"/>
-            <xs:enumeration value="email-hash-watchlist"/>
             <!-- QUESTION: Are values needed to differentiate the 
                  key information shared when the ds:KeyInfo class 
                  is referenced? -->
@@ -1405,10 +1371,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                     type="xs:string" use="optional"/>
       <xs:attribute name="valid" 
                     type="xs:boolean" use="optional" />
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
       <xs:attribute name="restriction"
                     type="iodef:restriction-type"/>
     </xs:complexType>
@@ -1452,7 +1416,155 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                 type="iodef:SoftwareType"/>
 
   <!--
+==================================================================
+   == IndicatorData classes                                 ==
    ==================================================================
+-->
+   <xs:element name="IndicatorData">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:Indicator" 
+                     minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="Indicator">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:IndicatorID" />
+         <xs:element ref="iodef:AlternativeIndicatorID"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Description"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:StartTime"
+                     minOccurs="0" />
+         <xs:element ref="iodef:EndTime"
+                     minOccurs="0" />
+         <xs:element ref="iodef:Confidence"
+                     minOccurs="0" />
+         <xs:element ref="iodef:Contact"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:choice>
+           <xs:element ref="iodef:Observable" />
+           <xs:element ref="iodef:ObservableReference" />
+           <xs:element ref="iodef:IndicatorExpression" />
+           <xs:element ref="iodef:IndicatorReference" />
+         </xs:choice>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                    type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorID" type="iodef:IndicatorIDType"/>
+   <xs:complexType name="IndicatorIDType">
+      <xs:simpleContent>
+        <xs:extension base="xs:id">
+          <xs:attribute name="name"
+                        type="xs:string" use="required"/>
+          <xs:attribute name="version"
+                        type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:element name="AlternativeIndicatorID">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:IndicatorID"
+                      maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
+   <xs:element name="Observable">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:Address" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:DomainData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:EmailData" 
+                     minOccurs="0"/>
+         <xs:element name="ApplicationHeader" 
+                     type="iodef:ApplicationHeaderType" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:WindowsRegistryKeysModified" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:HashData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:RecordData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:EventData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:Incident" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:Expectation" 
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Reference" 
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Assessment" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:HistoryItem" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:AdditionalData" 
+                     minOccurs="0"/>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                    type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorExpression">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:choice>
+           <xs:element ref="iodef:IndicatorExpression" 
+                       minOccurs="0"/>
+           <xs:element ref="iodef:Observable"
+                       minOccurs="0" />
+           <xs:element ref="iodef:ObservableReference" 
+                       minOccurs="0"/>
+           <xs:element ref="iodef:IndicatorReference" 
+                       minOccurs="0"/>
+         </xs:choice>
+         <xs:element ref="iodef:AlternativeIndicatorID"
+                     minOccurs="0" maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="operator" use="required">
+         <xs:simpleType>
+           <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="not"/>
+            <xs:enumeration value="and"/>
+            <xs:enumeration value="or"/>
+            <xs:enumeration value="xor"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="ObservableReference">
+     <xs:complexType>
+       <xs:attribute name="uid-ref"
+                     type="xs:IDREF" use="required"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorReference">
+     <xs:complexType>
+       <xs:attribute name="uid-ref"
+                     type="xs:IDREF" use="optional"/>
+       <xs:attribute name="euid-ref"
+                     type="xs:string" use="optional"/>
+       <xs:attribute name="version"
+                     type="xs:string" use="optional"/>
+     </xs:complexType>
+   </xs:element>
+<!--   ==================================================================
    == Miscellaneous simple classes                                 ==
    ==================================================================
   -->
@@ -1509,10 +1621,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
       <xs:attribute name="dtype"
                     type="iodef:proto-dtype-type" 
                     use="required"/>                     
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
     </xs:complexType>
 
   <!--

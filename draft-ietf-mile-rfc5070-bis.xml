@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-06" 
+     docName="draft-ietf-mile-rfc5070-bis-07" 
      obsoletes="5070" 
      category="std">
 	
@@ -44,7 +44,7 @@ The Incident Object Description Exchange Format v2</title>
     </author>
        
     
-<date month="February" year="2014"/>
+<date month="July" year="2014"/>
 <area>Security</area>
 <workgroup>MILE Working Group</workgroup>
 <keyword>STD</keyword>
@@ -63,7 +63,7 @@ The Incident Object Description Exchange Format v2</title>
 <keyword>cyber indicators</keyword>
 
 <abstract>
-<t>The Incident Object Description Exchange Format (IODEF) defines a data representation that provides a framework for sharing information commonly exchanged by Computer Security Incident Response Teams (CSIRTs) about computer security incidents.  This document describes the information model for the 
+<t>The Incident Object Description Exchange Format (IODEF) defines a data representation for sharing information commonly exchanged by Computer Security Incident Response Teams (CSIRTs) about computer security incidents.  This document describes the information model for the 
 IODEF and provides an associated data model specified with XML Schema.
 </t>
 </abstract>
@@ -121,6 +121,7 @@ This document contains changes with respect to its predecessor RFC5070.
 <t>Imported the xmlns:ds namespace to include digital signature hash classes.</t>
 <t>The @indicator-* attributes were added to various classes to reference commonly shared indicators.</t>		
 <t>The following classes were added to IODEF-Document: AdditionalData.</t>
+<t>The following class was added to Incident: IndicatorData.</t>
 <t>The following classes were added to Incident and EventData: Discovery.</t>
 <t>The following classes and attributes were added to the Service class:  EmailData, DomainData, AssetID, ApplicationHeader @virtual, and @ownership.  Service@ip_protocol was renamed to @ip-protocol.</t>
 <t>The following classes were added to the Record class:  FileName and WindowsRegistryKeysModified.</t>
@@ -242,7 +243,6 @@ The various data elements of the IODEF data model are typed.  This section discu
 <t>The HEXBIN data type is implemented as an "xs:hexBinary" in <xref target="W3C.SCHEMA.DTYPES" />.</t>
 </section>
 
-<?rfc needLines="10" ?>
 <section title="Enumerated Types" anchor="dt_enumerated">
 <t>Enumerated types are represented by the ENUM data type, and consist of an ordered list of acceptable values.  Each value has a representative keyword.  Within the IODEF schema, the enumerated type keywords are used as attribute values.</t>
 
@@ -302,6 +302,13 @@ The various data elements of the IODEF data model are typed.  This section discu
 </t>
 <t>The URL data type is implemented as an "xs:anyURI" in the schema.</t>
 </section>  <!-- URL DT -->
+
+<section title="Identifiers and Identifier References" anchor="dt_ids">
+<t>An identifier unique to the Document is represented by the ID data type.  A reference to this identifier is represented by the IDREF data type.  The acceptable format of ID and IDREF is documented in Section 3.3.8 and 3.3.9 of <xref target="W3C.SCHEMA.DTYPES" />.
+</t>
+<t>The ID and IDREF data types are implemented as "xs:ID" and "xs:IDREF" in the schema.</t>
+</section>  <!-- ID and IDREF DT -->
+
 
 </section> <!-- IODEF Data Types -->
 
@@ -363,8 +370,8 @@ Every incident is represented by an instance of the Incident class.  This class 
 | STRING ext-purpose      |<>--{0..1}--[ AlternativeID   ]
 | ENUM lang               |<>--{0..*}--[ RelatedActivity ]
 | ENUM restriction        |<>--{0..1}--[ DetectTime      ]
-| STRING indicator-uid    |<>--{0..1}--[ StartTime       ]
-| STRING indicator-set-id |<>--{0..1}--[ EndTime         ]
+| STRING observable-uid   |<>--{0..1}--[ StartTime       ]
+|                         |<>--{0..1}--[ EndTime         ]
 |                         |<>----------[ ReportTime      ]
 |                         |<>--{0..*}--[ Description     ]
 |                         |<>--{0..*}  [ Discovery       ]
@@ -372,6 +379,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 |                         |<>--{0..*}--[ Method          ]
 |                         |<>--{1..*}--[ Contact         ]
 |                         |<>--{0..*}--[ EventData       ]
+|                         |<>--{0..*}--[ IndicatorData   ]
 |                         |<>--{0..1}--[ History         ]
 |                         |<>--{0..*}--[ AdditionalData  ]
 +-------------------------+
@@ -408,13 +416,15 @@ Every incident is represented by an instance of the Incident class.  This class 
 
 <t hangText="EventData"><vspace/>Zero or more.  Description of the events comprising the incident.</t>
 
+<t hangText="IndicatorData"><vspace/>Zero or more.  Description of indicators.</t>
+
 <t hangText="History"><vspace/>Zero or one.  A log of significant events or actions that occurred during the course of handling the incident.</t>
 
 
 <t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.</t>
 	</list></t>
 
-<t>The Incident class has five attributes:
+<t>The Incident class has four attributes:
 <list style="hanging">
 
 <t hangText="purpose"><vspace/>Required.  ENUM.  The purpose attribute represents the reason why the IODEF document was created.  It is closely related to the <xref target="Expectation">Expectation class</xref>.
@@ -442,10 +452,8 @@ This attribute is defined as an enumerated list:
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 						
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-
 </list></t>
 
 </section>  <!-- Incident class -->
@@ -479,20 +487,10 @@ This attribute is defined as an enumerated value with a default value of "privat
 </list></t>
 </section> <!-- @restriction -->
 
-<section title="Indicator Attributes" anchor="indicator_attributes">
-<t>For data elements that are commonly used as indicators, the data model uses four attributes to facilitate their ... </t>  
+<section title="observable-id Attribute" anchor="observableid_attribute">
+<t>Information included in an incident report may be an observable relevant to an indicator.  The observable-id attribute provides a unique identifier in the scope of the document for this observable.  This identifer can then used to reference the observable with an ObservableReference class to define an indicator in the IndicatorData class.</t>
 
-<t>
-<list style="hanging">
-<t hangText="indicator-uid"><vspace/>STRING.  See <xref target="indicator_attributes" />.</t>
-						
-<t hangText="indicator-set-id"><vspace/>STRING.  See <xref target="indicator_attributes" />.</t>
-</list>
-</t>
-
-
-
-</section> <!-- indicator attributes -->
+</section> <!-- observable-id attribute -->
 
 </section> <!-- Common Attributes -->
 
@@ -762,7 +760,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 </t>
 </section>  <!-- AdditionalData class -->
 	
-<section title="Contact Class" anchor="contact">
+<section title="Contact Class" anchor="Contact">
 <t>The Contact class describes contact information for organizations and personnel involved in the incident.  This class allows for the naming of the involved party, specifying contact information for them, and identifying their role in the incident.
 </t>
 <t>People and organizations are treated interchangeably as contacts; one can be associated with the other using the recursive definition of the class (the Contact class is aggregated into the Contact class).  The 'type' attribute disambiguates the type of contact information being provided.
@@ -1169,8 +1167,7 @@ description of techniques, tactics, or procedures used by the intruder.
 +-------------------------+
 | ENUM attacktype         |<>----------[ ReferenceName ]
 | STRING ext-attacktype   |<>--{0..*}--[ URL           ]
-| STRING indicator-uid    |<>--{0..*}--[ Description   ]
-| STRING indicator-set-id | 
+| ID observable-id        |<>--{0..*}--[ Description   ]
 +-------------------------+
 ]]></artwork>
 </figure>
@@ -1184,12 +1181,11 @@ description of techniques, tactics, or procedures used by the intruder.
 
 <t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text description of this reference.</t>
 							
-<t> The Reference class has 4 attributes.
+<t> The Reference class has 3 attributes.
 <list style="hanging">								
 <t hangText="attacktype"><vspace/>Optional.  ENUM.  TODO.</t>
 <t hangText="ext-attacktype"><vspace/>Optional.  STRING.  A mechanism by which to extend the Attack Type.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 </list>
@@ -1209,8 +1205,8 @@ description of techniques, tactics, or procedures used by the intruder.
 +-------------------------+ 
 | ENUM occurrence         |<>--{0..*}--[ Impact         ]
 | ENUM restriction        |<>--{0..*}--[ BusinessImpact ]
-| STRING indicator-uid    |<>--{0..*}--[ TimeImpact     ]
-| STRING indicator-set-id |<>--{0..*}--[ MonetaryImpact ]
+| ID observable-id        |<>--{0..*}--[ TimeImpact     ]
+|                         |<>--{0..*}--[ MonetaryImpact ]
 |                         |<>--{0..*}--[ Counter        ]
 |                         |<>--{0..1}--[ Confidence     ]
 |                         |<>--{0..*}--[ AdditionalData ]
@@ -1246,7 +1242,7 @@ description of techniques, tactics, or procedures used by the intruder.
 <t>A least one instance of the possible three impact classes (i.e., Impact, TimeImpact, or MonetaryImpact) MUST be present.</t>
 
 
-<t>The Assessment class has four attributes:
+<t>The Assessment class has three attributes:
 <list style="hanging">
 
 <t hangText="occurrence"><vspace />Optional.  ENUM.  Specifies whether the assessment is describing actual or potential outcomes.
@@ -1258,8 +1254,7 @@ description of techniques, tactics, or procedures used by the intruder.
 </t>
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 
 </list></t>
 
@@ -1495,7 +1490,7 @@ The element content is a positive, floating point number (REAL) specifying a uni
 
 </section> <!-- MoneyImpact -->
 
-<section title="Confidence Class" anchor="confidence">
+<section title="Confidence Class" anchor="Confidence">
 
 <t>The Confidence class represents a best estimate of the validity and accuracy of the described impact (see <xref target="Assessment" />) of the incident activity.  This estimate can be expressed as a category or a numeric calculation.
 </t>
@@ -1582,8 +1577,8 @@ The element content is a positive, floating point number (REAL) specifying a uni
 | ENUM restriction        |<>----------[ DateTime       ]
 | ENUM action             |<>--{0..1}--[ IncidentId     ]
 | STRING ext-action       |<>--{0..1}--[ Contact        ]
-| STRING indicator-uid    |<>--{0..*}--[ Description    ]
-| STRING indicator-set-id |<>--{0..*}--[ AdditionalData ]
+| ID observable-id        |<>--{0..*}--[ Description    ]
+|                         |<>--{0..*}--[ AdditionalData ]
 +-------------------------+
 ]]></artwork>
 </figure></t>
@@ -1609,7 +1604,7 @@ The element content is a positive, floating point number (REAL) specifying a uni
 </list>
 </t>
 
-<t>The HistoryItem class has five attributes:
+<t>The HistoryItem class has four attributes:
 <list style="hanging">
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
@@ -1621,9 +1616,7 @@ conveyed expectation or internal investigation, this attribute is
 identical to the category attribute of the Expectation class.  The difference is only one of tense.  When an action is in this class, it has been completed.  See <xref target="Expectation" />.</t>
 
 <t hangText="ext-action"><vspace/>Optional.  STRING.  A means by which to extend the action attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 </section>
@@ -1641,8 +1634,8 @@ identical to the category attribute of the Expectation class.  The difference is
 | EventData               |
 +-------------------------+
 | ENUM restriction        |<>--{0..*}--[ Description    ]
-| STRING indicator-uid    |<>--{0..1}--[ DetectTime     ]
-| STRING indicator-set-id |<>--{0..1}--[ StartTime      ]
+| ID observable-id        |<>--{0..1}--[ DetectTime     ]
+|                         |<>--{0..1}--[ StartTime      ]
 |                         |<>--{0..1}--[ EndTime        ]
 |                         |<>--{0..*}--[ Contact        ]
 |                         |<>--{0..*}--[ Discovery      ]
@@ -1694,8 +1687,7 @@ data not explicitly represented in the data model.</t>
 <t>The EventData class has two attributes:
 <list style="hanging">
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.  The default value is "default".</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 	
 					</list></t>
 
@@ -1749,8 +1741,7 @@ For example, an EventData class might be used to describe two machines involved 
 | ENUM severity           |<>--{0..*}--[ DefinedCOA  ]
 | ENUM action             |<>--{0..1}--[ StartTime   ]
 | STRING ext-action       |<>--{0..1}--[ EndTime     ]
-| STRING indicator-uid    |<>--{0..1}--[ Contact     ]
-| STRING indicator-set-id |
+| ID observable-id        |<>--{0..1}--[ Contact     ]
 +-------------------------+
 		]]></artwork>
 	</figure></t>
@@ -1770,7 +1761,7 @@ For example, an EventData class might be used to describe two machines involved 
 <t hangText="Contact"><vspace/>Zero or one.  The expected actor for the action.</t>
 </list></t>
 	
-<t>The Expectations class has six attributes:
+<t>The Expectations class has five attributes:
 <list style="hanging">
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in 
@@ -1811,8 +1802,7 @@ action requested.  This attribute is an enumerated list with a default value of 
 </list></t>
 
 <t hangText="ext-action"><vspace/>Optional.  STRING.  A means by which to extend the action attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 
 </list></t>
 	
@@ -1894,8 +1884,6 @@ The System class describes a system or network involved in an event.  The system
 
 <t>source.  The System was the source of the event.</t>
 <t>target.  The System was the target of the event.</t>
-<t>watchlist-source.  The source of the event was on a watchlist.</t>
-<t>watchlist-target.  The target of the event was on a watchlist.</t>
 <t>intermediate.  The System was an intermediary in the event.</t>
 <t>sensor.  The System was a sensor monitoring the event.</t>
 <t>infrastructure.  The System was an infrastructure node of IODEF document exchange.</t>
@@ -1904,8 +1892,6 @@ The System class describes a system or network involved in an event.  The system
 </t>
 
 <t hangText="ext-category"><vspace/>Optional. STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-
 <t hangText="interface"><vspace/>Optional.  STRING.  Specifies the interface on which the event(s) on this System originated.  If the Node class specifies a network rather than a host, this attribute has no meaning.
 </t>
 
@@ -2009,8 +1995,7 @@ The System class describes a system or network involved in an event.  The system
 | STRING ext-category     |
 | STRING vlan-name        |
 | INTEGER vlan-num        |
-| STRING indicator-uid    |
-| STRING indicator-set-id |
+| ID observable-id        |
 +-------------------------+
 ]]></artwork>
 </figure></t>
@@ -2038,8 +2023,7 @@ The System class describes a system or network involved in an event.  The system
 <t hangText="ext-category"><vspace/>Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t>
 <t hangText="vlan-name"><vspace/>Optional.  STRING.  The name of the Virtual LAN to which the address belongs.</t>
 <t hangText="vlan-num"><vspace/>Optional.  STRING.  The number of the Virtual LAN to which the address belongs.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 </section> <!-- Address class -->
@@ -2174,8 +2158,8 @@ The System class describes a system or network involved in an event.  The system
 </section> <!-- Node class-->
 
 <section title="DomainData Class" anchor="DomainData">
-<t>...TODO...
-</t>
+<t>The DomainData class describes a domain name and meta-data associated with this domain.</t>
+
 <t>
 <figure title="The DomainData Class" anchor="figure_domaindata_class">
 <artwork><![CDATA[
@@ -2186,8 +2170,8 @@ The System class describes a system or network involved in an event.  The system
 | STRING ext-system-status |<>--{0..1}--[ DateDomainWasChecked ]
 | ENUM domain-status       |<>--{0..1}--[ RegistrationDate     ]
 | STRING ext-domain-status |<>--{0..1}--[ ExpirationDate       ]
-| STRING indicator-uid     |<>--{0..*}--[ RelatedDNS           ]
-| STRING indicator-set-id  |<>--{0..*}--[ Nameservers          ]
+| ID observable-id         |<>--{0..*}--[ RelatedDNS           ]
+|                          |<>--{0..*}--[ Nameservers          ]
 |                          |<>--{0..1}--[ DomainContacts       ]
 |                          |
 +--------------------------+
@@ -2204,7 +2188,7 @@ The System class describes a system or network involved in an event.  The system
 
 <t hangText="ExpirationDate"><vspace/>Zero or one.  DATETIME.  A timestamp of when the domain listed in Name is set to expire.</t>
 
-<t hangText="RelatedDNS"><vspace/>Zero or more.  ...TODO...</t>
+<t hangText="RelatedDNS"><vspace/>Zero or more.  Additional DNS records associated with this domain.</t>
 
 <t hangText="Nameservers"><vspace/>Zero or more.  The name servers identified for the domain listed in Name.</t>
 
@@ -2213,7 +2197,7 @@ The System class describes a system or network involved in an event.  The system
 </list>
 </t>
 
-<t>The DomainData class has six attribute:
+<t>The DomainData class has five attribute:
 <list style="hanging">
 
 <t hangText="system-status"><vspace/>Required.  ENUM.  Assesses the domain's involvement in the event.
@@ -2240,20 +2224,19 @@ The System class describes a system or network involved in an event.  The system
 <t>transferPending.  The domain is pending a change in authority.</t>
 <t>registryLock.  The domain is on hold by the registry.</t>
 <t>registrarLock.  Same as "registryLock".</t>
-<t>other.  ... TODO -- RFC 5901 has this but doesn't describe it ... </t>
+<t>other.  The domain has a known status but it is not one of the redefined enumerated values. </t>
 <t>unknown.  The domain has an unknown status.</t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list>
 </t>
 <t hangText="ext-domain-status"><vspace/>Optional.  STRING.  A means by which to extend the system-status attribute.  See <xref target="extending_enums" />.</t>
 
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 
 <section title="RelatedDNS" anchor="RelatedDNS">
-<t>...TODO...</t>
+<t>The RelatedDNS class describes additional record types associated with a given domain name.  The record type is described in the record-type attribute and the value of the record is the element content. ... TODO Issue #39 ...</t>
 <t>
 <figure title="The RelatedDNS Class" anchor="figure_relateddns_class">
 <artwork><![CDATA[
@@ -2267,6 +2250,13 @@ The System class describes a system or network involved in an event.  The system
 +----------------------+
 ]]></artwork></figure></t>
 
+<t>The RelatedDNS class has two attribute:
+<list style="hanging">
+
+<t hangText="record-type"><vspace/>Required.  ENUM.  The DNS record type.  ... TODO values need to be listed ...</t>
+<t>ext-record-type.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
 </section> <!-- RelatedDNS -->
 
 <section title="Nameservers Class" anchor="Nameservers">
@@ -2314,7 +2304,7 @@ The System class describes a system or network involved in an event.  The system
 
 <t hangText="SameDomainContact"><vspace/>Zero or one.  ML_STRING.  A domain name already cited in this document or through previous exchange that contains the identical contact information as the domain name in question.  The domain contact information associated with this domain should be used in lieu of explicit definition with the Contact class.</t>
 
-<t hangText="Contact"><vspace/>One or more.  Contact information for the domain. See <xref target="contact" />.</t>
+<t hangText="Contact"><vspace/>One or more.  Contact information for the domain. See <xref target="Contact" />.</t>
 </list>
 </t>
 
@@ -2340,8 +2330,8 @@ This class was derived from <xref target="RFC4765" />.
 | Service                 |
 +-------------------------+
 | INTEGER ip-protocol     |<>--{0..1}--[ Port              ]
-| STRING indicator-uid    |<>--{0..1}--[ Portlist          ]
-| STRING indicator-set-id |<>--{0..1}--[ ProtoCode         ]
+| ID observable-id        |<>--{0..1}--[ Portlist          ]
+|                         |<>--{0..1}--[ ProtoCode         ]
 |                         |<>--{0..1}--[ ProtoType         ]
 |                         |<>--{0..1}--[ ProtoField        ]
 |                         |<>--{0..*}--[ ApplicationHeader ]
@@ -2382,12 +2372,11 @@ This class was derived from <xref target="RFC4765" />.
 
 <t>When a given System classes with category="source" and another with category="target" are aggregated into a single Flow class, and each of these System classes has a Service and Portlist class, an implicit relationship between these Portlists exists.  If N ports are listed for a System@category="source", and M ports are listed for System@category="target", the number of ports in N must be equal to M.  Likewise, the ports MUST be listed in an identical sequence such that the n-th port in the source corresponds to the n-th port of the target.  If N is greater than 1, a given instance of a Flow class MUST only have a single instance of a System@category="source" and System@category="target".</t>
 
-<t>The Service class has three attributes:</t>
+<t>The Service class has two attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="ip-protocol"><vspace />Required. INTEGER.   The IANA assigned IP protocol number per <xref target="IANA.Protocols" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 
@@ -2405,12 +2394,11 @@ This class was derived from <xref target="RFC4765" />.
 | INTEGER proto            |
 | STRING field             |
 | ENUM dtype               |
-| STRING indicator-uid     |
-| STRING indicator-set-uid |
+| ID observable-id         |
 +--------------------------+
 ]]></artwork></figure></t>
 
-<t>The ApplicationHeader class has five attributes:</t>
+<t>The ApplicationHeader class has four attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="proto"><vspace />Required. INTEGER.   The IANA assigned port number per <xref target="IANA.Ports" /> corresponding to the application layer protocol whose field will be represented.</t>
@@ -2447,8 +2435,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="ext-dtype"><vspace/>Optional.  STRING.  A means by which to extend the dtype attribute.  See <xref target="extending_enums" />.</t>
 
 
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 </section> <!-- ApplicationHeader -->
@@ -2512,8 +2499,8 @@ This class was derived from <xref target="RFC4765" />.
 +-------------------------+
 | EmailData               |
 +-------------------------+
-| STRING indicator-uid    |<>--{0..1}--[ EmailFrom        ]
-| STRING indicator-set-id |<>--{0..1}--[ EmailSubject     ]
+| ID observable-id        |<>--{0..1}--[ EmailFrom        ]
+|                         |<>--{0..1}--[ EmailSubject     ]
 |                         |<>--{0..1}--[ EmailX-Mailer    ]
 |                         |<>--{0..*}--[ EmailHeaderField ]
 +-------------------------+
@@ -2530,11 +2517,10 @@ This class was derived from <xref target="RFC4765" />.
 </list>
 </t>
 
-<t>The EmailData class has two attributes:</t>
+<t>The EmailData class has one attribute:</t>
 <t>
 <list style="hanging">
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>	
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 
@@ -2575,18 +2561,17 @@ This class was derived from <xref target="RFC4765" />.
    <t>
 <figure title="The RecordData Class" anchor="figure_recorddata_class">
 <artwork><![CDATA[
-+-------------------------+
-| RecordData              |
-+-------------------------+
-| ENUM restriction        |<>--{0..1}--[ DateTime                    ]
-| STRING indicator-uid    |<>--{0..*}--[ Description                 ]
-| STRING indicator-set-id |<>--{0..1}--[ Application                 ]
-|                         |<>--{0..*}--[ RecordPattern               ]
-|                         |<>--{0..*}--[ RecordItem                  ]
-|                         |<>--{0..1}--[ HashData                    ]
-|                         |<>--{0..*}--[ WindowsRegistryKeysModified ]
-|                         |<>--{0..*}--[ AdditionalData              ]
-+-------------------------+
++--------------------+
+| RecordData         |
++--------------------+
+| ENUM restriction   |<>--{0..1}--[ DateTime                   ]
+| ID observable-id   |<>--{0..*}--[ Description                 ]
+|                    |<>--{0..1}--[ Application                 ]
+|                    |<>--{0..*}--[ RecordPattern               ]
+|                    |<>--{0..*}--[ RecordItem                  ]                 
+|                    |<>--{0..1}--[ HashData                    ]
+|                    |<>--{0..*}--[ WindowsRegistryKeysModified ]
+|                    |<>--{0..*}--[ AdditionalData             ]     +--------------------+
 ]]></artwork>
 </figure></t>
 					
@@ -2604,11 +2589,10 @@ This class was derived from <xref target="RFC4765" />.
 </list>
 	</t>
 
-<t>The RecordData class has three attribute:
+<t>The RecordData class has two attribute:
 <list style="hanging">
 <t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
-<t hangText="indicator-uid"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 
 </list>
 </t>
@@ -2642,7 +2626,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="type"><vspace />Required.  ENUM.  Describes the type of pattern being specified in the element content.  The default is "regex".
 
 <list style="numbers">
-<t>regex.  regular expression, per Appendix F of <xref target="W3C.SCHEMA.DTYPES"/>.</t>
+<t>regex.  regular expression as defined by POSIX Extended Regular Expressions (ERE) in Chaper 9 of <xref target="IEEE.POSIX"/>.</t>
 <t>binary. Binhex encoded binary pattern, per the HEXBIN data type.</t>
 <t>xpath.  XML Path (XPath) <xref target="W3C.XPATH" /></t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
@@ -2685,8 +2669,7 @@ This class was derived from <xref target="RFC4765" />.
 +-----------------------------+
 | WindowsRegistryKeysModified |
 +-----------------------------+
-| STRING indicator-uid        |<>--{1..*}--[ Key ]
-| STRING indicator-set-id     |
+| ID observable-id            |<>--{1..*}--[ Key ]
 +-----------------------------+
 ]]></artwork>
 </figure></t>
@@ -2695,11 +2678,10 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="Key"><vspace/>One or many.  The Window registry key.</t>
 </list>
 </t>
-<t>The WindowsRegistryKeysModified class has two attributes:</t>
+<t>The WindowsRegistryKeysModified class has one attribute:</t>
 <t>
 <list style="hanging">
-<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace />Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 
@@ -2714,8 +2696,7 @@ This class was derived from <xref target="RFC4765" />.
 +---------------------------+
 | ENUM registryaction       |<>----------[ KeyName ]
 | STRING ext-registryaction |<>--{0..1}--[ KeyValue ]
-| ENUM type                 |
-| STRING ext-type           |
+| ID observable-id          |
 +---------------------------+
 ]]></artwork>
 </figure></t>
@@ -2725,7 +2706,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="KeyValue"><vspace/>Zero or one.  STRING.  The value of the associated registry key encoded as in Microsoft .reg files <xref target="KB310516" />.</t>
 </list></t>
 
-<t>The Key class has four attributes:</t>
+<t>The Key class has three attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="registryaction"><vspace />Optional.  ENUM.  The type of action taken on the registry key.
@@ -2740,14 +2721,7 @@ This class was derived from <xref target="RFC4765" />.
 </list></t>
 <t hangText="ext-registryaction"><vspace />Optional.  A means by which to extend the registryaction attribute.  See <xref target="extending_enums" />.</t>
 
-<t hangText="type"><vspace /> Optional.  TODO.
-<list style="numbers">
-<t>watchlist.  Registry key information that is provided in a watchlist.</t>
-<t>ext-value.  Registry key information from an external source.</t>
-</list></t>
-<t hangText="ext-type"><vspace />Optional.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
-<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace />Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list>
 </t>
 </section> <!-- Key -->
@@ -2755,7 +2729,7 @@ This class was derived from <xref target="RFC4765" />.
 </section> <!-- RegistryKeyModified -->
 
 <section title="HashData Class" anchor="HashData">
-<t>The HashData class describes files, file hashes,  ... TODO ...the hash and signature details that are needed for providing context for indicators.</t>
+<t>The HashData class describes files names and associated hashes and signatures.  ... TODO Fix Issue #20 and #25 ...</t>
 <t>
 <figure title="The HashData Class" anchor="figure_hashdata_class">
 <artwork><![CDATA[
@@ -2765,8 +2739,8 @@ This class was derived from <xref target="RFC4765" />.
 | ENUM type                |<>--{0..*}--[ FileName       ]
 | STRING ext-type          |<>--{0..*}--[ FileSize       ]
 | BOOL valid               |<>--{0..*}--[ ds:Signature   ]
-| STRING indicator-uid     |<>--{0..*}--[ ds:KeyInfo     ]
-| STRING indicator-set-id  |<>--{0..*}--[ ds:Reference   ]
+| ID observable-id         |<>--{0..*}--[ ds:KeyInfo     ]
+|                          |<>--{0..*}--[ ds:Reference   ]
 |                          |<>--{0..*}--[ AdditionalData ]
 +--------------------------+
 ]]></artwork>
@@ -2783,31 +2757,300 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" /></t>
 </list></t>
 
-<t>The HashData class has five attributes:</t>
+<t>The HashData class has four attributes:</t>
 <t>
 <list style="hanging">
 <t hangText="type"><vspace />Optional.  ENUM.  The Hash Type.
 <list style="numbers">
 <t>PKI-email-ds.  PKI email digital signature.</t>
 <t>PKI-file-ds.  PKI file digital signature.</t>
-<t>PKI-email-ds_watchlist.  Watchlist of PKI email digital signatures.</t>
-<t>PKI-file-ds_watchlist.  Watchlist of PKI file digital signatures.</t>
 <t>PGP-email-ds.  PGP email digital signature.</t>
 <t>PGP-file-ds.  PGP file digital signature.</t>
-<t>PGP-email-ds-watchlist.  Watchlist of PGP email digital signatures.</t>
-<t>PGP-file-ds-watchlist.  Watchlist of PGP file digital signatures</t>
 <t>file-hash.  A file hash.</t>
 <t>email-hash.  An email hash.</t>
-<t>file-hash-watchlist.  Watchlist of file hashes</t>
-<t>email-hash-watchlist.  Watchlist of email hashes</t>
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
 <t hangText="ext-type"><vspace />Optional.  STRING.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
 <t hangText="valid"><vspace />Optional.  BOOLEAN.  Indicates if the signature or hash is valid.</t>
-<t hangText="indicator-uid"><vspace />Optional.  STRING.  See <xref target="indicator_attributes" />.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. See <xref target="indicator_attributes" />.</t>
+<t hangText="observable-id"><vspace />Optional.  ID.  See <xref target="observableid_attribute" />.</t>
 </list></t>
 </section> <!-- HashData -->
+
+<section title="IndicatorData Class" anchor="IndicatorData">
+<t>The IndicatorData class describes the indicators identified from analysis of an incident.</t>
+<t>
+<figure title="The IndicatorData Class" anchor="figure_indicatordata_class">
+<artwork><![CDATA[
++--------------------------+
+| IndicatorData            |
++--------------------------+
+|                          |<>--{1..*}--[ Indicator      ]
++--------------------------+
+]]></artwork>
+</figure></t>
+
+<t>The aggregate class that constitutes IndicatorData is:
+
+<list style="hanging">
+<t hangText="Indicator"><vspace />One or more.  An indicator from the incident.</t>
+</list></t>
+
+<t>The IndicatorData class has no attributes.</t>
+</section> <!-- IndicatorData -->
+
+<section title="Indicator Class" anchor="Indicator">
+<t>The Indicator class describes a cyber indicator.  An indicator consists of observable features and phenomenon that aid in the forensic or proactive detection of malicious activity, and associated meta-data.  This indicator can be described outright or reference observable features and phenomenon described elsewhere in the incident information.  Portions of an incident description can be composed to define an indicator, as can the indicators themselves.</t>
+<t>
+<figure title="The Indicator Class" anchor="figure_indicator_class">
+<artwork><![CDATA[
++--------------------+
+| Indicator          |
++--------------------+
+| ENUM restriction   |<>----------[ IndicatorID            ]
+|                    |<>--{0..1}--[ AlternativeIndicatorID ]
+|                    |<>--{0..*}--[ Description            ]
+|                    |<>--{0..1}--[ StartTime              ]
+|                    |<>--{0..1}--[ EndTime                ]
+|                    |<>--{0..1}--[ Confidence             ]
+|                    |<>--{0..*}--[ Contact                ]
+|                    |<>--{0..1}--[ Observable             ]
+|                    |<>--{0..1}--[ ObservableReference    ]
+|                    |<>--{0..1}--[ IndicatorExpression    ]
+|                    |<>--{0..1}--[ IndicatorReference     ]
+|                    |<>--{0..*}--[ AdditionalData         ]
++--------------------+
+]]></artwork>
+</figure></t>
+
+<t>The aggregate classes that constitute Indicator are:
+
+<list style="hanging">
+<t hangText="IndicatorID"><vspace />One.  An identifier for this indicator.  See <xref target="IndicatorID" /></t>
+<t hangText="AlternativeIndicatorID"><vspace />Zero or one. An alternative identifier for this indicator.  See <xref target="AlternativeIndicatorID" /></t>
+<t hangText="Description"><vspace />Zero or more. ML_STRING.  A free-form textual description of the indicator.</t>
+<t hangText="StartTime"><vspace />Zero or one. DATETIME.  A timestamp of the start of the time period during which this indicator is valid.</t>
+<t hangText="EndTime"><vspace />Zero or one. DATETIME. A timestamp fo the end of the time period during which this indicaor is valid.</t>
+<t hangText="Confidence"><vspace />Zero or one.  An estimate of the confidence in the quality of the indicator.  See <xref target="Confidence" />.</t>
+<t hangText="Contact"><vspace />Zero or more.  Contact information for this indicator. See <xref target="Contact" />.</t>
+<t hangText="Observable"><vspace />Zero or one.  An observable feature or phenomenon of this indicator.  See <xref target="Observable" />.</t>
+<t hangText="ObservableReference"><vspace />Zero or one.  A reference to a feature or phenomenon defined elsewhere in the document.  See <xref target="ObservableReference" />.</t>
+<t hangText="IndicatorExpression"><vspace />Zero or one.  A composition of observables.  See <xref target="IndicatorExpression" />.</t>
+<t hangText="IndicatorReference"><vspace />Zero or one.  A reference to an indicator.</t>
+<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" /></t>
+</list></t>
+
+<t>The Indicator class MUST have exactly one instance of an Observable, IndicatorExpression, ObservableReference, or IndicatorReference class.</t>
+
+<t>The StartTime and EndTime classes can be used to define an interval during which the indicator is valid.  If both classes are present, the indicator is consider valid only during the decribed interval.  If neither class is provided, the indicator is considered valid during any time interval.  If only a StartTime is provided, the indicator is valid anytime after this timestamp.  If only an EndTime is provided, the indicator is valid anytime prior to this timestamp.</t>
+
+<t>The Indicator class has one attribute:
+<list style="hanging">
+<t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
+</list>
+</t>
+
+<section title="IndicatorID Class" anchor="IndicatorID">
+<t>The IndicatorID class identifies an indicator with a indentifier globally unique identifier.  The combination of the name and version attributes, and the element content form this identifier.  Indicators generated by given CSIRT MUST NOT resuse the same value unless they are referencing the same indicator.</t>
+
+<t>
+<figure title="The IndicatorID Class" anchor="figure_indicatorid_class">
+<artwork><![CDATA[
++------------------+
+| IndicatorID      |
++------------------+
+| ID               |
+|                  |
+| STRING name      |
+| STRING version   |
++------------------+
+]]></artwork>
+</figure></t>
+
+<t>The IndicatorID class has two attributes:
+<list style="hanging">
+<t hangText="name"><vspace/>Required.  STRING.  An identifier describing the CSIRT that created the indicator.  In order to have a globally unique CSIRT name, the fully qualified domain name associated with the CSIRT MUST be used.  This format is identical to the IncidentID@name attribute in <xref target="IncidentID" />.</t>
+
+<t hangText="version"><vspace/>Required.  STRING.  A version number of an indicator.</t>
+</list>
+</t>
+</section>  <!-- IndicatorID class -->
+
+<section title="AlternativeIndicatorID Class" anchor="AlternativeIndicatorID">
+<t>The AlternativeIndicatorID class lists alternative identifiers for an indicator.</t>
+
+<t>
+<figure title="The AlternativeIndicatorID Class" anchor="figure_AlternativeIndicatorID_class">
+<artwork><![CDATA[
++-------------------------+
+| AlternativeIndicatorID  |
++-------------------------+
+| ENUM restriction        |<>--{1..*}--[ IndicatorReference ]
+|                         |
++-------------------------+
+]]></artwork></figure></t>
+	
+<t>The aggregate class that constitutes AlternativeIndicatorID is:
+<list style="hanging">
+<t hangText="IndicatorReference"><vspace/>One or more.  A reference to an indicator.</t> 
+</list></t>
+	
+<t>The AlternativeIndicatorID class has one attribute:
+<list style="hanging">
+<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+</list></t>
+</section> <!-- AlternativeIndicatorID class -->
+
+<section title="Observable Class" anchor="Observable">
+<t>The Observable class describes a feature and phenomenon that can be observed or measured for the purposes of detecting malicious behavior.</t>
+<t>
+<figure title="The Observable Class" anchor="figure_observable_class">
+<artwork><![CDATA[
++-------------------+
+| Observable        |
++-------------------+
+|                   |<>--{0..1}--[ Address                     ]
+|                   |<>--{0..1}--[ DomainData                  ]
+|                   |<>--{0..1}--[ Service                     ]
+|                   |<>--{0..1}--[ EmailData                   ]
+|                   |<>--{0..1}--[ ApplicationHeader           ]
+|                   |<>--{0..1}--[ WindowsRegistryKeysModified ]
+|                   |<>--{0..1}--[ HashData                    ]
+|                   |<>--{0..1}--[ RecordData                  ]
+|                   |<>--{0..1}--[ EventData                   ]
+|                   |<>--{0..1}--[ Incident                    ]
+|                   |<>--{0..*}--[ Expectation                 ]
+|                   |<>--{0..*}--[ Reference                   ]
+|                   |<>--{0..1}--[ Assessment                  ]
+|                   |<>--{0..1}--[ HistoryItem                 ]
+|                   |<>--{0..*}--[ AdditionalData              ]
++-------------------+
+]]></artwork>
+</figure></t>
+
+<t>The aggregate classes that constitute Observable are:
+
+<list style="hanging">
+<t hangText="Address"><vspace />Zero or One.  An Address observable.  See <xref target="Address" />.</t>
+<t hangText="DomainData"><vspace />Zero or One.  A DomainData observable.  See <xref target="DomainData" />.</t>
+<t hangText="Service"><vspace />Zero or One.  A Service observable.  See <xref target="Service" />.</t>
+<t hangText="EmailData"><vspace />Zero or One.  A EmailData observable.  See <xref target="EmailData" />.</t>
+<t hangText="ApplicationHeader"><vspace />Zero or One.  An ApplicationHeader observable.  See <xref target="ApplicationHeader" />.</t>
+<t hangText="WindowsRegistryKeysModified"><vspace />Zero or One.  A WindowsRegistryKeysModified observable.  See <xref target="WindowsRegistryKeysModified" />.</t>
+<t hangText="HashData"><vspace />Zero or One.  A HashData observable.  See <xref target="HashData" />.</t>
+<t hangText="RecordData"><vspace />Zero or One.  A RecordData observable.  See <xref target="RecordData" />.</t>
+<t hangText="EventData"><vspace />Zero or One.  An EventData observable.  See <xref target="EventData" />.</t>
+<t hangText="Incident"><vspace />Zero or One.  An Incident observable.  See <xref target="Incident" />.</t>
+<t hangText="EventData"><vspace />Zero or One.  An EventData observable.  See <xref target="EventData" />.</t>
+<t hangText="Expectation"><vspace />Zero or One.  An Expectation observable.  See <xref target="Expectation" />.</t>
+<t hangText="Reference"><vspace />Zero or One.  A Reference observable.  See <xref target="Reference" />.</t>
+<t hangText="Assessment"><vspace />Zero or One.  An Assessment observable.  See <xref target="Assessment" />.</t>
+<t hangText="HistoryItem"><vspace />Zero or One.  A HistoryItem observable.  See <xref target="HistoryItem" />.</t>
+<t hangText="AdditionalData"><vspace />Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" />.</t>
+</list>
+</t>
+
+<t>The Observable class MUST have exactly one of the possible child classes.</t>
+
+<t>The Observable class has no attributes.</t>
+</section> <!-- Observable -->
+
+<section title="IndicatorExpression Class" anchor="IndicatorExpression">
+<t>The IndicatorExpression describes an expression composed of observed phenomenon or features, or indicators.  Elements of the expression can be described directly, reference relevant data from other parts of a given IODEF document, or reference previously defined indicators.</t>
+
+<t>All child classes of a given instance of IndicatorExpression form a boolean algebraic expression where the operator between them is determined by the operator attribute.  Nesting an IndicatorExpression in itself is akin to a parenthesis in the expression.</t>
+
+<t>
+<figure title="The IndicatorExpression Class" anchor="figure_indicatorexpression_class">
+<artwork><![CDATA[
++--------------------------+
+| IndicatorExpression      |
++--------------------------+
+| ENUM operator            |<>--{0..*}--[ IndicatorExpression  ]
+|                          |<>--{0..*}--[ Observable           ]
+|                          |<>--{0..*}--[ ObservableReference  ]
+|                          |<>--{0..*}--[ IndicatorReference   ]
+|                          |<>--{0..*}--[ AdditionalData       ]
++--------------------------+
+]]></artwork>
+</figure></t>
+
+<t>The aggregate classes that constitute IndicatorExpression are:
+
+<list style="hanging">
+<t hangText="IndicatorExpression"><vspace />Zero or more.  An expression composed of other observables or indicators.</t>
+<t hangText="Observable"><vspace />Zero or more. A description of an observable.</t>
+<t hangText="ObservableReference"><vspace />Zero or more. A reference to another observable.</t>
+<t hangText="IndicatorReference"><vspace />Zero or more. A reference to another indicator.</t>
+<t hangText="AdditionalData"><vspace/>Zero or more.  Mechanism by which to extend the data model.  See <xref target="AdditionalData" /></t>
+</list></t>
+
+<t>... TODO Additional text is required to describe the valid combinations of classes and how the operator class should be applied ...</t>
+
+<t>The IndicatorExpression class has one attributes:</t>
+<t>
+<list style="hanging">
+<t hangText="operator"><vspace />Optional.  ENUM.  The operator to be applied between the child elements.
+<list style="numbers">
+<t>not.  negation operator.</t>
+<t>and.  conjunction operator.</t>
+<t>or.  disjunction operator.</t>
+<t>xor.  exclusive disjunction operator.</t>
+</list></t>
+</list></t>
+</section> <!-- IndicatorExpression -->
+
+<section title="ObservableReference Class" anchor="ObservableReference">
+<t>The ObservableReference describes a reference to an observable feature or phenomenon described elsewhere in the document.</t>
+
+<t>This class has no content.</t>
+
+<figure title="The ObservableReference Class" anchor="figure_observablereferece_class">
+<artwork><![CDATA[
++-------------------------+
+| ObservableReference     |
++-------------------------+
+| EMPTY                   |
+|                         |
+| IDREF uid-ref           |
++-------------------------+
+]]></artwork>
+</figure>
+
+<t>The ObservableReference class has one attributes:
+<list style="hanging">
+<t hangText="uid-ref"><vspace/>Required.  IDREF.  An identifier that serves as a reference to a class in the IODEF document. The referenced class will have this identifier set in the observable-id attribute.</t>
+</list>
+</t>
+</section>  <!-- ObservableReference class -->
+
+<section title="IndicatorReference Class" anchor="IndicatorReference">
+<t>The IndicatorReference describes a reference to an indicator.  This reference may be to an indicator described in the IODEF document or in a previously exchanged IODEF document.</t>
+
+<figure title="The IndicatorReference Class" anchor="figure_indicatorreferece_class">
+<artwork><![CDATA[
++--------------------------+
+| IndicatorReference       |
++--------------------------+
+| EMPTY                    |
+|                          |
+| IDREF uid-ref            |
+| STRING euid-ref          |
+| STRING version           |
++--------------------------+
+]]></artwork>
+</figure>
+
+<t>The IndicatorReference class has one attributes:
+<list style="hanging">
+<t hangText="uid-ref"><vspace/>Optional.  IDREF.  An identifier that serves as a reference to an Indicator class in the IODEF document. The referenced Indicator class will have this identifier set in the IndicatorID class.</t>
+<t hangText="euid-ref"><vspace/>Optional.  STRING.  An identifier that references an IndicatorID not in this IODEF document.</t>
+<t hangText="version"><vspace/>Optional.  STRING.  A version number of an indicator.</t>
+</list>
+</t>
+<t>Either the uid-ref or the euid-ref attribute MUST be set.</t>
+</section>  <!-- IndicatorReference class -->
+</section> <!-- Indicator -->
+
 
 </section> <!-- IODEF Data Model -->
 
@@ -3461,10 +3704,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="xs:language"/>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" default="private"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -3788,10 +4029,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="iodef:action-type" use="required"/>
         <xs:attribute name="ext-action"
         type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -3823,10 +4062,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       type="iodef:action-type" default="other"/>
         <xs:attribute name="ext-action"
                       type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
 
@@ -3922,10 +4159,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
         <!-- Adding in Attack Type -->
         <xs:attribute name="attacktype" type="att-type" 
                       use="required">
@@ -3965,10 +4200,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:attribute>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:element name="Impact">
@@ -4145,10 +4378,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" 
                       default="default"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -4197,10 +4428,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
             <xs:restriction base="xs:NMTOKEN">
               <xs:enumeration value="source"/>
               <xs:enumeration value="target"/>
-              <!-- CHANGE - adding two new values to cover
-                   watchlist groups -->
-              <xs:enumeration value="watchlist-source"/>
-              <xs:enumeration value="watchlist-target"/>
               <xs:enumeration value="intermediate"/>
               <xs:enumeration value="sensor"/>
               <xs:enumeration value="infrastructure"/>
@@ -4286,10 +4513,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                           type="xs:string"/>
             <xs:attribute name="vlan-num"
                           type="xs:integer"/>
-            <xs:attribute name="indicator-uid"
-                          type="xs:string" use="optional"/>
-           <xs:attribute name="indicator-set-id"
-                          type="xs:string" use="optional"/>
+            <xs:attribute name="observable-id"
+                          type="xs:ID" use="optional"/>
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
@@ -4379,10 +4604,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:sequence>
         <xs:attribute name="ip-protocol"
                       type="xs:integer" use="required"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
     <xs:simpleType name="PortlistType">
@@ -4447,10 +4670,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                      type="iodef:ApplicationHeaderType" 
                      minOccurs="0"/>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
+       <xs:attribute name="observable-id"
+                     type="xs:ID" use="optional"/>
      </xs:complexType>
    </xs:element>
 
@@ -4513,10 +4734,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
       </xs:attribute>
       <xs:attribute name="ext-domain-status"
                     type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
     </xs:complexType>
   </xs:element>
 
@@ -4624,7 +4843,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:RecordItem"
                       maxOccurs="unbounded"/>
-          <xs:element ref="iodef:HashInformation"
+          <xs:element ref="iodef:HashData"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:WindowsRegistryKeysModified"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -4633,10 +4852,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:sequence>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
-        <xs:attribute name="indicator-uid"
-                      type="xs:string" use="optional"/>
-        <xs:attribute name="indicator-set-id"
-                      type="xs:string" use="optional"/>
+        <xs:attribute name="observable-id"
+                      type="xs:ID" use="optional"/>
       </xs:complexType>
     </xs:element>
 
@@ -4713,10 +4930,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
            </xs:complexType>
          </xs:element>
        </xs:sequence>
-       <xs:attribute name="indicator-uid"
-                     type="xs:string" use="optional"/>
-       <xs:attribute name="indicator-set-id"
-                     type="xs:string" use="optional"/>
+       <xs:attribute name="observable-id"
+                     type="xs:ID" use="optional"/>
      </xs:complexType>
      </xs:element>
 
@@ -4728,7 +4943,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
    ==  so it does not need to be maintained here.                  ==
    ==================================================================
   -->
-  <xs:element name="HashInformation">
+  <xs:element name="HashData">
   <xs:complexType>
     <xs:sequence>
         <xs:element name="FileName" type="iodef:MLStringType"
@@ -4755,16 +4970,10 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="PKI-email-ds"/>
             <xs:enumeration value="PKI-file-ds"/>
-            <xs:enumeration value="PKI-email-ds-watchlist"/>
-            <xs:enumeration value="PKI-file-ds-watchlist"/>
             <xs:enumeration value="PGP-email-ds"/>
             <xs:enumeration value="PGP-file-ds"/>
-            <xs:enumeration value="PGP-email-ds-watchlist"/>
-            <xs:enumeration value="PGP-file-ds-watchlist"/>
             <xs:enumeration value="file-hash"/>
             <xs:enumeration value="email-hash"/>
-            <xs:enumeration value="file-hash-watchlist"/>
-            <xs:enumeration value="email-hash-watchlist"/>
             <!-- QUESTION: Are values needed to differentiate the 
                  key information shared when the ds:KeyInfo class 
                  is referenced? -->
@@ -4776,10 +4985,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                     type="xs:string" use="optional"/>
       <xs:attribute name="valid" 
                     type="xs:boolean" use="optional" />
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
       <xs:attribute name="restriction"
                     type="iodef:restriction-type"/>
     </xs:complexType>
@@ -4823,7 +5030,155 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                 type="iodef:SoftwareType"/>
 
   <!--
+==================================================================
+   == IndicatorData classes                                 ==
    ==================================================================
+-->
+   <xs:element name="IndicatorData">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:Indicator" 
+                     minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="Indicator">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:IndicatorID" />
+         <xs:element ref="iodef:AlternativeIndicatorID"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Description"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:StartTime"
+                     minOccurs="0" />
+         <xs:element ref="iodef:EndTime"
+                     minOccurs="0" />
+         <xs:element ref="iodef:Confidence"
+                     minOccurs="0" />
+         <xs:element ref="iodef:Contact"
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:choice>
+           <xs:element ref="iodef:Observable" />
+           <xs:element ref="iodef:ObservableReference" />
+           <xs:element ref="iodef:IndicatorExpression" />
+           <xs:element ref="iodef:IndicatorReference" />
+         </xs:choice>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                    type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorID" type="iodef:IndicatorIDType"/>
+   <xs:complexType name="IndicatorIDType">
+      <xs:simpleContent>
+        <xs:extension base="xs:id">
+          <xs:attribute name="name"
+                        type="xs:string" use="required"/>
+          <xs:attribute name="version"
+                        type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:element name="AlternativeIndicatorID">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:IndicatorID"
+                      maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+
+   <xs:element name="Observable">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:Address" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:DomainData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:EmailData" 
+                     minOccurs="0"/>
+         <xs:element name="ApplicationHeader" 
+                     type="iodef:ApplicationHeaderType" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:WindowsRegistryKeysModified" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:HashData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:RecordData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:EventData" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:Incident" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:Expectation" 
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Reference" 
+                     minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="iodef:Assessment" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:HistoryItem" 
+                     minOccurs="0"/>
+         <xs:element ref="iodef:AdditionalData" 
+                     minOccurs="0"/>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                    type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorExpression">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:choice>
+           <xs:element ref="iodef:IndicatorExpression" 
+                       minOccurs="0"/>
+           <xs:element ref="iodef:Observable"
+                       minOccurs="0" />
+           <xs:element ref="iodef:ObservableReference" 
+                       minOccurs="0"/>
+           <xs:element ref="iodef:IndicatorReference" 
+                       minOccurs="0"/>
+         </xs:choice>
+         <xs:element ref="iodef:AlternativeIndicatorID"
+                     minOccurs="0" maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="operator" use="required">
+         <xs:simpleType>
+           <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="not"/>
+            <xs:enumeration value="and"/>
+            <xs:enumeration value="or"/>
+            <xs:enumeration value="xor"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="ObservableReference">
+     <xs:complexType>
+       <xs:attribute name="uid-ref"
+                     type="xs:IDREF" use="required"/>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="IndicatorReference">
+     <xs:complexType>
+       <xs:attribute name="uid-ref"
+                     type="xs:IDREF" use="optional"/>
+       <xs:attribute name="euid-ref"
+                     type="xs:string" use="optional"/>
+       <xs:attribute name="version"
+                     type="xs:string" use="optional"/>
+     </xs:complexType>
+   </xs:element>
+<!--   ==================================================================
    == Miscellaneous simple classes                                 ==
    ==================================================================
   -->
@@ -4880,10 +5235,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
       <xs:attribute name="dtype"
                     type="iodef:proto-dtype-type" 
                     use="required"/>                     
-      <xs:attribute name="indicator-uid"
-                    type="xs:string" use="optional"/>
-      <xs:attribute name="indicator-set-id"
-                    type="xs:string" use="optional"/>
+      <xs:attribute name="observable-id"
+                    type="xs:ID" use="optional"/>
     </xs:complexType>
 
   <!--
@@ -5022,6 +5375,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         </xs:restriction>
       </xs:simpleType>
 </xs:schema>		
+
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
@@ -5143,6 +5497,18 @@ The following groups and individuals, listed alphabetically, contributed substan
 </front>
 <seriesInfo name="W3C Candidate Recommendation" value="" />
 </reference>
+
+<reference anchor="IEEE.POSIX">
+<front>
+	<title>Information Technology - Portable Operating System Interface (POSIX) - Part 1: Base Definitions</title>
+	<author>
+	<organization abbrev="IEEE">Institute of Electrical and Electronics Engineers</organization>
+	</author>
+	<date month="June" year="2001" />
+</front>
+<seriesInfo name="IEEE" value="1003.1" />
+</reference>
+
 
 <reference anchor="RFC2119">
 <front>

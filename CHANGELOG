@@ -1,14 +1,11 @@
 editorial = just the text was changed
-schema = schema was modified
+schema = text and schema was modified
 
-** (schema) Sorted attributes of System to align to the text
-** (schema) Removed System@indicator-set-id
-** (schema) Removed Service/{Email,EmailSubject, X-Mailer} in favor of Service/EmailData
-** (schema) Renamed Service/EmailInfo to EmailData
-** (schema) Renamed Service@ip_protocol to @ip-protocol
-** (schema) Removed Node/{NodeName,DateTime} and Service/DomainData in favor of Node/DomainData (Issue #4)
-** (schema) Added Expectation@action={upgrade-software,rebuild-asset}
-** (schema) Added Contact@role="vendor"
-** (schema) Added {Incident,Event}/Discovery and Discovery/DetectionPattern (Issue #27)
-** (editorial) Added Section 4.4 to describe incompatable changes between rfc5070 and rfc070bis
-** (editorial) Changed text in Method class to address part (c) for Issue #22 (Issue #22)
+** (schema) Removed System@category={watchlist-source,watchlist-target} (Issue #42)
+** (schema) Remove HashInformation@type={PKI-email-ds-watchlist,PKI-file-ds-watchlist,PGP-email-ds-watchlist,PGP-file-ds-watchlist,file-hash-watchlist,email-hash-watchlist} (Issue #42)
+** (editorial) Removed Key@type (from the text but it was already gone from the schema) (Issue #42) 
+** (schema) Added Incident/IndicatorData, Indicator, IndicatorID, AlternativeIndicatorID, Observable, IndicatorExpression, ObservableReference, and IndicatorReference (Issues #14, 28)
+** (schema) Renamed all @indicator-uid to be @observable-id. Removed @indicator-set-id (Issue #41)
+** (schema) Renamed HashInformation in schema to be HashData. The text already used this name.
+** (text) changed RecordPattern@type="regex" reference to be POSIX ERE (Issue #2)
+** (text) Refined description of DomainData@status="other"
