@@ -1,0 +1,19 @@
+editorial = just the text was changed
+schema = schema was modified
+
+** (editorial) make document standards track, not informational
+** (editorial) rename all reference to HashSigDetails in Section 3.21 to HashInformation
+** (editorial) rename Registry Key Modified class name to RegistryKeyModified in Section 3.20
+** (schema) consistenly used hyphen rather than underscore for multi-word enumerated values (Key@registryaction, HashInformation@type, 
+** (editorial) add ML_STRING definition to FileName class text per current schema definition
+** (editorial) add INTEGER definition to Filename class text per current schema definition
+** (schema) added enumerated values to @restriction to map it to Traffic Light Protocol (TLP) (Issue #9, http://trac.tools.ietf.org/wg/mile/trac/ticket/9)
+** (editorial) added additional text to describing parsing multiple System classes within a Flow when a Portlist class is present
+** (editorial) fixed usage of RFC2119 words (Issue #5, http://trac.tools.ietf.org/wg/mile/trac/ticket/5)
+** (schema) added {Expectation, HistoryItem}@action ="watch-and-report" (Issue #8, http://trac.tools.ietf.org/wg/mile/trac/ticket/8)
+** (schema) added numerous new values to NodeRole@category (Issue #7, http://trac.tools.ietf.org/wg/mile/trac/ticket/7)
+** (editorial) Added improved text about scope in Section 1.0 (Issue #19, http://trac.tools.ietf.org/wg/mile/trac/ticket/19)
+** (editorial) Fixed all of Sean Turner's early feedback except using the new IETF TLP
+** (schema) Set version of IODEF to be v2.0 based on title of draft: targetNamespace="urn:ietf:params:xml:ns:iodef-2.0", xmlns="urn:ietf:params:xml:ns:iodef-2.0", xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0", and IODEF-Document@version="2.0"
+** (editorial) Significant whitespace changes to schema formatting so that the draft would pass the id-nits checks (There remain a number of non-editorial questions posed in the schema.  These will have to be fixed in future drafts)
+
