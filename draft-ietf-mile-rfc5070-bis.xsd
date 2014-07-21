@@ -1,7 +1,7 @@
-
-  <xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-1.0"
-             xmlns="urn:ietf:params:xml:ns:iodef-1.0"
-             xmlns:iodef="urn:ietf:params:xml:ns:iodef-1.0"
+<?xml version="1.0" encoding="UTF-8"?>
+  <xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-1.40"
+             xmlns="urn:ietf:params:xml:ns:iodef-1.40"
+             xmlns:iodef="urn:ietf:params:xml:ns:iodef-1.40"
              xmlns:xs="http://www.w3.org/2001/XMLSchema"
              xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
              elementFormDefault="qualified"
@@ -10,11 +10,11 @@
      schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
     <xs:annotation>
       <xs:documentation>
-      Incident Object Description Exchange Format v1.10, RFC5070-bis
+      Incident Object Description Exchange Format v1.11, RFC5070-bis
       </xs:documentation>
     </xs:annotation>
 
-<!-- CHANGE: See above addition of xmlns:ds and import of same 
+<!-- CHANGE: See above addition of xmlns:ds and import of same
        namespace.  This is to use the digital signature hash inclusion
        of a file by referencing the existing standard as was done in
        RFC5901, RFC3275 is the reference, see RFC5901 section 5.9.5.2
@@ -22,6 +22,14 @@
   <!--
    ====================================================================
    ===  List of changes                                          ===
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 72]
+
+Internet-Draft                    IODEF                         May 2013
+
+
    ====================================================================
    CHANGE - new indicator values in the schema
 
@@ -32,7 +40,7 @@
    classes will be required to include additional data types.
    A table could be maintained through IANA to extend or change this
    class in between IODEF revisions.
-   
+
   RFC5901 provides a method to include an entire email, the following
   included indicators are ones commonly used when you do not need the
   entire email
@@ -70,6 +78,14 @@ The following are in the Record class:
                       type="xs:string" fixed="1.00"/>
         <xs:attribute name="lang"
                       type="xs:language" use="required"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 73]
+
+Internet-Draft                    IODEF                         May 2013
+
+
         <xs:attribute name="formatid"
                       type="xs:string"/>
       </xs:complexType>
@@ -84,14 +100,14 @@ The following are in the Record class:
         <xs:sequence>
           <xs:choice>
             <xs:element ref="iodef:IncidentID"/>
-            <!-- CHANGE - the incidentID can still be used, 
+            <!-- CHANGE - the incidentID can still be used,
               but when you have a set of indictaors or include
-              a watch list, a ReportID may be preferred.  If 
+              a watch list, a ReportID may be preferred.  If
               this is agreed upon, do we make them both unique
-              so the same key can be used in databases?  This 
+              so the same key can be used in databases?  This
               should not be used as your index value unless you
               are the issueing entity. -->
-            <xs:element name="ReportID" type="IncidentIDType"/>
+            <xs:element ref="iodef:ReportID"/>
           </xs:choice>
           <xs:element ref="iodef:AlternativeID"
                       minOccurs="0"/>
@@ -118,6 +134,14 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:AdditionalData"
                       minOccurs="0" maxOccurs="unbounded"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 74]
+
+Internet-Draft                    IODEF                         May 2013
+
+
         </xs:sequence>
         <xs:attribute name="purpose" use="required">
           <xs:simpleType>
@@ -160,6 +184,29 @@ The following are in the Record class:
       </xs:simpleContent>
     </xs:complexType>
 
+    <!--
+      ====================================================================
+      ==  ReportID class                                                ==
+      ====================================================================
+    -->
+    <xs:element name="ReportID">
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 75]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element ref="iodef:IncidentID"
+            maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+          type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
   <!--
    ====================================================================
    ==  AlternativeID class                                           ==
@@ -199,6 +246,14 @@ The following are in the Record class:
   -->
     <xs:element name="AdditionalData" type="iodef:ExtensionType"/>
   <!--
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 76]
+
+Internet-Draft                    IODEF                         May 2013
+
+
   ====================================================================
   ===  Contact class                                               ===
   ====================================================================
@@ -247,6 +302,14 @@ The following are in the Record class:
               <xs:enumeration value="person"/>
               <xs:enumeration value="organization"/>
               <xs:enumeration value="ext-value"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 77]
+
+Internet-Draft                    IODEF                         May 2013
+
+
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
@@ -256,7 +319,7 @@ The following are in the Record class:
                       type="iodef:restriction-type"/>
       </xs:complexType>
     </xs:element>
-<!-- CHANGE - UML states the type disambiguates the type of Name 
+<!-- CHANGE - UML states the type disambiguates the type of Name
      person or organization.  Do we want this added to the schema? -->
     <xs:element name="ContactName"
                 type="iodef:MLStringType"/>
@@ -295,6 +358,14 @@ The following are in the Record class:
         </xs:simpleContent>
       </xs:complexType>
     </xs:element>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 78]
+
+Internet-Draft                    IODEF                         May 2013
+
+
     <xs:element name="Email" type="iodef:ContactMeansType"/>
     <xs:element name="Telephone" type="iodef:ContactMeansType"/>
     <xs:element name="Fax" type="iodef:ContactMeansType"/>
@@ -343,6 +414,14 @@ The following are in the Record class:
         </xs:sequence>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type" default="default"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 79]
+
+Internet-Draft                    IODEF                         May 2013
+
+
       </xs:complexType>
     </xs:element>
     <xs:element name="HistoryItem">
@@ -370,7 +449,7 @@ The following are in the Record class:
         <xs:attribute name="indicator-uid"
         type="xs:string" use="optional"/>
         <!-- CHANGE: Including an indicator set ID that may be used
-          to detail changes int he history class as it relates to 
+          to detail changes int he history class as it relates to
           indicators or sets.
         -->
         <xs:attribute name="indicator-set-id"
@@ -391,6 +470,14 @@ The following are in the Record class:
                       minOccurs="0"/>
           <xs:element ref="iodef:EndTime"
                       minOccurs="0"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 80]
+
+Internet-Draft                    IODEF                         May 2013
+
+
           <xs:element ref="iodef:Contact"
                       minOccurs="0"/>
         </xs:sequence>
@@ -436,9 +523,17 @@ The following are in the Record class:
       ====================================================================
       ===  Reference class                                             ===
       ====================================================================
-    -->    
+    -->
     <xs:element name="Reference">
       <xs:complexType>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 81]
+
+Internet-Draft                    IODEF                         May 2013
+
+
         <xs:sequence>
           <xs:element name="ReferenceName"
                       type="iodef:MLStringType"/>
@@ -447,9 +542,9 @@ The following are in the Record class:
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <!-- CHANGE: Do we want an indicator_set_id here to connect 
-             data in the reference class to specific indicators? 
-             is there a better way to do this? 
+        <!-- CHANGE: Do we want an indicator_set_id here to connect
+             data in the reference class to specific indicators?
+             is there a better way to do this?
              Should the indicator_uid be used to mark data so that
              you have a way to limit who you share that data with
              in products?
@@ -462,8 +557,7 @@ The following are in the Record class:
         <xs:attribute name="indicator-uid"
         type="xs:string" use="optional"/>
         <!-- Adding in Attack Type -->
-        <xs:attribute name="attacktype" type="att-type" use="required">
-        </xs:attribute>
+        <xs:attribute name="attacktype" type="att-type" use="optional"/>
         <xs:attribute name="ext-attacktype"
           type="xs:string" use="optional"/>
       </xs:complexType>
@@ -488,6 +582,14 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="occurrence">
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 82]
+
+Internet-Draft                    IODEF                         May 2013
+
+
           <xs:simpleType>
             <xs:restriction base="xs:NMTOKEN">
               <xs:enumeration value="actual"/>
@@ -536,6 +638,14 @@ The following are in the Record class:
                   <xs:enumeration value="file"/>
                   <xs:enumeration value="info-leak"/>
                   <xs:enumeration value="misconfiguration"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 83]
+
+Internet-Draft                    IODEF                         May 2013
+
+
                   <xs:enumeration value="recon"/>
                   <xs:enumeration value="policy"/>
                   <xs:enumeration value="social-engineering"/>
@@ -584,6 +694,14 @@ The following are in the Record class:
           <xs:extension base="iodef:PositiveFloatType">
             <xs:attribute name="severity"
                           type="iodef:severity-type"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 84]
+
+Internet-Draft                    IODEF                         May 2013
+
+
             <xs:attribute name="currency"
                           type="xs:string"/>
           </xs:extension>
@@ -632,6 +750,14 @@ The following are in the Record class:
           <xs:element ref="iodef:Expectation"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Record"
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 85]
+
+Internet-Draft                    IODEF                         May 2013
+
+
                       minOccurs="0"/>
           <xs:element ref="iodef:EventData"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -650,11 +776,11 @@ The following are in the Record class:
    ===  Flow class                                                ===
    ====================================================================
   -->
+    <!-- Added System unbounded for use only when the source or target watchlist is in use, otherwise only one system entry is expected. -->
     <xs:element name="Flow">
       <xs:complexType>
         <xs:sequence>
-          <xs:element ref="iodef:System"
-                      maxOccurs="unbounded"/>
+          <xs:element ref="iodef:System" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:complexType>
     </xs:element>
@@ -666,7 +792,7 @@ The following are in the Record class:
     <xs:element name="System">
       <xs:complexType>
         <xs:sequence>
-          <xs:element ref="iodef:Node"/>
+          <xs:element ref="iodef:Node" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Service"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:OperatingSystem"
@@ -680,6 +806,14 @@ The following are in the Record class:
         </xs:sequence>
         <xs:attribute name="restriction"
                      type="iodef:restriction-type"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 86]
+
+Internet-Draft                    IODEF                         May 2013
+
+
         <xs:attribute name="interface"
                       type="xs:string"/>
         <xs:attribute name="category">
@@ -724,14 +858,25 @@ The following are in the Record class:
         <xs:sequence>
           <xs:choice maxOccurs="unbounded">
             <xs:element name="NodeName"
-                        type="iodef:MLStringType" minOccurs="0"/>
+            type="iodef:MLStringType" minOccurs="0"/>
+            <!-- CHANGE - added DomainData class and subclasses from RFC5901 -->
+            <xs:element ref="iodef:DomainData" minOccurs="0"
+              maxOccurs="unbounded"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 87]
+
+Internet-Draft                    IODEF                         May 2013
+
+
             <xs:element ref="iodef:Address"
                         minOccurs="0" maxOccurs="unbounded"/>
             <!-- Proposed CHANGE: include a URI indicator.
-                 Common complaint that URIs were only in the 
+                 Common complaint that URIs were only in the
                  IODEF schema as references and not part of the
-                 incident or included indicators. 
-                 Included right now as an address type, below is a 
+                 incident or included indicators.
+                 Included right now as an address type, below is a
                  second option for how to add it.
             <xs:element ref="iodef:URL"
                         minOccurs="0" maxOccurs="unbounded"/>
@@ -773,6 +918,14 @@ The following are in the Record class:
             </xs:attribute>
             <xs:attribute name="ext-category"
                           type="xs:string" use="optional"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 88]
+
+Internet-Draft                    IODEF                         May 2013
+
+
             <xs:attribute name="vlan-name"
                           type="xs:string"/>
             <xs:attribute name="vlan-num"
@@ -820,6 +973,15 @@ The following are in the Record class:
             </xs:attribute>
             <xs:attribute name="ext-category"
             type="xs:string" use="optional"/>
+            <xs:attribute name="attacktype" type="att-type" use="optional"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 89]
+
+Internet-Draft                    IODEF                         May 2013
+
+
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
@@ -846,14 +1008,14 @@ The following are in the Record class:
                       type="xs:integer" minOccurs="0"/>
           <xs:element ref="iodef:Application"
                       minOccurs="0"/>
-<!-- CHANGE - email from address indicator, may be better as a sub class? 
-               Would only make sense with the service set to email ports 
+<!-- CHANGE - email from address indicator, may be better as a sub class?
+               CHANGED to a sub-class
+               Would only make sense with the service set to email ports
                or none at all here or a new class. -->
-          <xs:element ref="Email" minOccurs="0"/>
-          <xs:element name="EmailSubject"
-                      type="iodef:MLStringType" minOccurs="0"/>
-          <xs:element name="X-Mailer"
-                      type="iodef:MLStringType" minOccurs="0"/>
+          <xs:element name="EmailInfo" type="EmailDetails" minOccurs="0"/>
+          <!-- CHANGE - added DomainData class and subclasses from RFC5901 -->
+          <xs:element ref="iodef:DomainData" minOccurs="0"
+            maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="ip_protocol"
         type="xs:integer" use="required"/>
@@ -863,11 +1025,19 @@ The following are in the Record class:
         <xs:attribute name="indicator-uid"
         type="xs:string" use="optional"/>
         <!-- CHANGE: Including an indicator set ID that may be used
-          to detail changes int he history class as it relates to 
+          to detail changes int he history class as it relates to
           indicators or sets.
         -->
         <xs:attribute name="indicator-set-id"
           type="xs:string" use="optional"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 90]
+
+Internet-Draft                    IODEF                         May 2013
+
+
       </xs:complexType>
     </xs:element>
     <xs:simpleType name="PortlistType">
@@ -913,8 +1083,185 @@ The following are in the Record class:
         </xs:simpleContent>
       </xs:complexType>
     </xs:element>
+    <!--
+      ====================================================================
+      ===  EMailDetails class                                          ===
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 91]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+      ====================================================================
+    -->
+    <!-- CHANGE: added the email details in a subclass for use when you
+      do not need all of the email details provided in the RFC5901 or ARF
+      extensions.  No extension mechanism here, is it needed?
+      Possible to create an IANA table to extend this class if needed
+      in the future outside of schema edit cycles -->
+   <xs:complexType name="EmailDetails">
+     <xs:sequence>
+    <!-- Email is the From email -->
+    <xs:element ref="Email" minOccurs="0"/>
+    <xs:element name="EmailSubject"
+      type="iodef:MLStringType" minOccurs="0"/>
+    <xs:element name="X-Mailer"
+    type="iodef:MLStringType" minOccurs="0"/>
+     </xs:sequence>
+     <xs:attribute name="indicator-uid"
+       type="xs:string" use="optional"/>
+   </xs:complexType>
+
   <!--
    ====================================================================
+   ===  DomainData class - from RFC5901                             ===
+   ====================================================================
+  -->
+  <xs:element name="DomainData">
+    <xs:complexType id="DomainData.type">
+      <xs:sequence>
+        <xs:element maxOccurs="1"
+                  name="Name" type="iodef:MLStringType"/>
+        <xs:element maxOccurs="1" minOccurs="0"
+                  name="DateDomainWasChecked" type="xs:dateTime"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="RegistrationDate"
+                  type="xs:dateTime"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="ExpirationDate"
+                  type="xs:dateTime"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="RelatedDNS"
+                  type="iodef:RelatedDNSEntryType"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0"
+                 name="Nameservers">
+          <xs:complexType id="Nameservers.type">
+            <xs:sequence>
+              <xs:element name="Server" type="iodef:MLStringType"/>
+              <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:choice id="DomainContacts" maxOccurs="1" minOccurs="0">
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 92]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+          <xs:element name="SameDomainContact"
+                     type="iodef:MLStringType"/>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1"
+                        ref="iodef:Contact"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="SystemStatus">
+        <xs:simpleType id="SystemStatus.type">
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="spoofed"/>
+            <xs:enumeration value="fraudulent"/>
+            <xs:enumeration value="innocent-hacked"/>
+            <xs:enumeration value="innocent-hijacked"/>
+            <xs:enumeration value="unknown"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+
+      <xs:attribute name="DomainStatus">
+        <xs:simpleType id="DomainStatus.type">
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="reservedDelegation"/>
+            <xs:enumeration value="assignedAndActive"/>
+            <xs:enumeration value="assignedAndInactive"/>
+            <xs:enumeration value="assignedAndOnHold"/>
+            <xs:enumeration value="revoked"/>
+            <xs:enumeration value="transferPending"/>
+            <xs:enumeration value="registryLock"/>
+            <xs:enumeration value="registrarLock"/>
+            <xs:enumeration value="other"/>
+            <xs:enumeration value="unknown"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+
+    <xs:element name="RelatedDNS"
+    type="iodef:RelatedDNSEntryType"/>
+    <xs:complexType name="RelatedDNSEntryType">
+     <xs:simpleContent>
+      <xs:extension base="xs:string">
+      <xs:attribute name="RecordType" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 93]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+            <xs:enumeration value="A"/>
+            <xs:enumeration value="AAAA"/>
+            <xs:enumeration value="AFSDB"/>
+            <xs:enumeration value="APL"/>
+            <xs:enumeration value="AXFR"/>
+            <xs:enumeration value="CAA"/>
+            <xs:enumeration value="CERT"/>
+            <xs:enumeration value="CNAME"/>
+            <xs:enumeration value="DHCID"/>
+            <xs:enumeration value="DLV"/>
+            <xs:enumeration value="DNAME"/>
+            <xs:enumeration value="DNSKEY"/>
+            <xs:enumeration value="DS"/>
+            <xs:enumeration value="HIP"/>
+            <xs:enumeration value="IXFR"/>
+            <xs:enumeration value="IPSECKEY"/>
+            <xs:enumeration value="LOC"/>
+            <xs:enumeration value="MX"/>
+            <xs:enumeration value="NAPTR"/>
+            <xs:enumeration value="NS"/>
+            <xs:enumeration value="NSEC"/>
+            <xs:enumeration value="NSEC3"/>
+            <xs:enumeration value="NSEC3PARAM"/>
+            <xs:enumeration value="OPT"/>
+            <xs:enumeration value="PTR"/>
+            <xs:enumeration value="RRSIG"/>
+            <xs:enumeration value="RP"/>
+            <xs:enumeration value="SIG"/>
+            <xs:enumeration value="SOA"/>
+            <xs:enumeration value="SPF"/>
+            <xs:enumeration value="SRV"/>
+            <xs:enumeration value="SSHFP"/>
+            <xs:enumeration value="TA"/>
+            <xs:enumeration value="TKEY"/>
+            <xs:enumeration value="TLSA"/>
+            <xs:enumeration value="TSIG"/>
+            <xs:enumeration value="TXT"/>
+            <xs:enumeration value="ext-value"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="ext-category"
+      type="xs:string" use="optional"/>
+     </xs:extension>
+    </xs:simpleContent>
+   </xs:complexType>
+  <!--
+   ====================================================================
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 94]
+
+Internet-Draft                    IODEF                         May 2013
+
+
    ===  Record class                                                ===
    ====================================================================
   -->
@@ -938,16 +1285,15 @@ The following are in the Record class:
           <xs:element ref="iodef:Application"
                       minOccurs="0"/>
           <xs:element ref="iodef:RecordPattern"
-                      minOccurs="0" maxOccurs="unbounded"/>
-          <xs:element ref="iodef:RecordItem"
+          minOccurs="0" maxOccurs="unbounded"/>
+          <!-- Added a minOccurs of 0 since you can just have HashInformation now -->
+          <xs:element ref="iodef:RecordItem" minOccurs="0"
                       maxOccurs="unbounded"/>
 
-           <!-- CHANGE: File name and hash of file indicator information -->
-            <xs:element name="FileName"
-                        type="iodef:MLStringType" minOccurs="0"/>
-           <!-- Represent file hash information via digsig schema 
-                Reference class -->
-            <xs:element ref="ds:Reference" minOccurs="0"/>
+           <!-- CHANGE: Class to represent file and hash or digital signature
+                information -->
+          <xs:element name="HashInformation" type="HashSigDetails"
+            minOccurs="0" maxOccurs="unbounded"/>
            <!-- CHANGE: Windows Registry Key Modifications:
                 Here, we include the classes from iodef-phish, to
                 prevent the need to pull in the full schema.
@@ -964,6 +1310,14 @@ The following are in the Record class:
         <!-- CHANGE: Including a unique ID for an indicator.
         -->
         <xs:attribute name="indicator-uid"
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 95]
+
+Internet-Draft                    IODEF                         May 2013
+
+
           type="xs:string" use="optional"/>
         <!-- CHANGE: Including a unique ID for sets of indicators, may be
              used to connect indicators in different representations
@@ -1012,6 +1366,14 @@ The following are in the Record class:
     <xs:element name="RecordItem"
                 type="iodef:ExtensionType"/>
   <!--
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 96]
+
+Internet-Draft                    IODEF                         May 2013
+
+
    ====================================================================
    ===  Class to describe Windows Registry Keys                     ===
    ====================================================================
@@ -1026,7 +1388,7 @@ The following are in the Record class:
                        <xs:element name="KeyName" type="xs:string"/>
                        <xs:element name="Value" type="xs:string" minOccurs="0"/>
                      </xs:sequence>
-                   <xs:attribute name="registryaction"> 
+                   <xs:attribute name="registryaction">
                      <xs:simpleType>
                        <xs:restriction base="xs:NMTOKEN">
                          <xs:enumeration value="add_key"/>
@@ -1040,21 +1402,41 @@ The following are in the Record class:
                        </xs:simpleType>
                    </xs:attribute>
                    <xs:attribute name="ext-category"
-                     type="xs:string" use="optional"/>
+                   type="xs:string" use="optional"/>
+                     <!-- CHANGE: Including the ability to set the grouping as a watchlist. -->
+                     <xs:attribute name="type" use="optional">
+                       <xs:simpleType>
+                         <xs:restriction base="xs:NMTOKEN">
+                           <xs:enumeration value="watchlist"/>
+                           <xs:enumeration value="ext-value"/>
+                         </xs:restriction>
+                       </xs:simpleType>
+                     </xs:attribute>
+                     <xs:attribute name="ext-type"
+                       type="xs:string" use="optional"/>
 <!-- CHANGE: Including a unique ID for indicators, may be
      used to connect indicators in different representations
 -->
                    <xs:attribute name="indicator-uid"
                    type="xs:string" use="optional"/>
+<!-- CHANGE: Including an indicator set ID that may be used
+     to detail changes in the history class as it relates to
+     indicators or sets.
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 97]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+-->
+                     <xs:attribute name="indicator-set-id"
+                       type="xs:string" use="optional"/>
 
                    </xs:complexType>
                  </xs:element>
-                 <!-- CHANGE: Including an indicator set ID that may be used
-                   to detail changes int he history class as it relates to 
-                   indicators or sets.
-                 -->
-                 <xs:attribute name="indicator-set-id"
-                   type="xs:string" use="optional"/>
+
                </xs:sequence>
            </xs:complexType>
 <!-- CHANGE: Should this be broken out as another class
@@ -1062,8 +1444,78 @@ The following are in the Record class:
      for indicator_ID and action - add_value, removes_value, etc.
      as is demonstrated?
 -->
-                   
-        
+    <!--
+      ====================================================================
+      ===  Classes that describe hash types, file information          ===
+      ===  with certificate properties and digital signature info      ===
+      ===  provided through the W3C digital signature schema           ===
+      ===  so it does not need to be maintained here.                  ===
+      ====================================================================
+    -->
+    <xs:complexType name="HashSigDetails">
+      <xs:sequence>
+    <xs:element name="FileName"
+    type="iodef:MLStringType" minOccurs="0" maxOccurs="unbounded"/>
+        <!-- QUESTION: For FileSize, need to specify the unit this is provided in
+             assume kb? -->
+        <xs:element name="FileSize"
+          type="xs:integer" minOccurs="0" maxOccurs="unbounded"/>
+    <!-- CHANGE: Represent file hash information via digsig schema
+      and the Reference class.  You may need any of the other classes
+      and in particular the KeyInfo (see RFC3275 sect 4.4.4 and 4.4.5),
+      which has been added.  KeyName, KeyValue, SignatureProperties
+      classes may be useful, so Signature was added, but you can use
+      KeyInfo and Reference directly to avoid some bloat.  -->
+        <xs:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="ds:KeyInfo" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="ds:Reference" minOccurs="0" maxOccurs="unbounded"/>
+        <!-- QUESTION: Do we want an AdditionalData here? -->
+      </xs:sequence>
+      <xs:attribute name="type" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <!-- W3C digsig should be used to denote PGP or PKI -->
+            <xs:enumeration value="PKI_email_ds"/>
+            <xs:enumeration value="PKI_file_ds"/>
+            <xs:enumeration value="PKI_email_ds_watchlist"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 98]
+
+Internet-Draft                    IODEF                         May 2013
+
+
+            <xs:enumeration value="PKI_file_ds_watchlist"/>
+            <xs:enumeration value="PGP_email_ds"/>
+            <xs:enumeration value="PGP_file_ds"/>
+            <xs:enumeration value="PGP_email_ds_watchlist"/>
+            <xs:enumeration value="PGP_file_ds_watchlist"/>
+            <!-- hash of the file or email and not a digital signature hash -->
+            <xs:enumeration value="file_hash"/>
+            <xs:enumeration value="email_hash"/>
+            <xs:enumeration value="file_hash_watchlist"/>
+            <xs:enumeration value="email_hash_watchlist"/>
+            <!-- QUESTION: Are values needed to differentiate the key information
+              shared when the ds:KeyInfo class is referenced? -->
+            <xs:enumeration value="ext-value"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="ext-category"
+      type="xs:string" use="optional"/>
+      <!-- Adding a boolean yes/no, 0/1option to indicate if the
+        signature or hash is valid -->
+      <xs:attribute name="valid" type="xs:boolean" use="optional"></xs:attribute>
+      <!-- Indicator-uid and indicator-set-id to connect to the related
+           file or email indicators outside of this class -->
+        <xs:attribute name="indicator-uid"
+          type="xs:string" use="optional"/>
+        <xs:attribute name="indicator-set-id"
+        type="xs:string" use="optional"/>
+      <xs:attribute name="restriction"
+        type="iodef:restriction-type"/>
+    </xs:complexType>
   <!--
    ====================================================================
    ===  Classes that describe software                       ===
@@ -1082,9 +1534,17 @@ The following are in the Record class:
                     type="xs:string"/>
       <xs:attribute name="family"
                     type="xs:string"/>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013               [Page 99]
+
+Internet-Draft                    IODEF                         May 2013
+
+
       <xs:attribute name="name"
                     type="xs:string"/>
-     <!-- CHANGE: Should UserAgent or HTTPUserAgent fit in 
+     <!-- CHANGE: Should UserAgent or HTTPUserAgent fit in
           SoftwareTypes? This is typically intended to mean
           servers, but the category seems more appropriate
           than others.
@@ -1130,6 +1590,14 @@ The following are in the Record class:
     </xs:complexType>
     <xs:complexType name="ExtensionType" mixed="true">
       <xs:sequence>
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013              [Page 100]
+
+Internet-Draft                    IODEF                         May 2013
+
+
         <xs:any namespace="##any" processContents="lax"
                 minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
@@ -1178,6 +1646,14 @@ The following are in the Record class:
       </xs:restriction>
     </xs:simpleType>
 
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013              [Page 101]
+
+Internet-Draft                    IODEF                         May 2013
+
+
     <xs:simpleType name="action-type">
       <xs:restriction base="xs:NMTOKEN">
         <xs:enumeration value="nothing"/>
@@ -1223,9 +1699,17 @@ The following are in the Record class:
         <xs:enumeration value="ext-value"/>
       </xs:restriction>
     </xs:simpleType>
-    
+
       <xs:simpleType name="att-type">
         <xs:restriction base="xs:NMTOKEN">
+
+
+
+Danyliw & Stoecker      Expires November 6, 2013              [Page 102]
+
+Internet-Draft                    IODEF                         May 2013
+
+
           <!-- CHANGE - added two values per July IETF discussion
             adding command and control server and sink hole
             bringing forward the 'FraudType' from RFC5901
@@ -1243,4 +1727,4 @@ The following are in the Record class:
           <xs:enumeration value="ext-value"/>
         </xs:restriction>
       </xs:simpleType>
-  </xs:schema>		
+  </xs:schema>
