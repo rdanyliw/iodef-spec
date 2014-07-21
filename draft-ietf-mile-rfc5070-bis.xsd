@@ -14,12 +14,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
     </xs:documentation>
   </xs:annotation>
 
-<!-- CHANGE: See above addition of xmlns:ds and import of same 
-       namespace.  This is to use the digital signature hash 
-       inclusion of a file by referencing the existing standard as 
-       was done in RFC5901, RFC3275 is the reference, see RFC5901 
-       section 5.9.5.2
--->
   <!--
    ==================================================================
    ==  List of changes                                             ==
@@ -81,18 +75,18 @@ The following are in the Record class:
           <xs:choice>
             <xs:element ref="iodef:IncidentID"/>
             <!-- CHANGE - the incidentID can still be used, 
-              but when you have a set of indictaors or include
+              but when you have a set of indicators or include
               a watch list, a ReportID may be preferred.  If 
               this is agreed upon, do we make them both unique
               so the same key can be used in databases?  This 
               should not be used as your index value unless you
-              are the issueing entity. -->
+              are the issuing entity. -->
             <xs:element name="ReportID" type="IncidentIDType"/>
           </xs:choice>
           <xs:element ref="iodef:AlternativeID"
                       minOccurs="0"/>
           <xs:element ref="iodef:RelatedActivity"
-                      minOccurs="0"/>
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:DetectTime"
                       minOccurs="0"/>
           <xs:element ref="iodef:StartTime"
@@ -121,6 +115,7 @@ The following are in the Record class:
               <xs:enumeration value="traceback"/>
               <xs:enumeration value="mitigation"/>
               <xs:enumeration value="reporting"/>
+              <xs:enumeration value="watch" />
               <xs:enumeration value="other"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
@@ -195,16 +190,82 @@ The following are in the Record class:
   -->
     <xs:element name="RelatedActivity">
       <xs:complexType>
-        <xs:choice>
-          <xs:element ref="iodef:IncidentID"
-                      maxOccurs="unbounded"/>
-          <xs:element ref="iodef:URL"
-                      maxOccurs="unbounded"/>
-        </xs:choice>
+        <xs:sequence>
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="iodef:IncidentID" 
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:URL"
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:ThreatActor"
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:Campaign"
+                        maxOccurs="unbounded"/>               
+          </xs:choice>
+          <xs:element ref="iodef:Confidence"
+                      minOccurs="0"/>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
       </xs:complexType>
     </xs:element>
+
+  <!--
+   ==================================================================
+   ==  ThreatActor class                                           ==
+   ==================================================================
+  -->
+    <xs:element name="ThreatActor">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element ref="iodef:ThreatActorID" />
+              <xs:element ref="iodef:Description"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:element ref="iodef:Description"
+                        minOccurs="1" maxOccurs="unbounded"/>
+          </xs:choice>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="ThreatActorID" type="xs:string"/>
+
+  <!--
+   ==================================================================
+   ==  Campaign class                                              ==
+   ==================================================================
+  -->
+    <xs:element name="Campaign">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element ref="iodef:CampaignID"/>
+              <xs:element ref="iodef:Description"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:element ref="iodef:Description"
+                        minOccurs="1" maxOccurs="unbounded"/>
+          </xs:choice>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="CampaignID" type="xs:string"/>
+
+
   <!--
    ==================================================================
    ==  AdditionalData class                                        ==
@@ -220,6 +281,8 @@ The following are in the Record class:
       <xs:complexType>
         <xs:sequence>
           <xs:element ref="iodef:ContactName"
+                      minOccurs="0"/>
+          <xs:element ref="iodef:ContactTitle"
                       minOccurs="0"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -269,10 +332,9 @@ The following are in the Record class:
                       type="iodef:restriction-type"/>
       </xs:complexType>
     </xs:element>
-<!-- CHANGE - UML states the type disambiguates the type of 
-     Name person or organization.  Do we want this added to the 
-     schema? -->
     <xs:element name="ContactName"
+                type="iodef:MLStringType"/>
+    <xs:element name="ContactTitle"
                 type="iodef:MLStringType"/>
     <xs:element name="RegistryHandle">
       <xs:complexType>
@@ -699,6 +761,8 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Counter"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="AssetID" type="xs:string"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:AdditionalData"
@@ -729,7 +793,7 @@ The following are in the Record class:
         <!-- CHANGE - adding an attribute to mark sets of 
              indicators -->
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
         <xs:attribute name="spoofed"
                       default="unknown">
           <xs:simpleType>
@@ -740,6 +804,23 @@ The following are in the Record class:
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
+        <xs:attribute name="virtual" type="yes-no-type"
+                      use="optional" default="no"/>
+        <xs:attribute name="ownership">
+          <xs:simpleType>
+            <xs:restriction base="xs:NMTOKEN">
+              <xs:enumeration value="organization"/>
+              <xs:enumeration value="personal"/>
+              <xs:enumeration value="partner"/>
+              <xs:enumeration value="customer"/>
+              <xs:enumeration value="no-relationship"/>
+              <xs:enumeration value="unknown"/>
+              <xs:enumeration value="ext-value"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ext-ownership" 
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -1016,7 +1097,7 @@ The following are in the Record class:
                     type="iodef:RelatedDNSEntryType" 
                     maxOccurs="unbounded" minOccurs="0" />
         <xs:element name="Nameservers"
-                    maxOccurs="unbounded" minOccurs="0" />
+                    maxOccurs="unbounded" minOccurs="0">
           <xs:complexType id="Nameservers.type">
             <xs:sequence>
               <xs:element name="Server" type="iodef:MLStringType"/>
@@ -1249,22 +1330,18 @@ The following are in the Record class:
                 </xs:restriction>
               </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name="ext-category"
+            <xs:attribute name="ext-category" 
                           type="xs:string" use="optional"/>
-<!-- CHANGE: Including a unique ID for indicators, may be
-     used to connect indicators in different representations
--->
-             <xs:attribute name="indicator-uid"
-                   type="xs:string" use="optional"/>
            </xs:complexType>
          </xs:element>
-         <!-- CHANGE: Including an indicator set ID that may be used
-              to detail changes int he history class as it relates to 
-              indicators or sets.
-           -->
+       </xs:sequence>
+         <!-- CHANGE: Including a unique ID for indicators, may be
+              used to connect indicators in different representations
+         -->
+         <xs:attribute name="indicator-uid"
+                   type="xs:string" use="optional"/>
          <xs:attribute name="indicator-set-id"
                        type="xs:string" use="optional"/>
-       </xs:sequence>
      </xs:complexType>
 <!-- CHANGE: Should this be broken out as another class
      for WindowsRegistryKeyModified and add attributes
@@ -1422,6 +1499,13 @@ The following are in the Record class:
    == Global attribute type declarations                           ==
    ==================================================================
   -->
+    <xs:simpleType name="yes-no-type">
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="yes"/>
+        <xs:enumeration value="no"/>
+      </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="restriction-type">
       <xs:restriction base="xs:NMTOKEN">
         <xs:enumeration value="default"/>
@@ -1518,4 +1602,4 @@ The following are in the Record class:
           <xs:enumeration value="ext-value"/>
         </xs:restriction>
       </xs:simpleType>
-  </xs:schema>		
+  </xs:schema>

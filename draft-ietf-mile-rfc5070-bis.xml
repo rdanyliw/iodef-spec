@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-01" 
+     docName="draft-ietf-mile-rfc5070-bis-02" 
      obsoletes="5070" 
      category="std">
 	
@@ -44,7 +44,7 @@ The Incident Object Description Exchange Format v2</title>
     </author>
        
     
-<date month="August" year="2013"/>
+<date month="October" year="2013"/>
 <area>Security</area>
 <workgroup>MILE Working Group</workgroup>
 <keyword>STD</keyword>
@@ -118,11 +118,13 @@ This document contains changes with respect to its predecessor RFC5070.
 <t>All of the RFC5070 Errata was implemented.</t>	
 <t>Imported the xmlns:ds namespace to include digital signature hash classes.</t>
 <t>The attributes @indicator-uid and @indicator-set-id were added to various classes to reference commonly shared indicators.</t>						
-<t>The following classes were added to the Service class:  Email, EmailSubject, X-Mailer, and DomainData.</t>
+<t>The following classes and attributes were added to the Service class:  Email, EmailSubject, X-Mailer, DomainData, AssetID, @virtual, and @ownership.</t>
 <t>The following classes were added to the Record class:  FileName, ds:Reference, and WindowsRegistryKeysModified.</t>
+<t>The following classes were added to the RelatedActivity class: ThreatActor, Campaign, Confidence, Description, and AdditionalData.</t>
+<t>The following classes were added to the Contact class: ContactTitle.</t>
 <t>(for consideration) The following class was added to the Node class: URL.</t>
 <t>(for consideration) The following attributes was added to the SoftwareType complexType: user-agent.</t>
-<t>Additional enumerated values were added to the following attributes: @restriction, {Expectation, HistoryItem}@action, and NodeRole@category.</t>
+<t>Additional enumerated values were added to the following attributes: @restriction, {Expectation, HistoryItem}@action, NodeRole@category, Incident@purpose.</t>
 </list></t>	
 </section>  <!-- Changes -->
 			
@@ -352,7 +354,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 +--------------------+
 | ENUM purpose       |<>----------[ IncidentID      ]
 | STRING ext-purpose |<>--{0..1}--[ AlternativeID   ]
-| ENUM lang          |<>--{0..1}--[ RelatedActivity ]
+| ENUM lang          |<>--{0..*}--[ RelatedActivity ]
 | ENUM restriction   |<>--{0..1}--[ DetectTime      ]
 |                    |<>--{0..1}--[ StartTime       ]
 |                    |<>--{0..1}--[ EndTime         ]
@@ -376,7 +378,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 
 <t hangText="AlternativeID"><vspace/>Zero or one.  The incident tracking numbers used by other CSIRTs to refer to the incident described in the document.</t>
 
-<t hangText="RelatedActivity"><vspace/>Zero or one.  The incident tracking numbers of related incidents.</t>
+<t hangText="RelatedActivity"><vspace/>Zero or many.  Related activity and attribution of this activity.</t>
 
 <t hangText="DetectTime"><vspace/>Zero or one.  The time the incident was first detected.</t>
 
@@ -416,6 +418,8 @@ This attribute is defined as an enumerated list:
 <t>mitigation.  The document was sent to request aid in mitigating the described activity.</t>
 
 <t>reporting.  The document was sent to comply with reporting requirements.</t> 
+
+<t>watch.  The document was sent to convey indicators to watch for particular activity.</t>
 
 <t>other.  The document was sent for purposes specified in the Expectation class.</t>
 
@@ -516,11 +520,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 	</section> <!-- AlternativeID class -->
 
 <section title="RelatedActivity Class" anchor="RelatedActivity">
-<t>The RelatedActivity class lists either incident tracking numbers of incidents or URLs (not both) that refer to activity related to the one described in the IODEF document.  These references may be to local incident tracking numbers or to those of other CSIRTs.
-</t> 
-<t>
-The specifics of how a CSIRT comes to believe that two incidents are related are considered out of scope.
-</t>
+<t>The RelatedActivity class relates the information described in the rest of the IODEF document to previously observed incidents or activity; and allows attribution to a specific actor or campaign.</t>
 
 <t>
 <figure title="RelatedActivity Class" anchor="figure_RelatedActivity_class">
@@ -528,8 +528,13 @@ The specifics of how a CSIRT comes to believe that two incidents are related are
       +------------------+
       | RelatedActivity  |
       +------------------+
-      | ENUM restriction |<>--{1..*}--[ IncidentID ]
-      |                  |<>--{1..*}--[ URL        ]
+      | ENUM restriction |<>--{0..*}--[ IncidentID     ]
+      |                  |<>--{0..*}--[ URL            ]
+      |                  |<>--{0..*}--[ ThreatActor    ]
+      |                  |<>--{0..*}--[ Campaign       ]
+      |                  |<>--{0..1}--[ Confidence     ]
+      |                  |<>--{0..*}--[ Description    ]
+      |                  |<>--{0..*}--[ AdditionalData ]
       +------------------+
       ]]></artwork></figure>
 	</t>
@@ -540,7 +545,20 @@ The specifics of how a CSIRT comes to believe that two incidents are related are
 <t hangText="IncidentID"><vspace/>One or more.  The incident tracking number of a related incident.</t> 
 
 <t hangText="URL"><vspace/>One or more.  URL.  A URL to activity related to this incident.</t> 
+
+<t hangText="ThreatActor"><vspace/>One or more.  The threat actor to whom the described activity is attributed.</t> 
+
+<t hangText="Campaign"><vspace/>One or more.  The campaign of a given threat actor to whom the described activity is attributed.</t> 
+
+<t hangText="Confidence"><vspace/>Zero or one.  An estimate of the confidence in attributing this RelatedActivity to the event described in the document.</t> 
+
+<t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A description of how these relationships were derived.</t> 
+
+<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+
 </list></t>
+
+<t>RelatedActivity MUST at least have one instance of IncidentID, URL, ThreatActor, or Campaign.</t>
 
 <t>The RelatedActivity class has one attribute:
 <list style="hanging">
@@ -548,6 +566,81 @@ The specifics of how a CSIRT comes to believe that two incidents are related are
 </list></t>
 
    </section> <!-- RelatedActivity class -->
+
+<section title="ThreatActor Class" anchor="ThreatActor">
+<t>The ThreatActor class describes a given actor.
+</t> 
+
+<t>
+<figure title="ThreatActor Class" anchor="figure_ThreatActor_class">
+<artwork><![CDATA[
+      +------------------+
+      | Actor            |
+      +------------------+
+      | ENUM restriction |<>--{0..1}--[ ThreatActorID  ]
+      |                  |<>--{0..*}--[ Description    ]
+      |                  |<>--{0..*}--[ AdditionalData ]
+      +------------------+
+      ]]></artwork></figure>
+	</t>
+
+<t>The aggregate classes that constitutes ThreatActor are:
+<list style="hanging">
+
+<t hangText="ThreatActorID"><vspace/>One or more.  STRING. An identifier for the ThreatActor.</t> 
+
+<t hangText="Description"><vspace/>One or more.  ML_STRING.  A description of the ThreatActor.</t> 
+
+<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+
+</list></t>
+
+<t>ThreatActor MUST have at least one instance of a ThreatActorID or Description.</t>
+
+<t>The ThreatActor class has one attribute:
+<list style="hanging">
+<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+</list></t>
+
+</section> <!-- ThreatActor class -->
+
+<section title="Campaign Class" anchor="Campaign">
+<t>The Campaign class describes a ...
+</t> 
+
+<t>
+<figure title="Campaign Class" anchor="figure_Campaign_class">
+<artwork><![CDATA[
+      +------------------+
+      | Campaign         |
+      +------------------+
+      | ENUM restriction |<>--{0..1}--[ CampaignID     ]
+      |                  |<>--{0..*}--[ Description    ]
+      |                  |<>--{0..*}--[ AdditionalData ]
+      +------------------+
+      ]]></artwork></figure>
+	</t>
+
+<t>The aggregate classes that constitutes Campaign are:
+<list style="hanging">
+
+<t hangText="CampaignID"><vspace/>One or more.  STRING. An identifier for the Campaign.</t> 
+
+<t hangText="Description"><vspace/>One or more.  ML_STRING.  A description of the Campaign.</t> 
+
+<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+
+</list></t>
+
+<t>Campaign MUST have at least one instance of a Campaign or Description.</t>
+
+<t>The Campaign class has one attribute:
+<list style="hanging">
+<t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute has been defined in <xref target="Incident" />.</t>
+</list></t>
+
+</section> <!-- Campaign class -->
+
 	
 <section title="AdditionalData Class" anchor="AdditionalData">
 <t> The AdditionalData class serves as an extension mechanism for information not otherwise represented in the data model.  For relatively simple information, atomic data types (e.g., integers, strings) are provided with a mechanism to annotate their meaning.  The class can also be used to extend the data model (and the associated Schema) to support proprietary extensions by encapsulating entire XML documents conforming to another Schema (e.g., IDMEF).  A detailed discussion for extending the data model and the schema can be found in <xref target="extending" />.
@@ -647,10 +740,11 @@ Contact class logically inherits contact information from its ancestors.
 | Contact          |
 +------------------+
 | ENUM role        |<>--{0..1}--[ ContactName    ]
-| STRING ext-role  |<>--{0..*}--[ Description    ]
-| ENUM type        |<>--{0..*}--[ RegistryHandle ]
-| STRING ext-type  |<>--{0..1}--[ PostalAddress  ]
-| ENUM restriction |<>--{0..*}--[ Email          ]
+| STRING ext-role  |<>--{0..1}--[ ContactTitle   ]
+| ENUM type        |<>--{0..*}--[ Description    ]
+| STRING ext-type  |<>--{0..*}--[ RegistryHandle ]
+| ENUM restriction |<>--{0..1}--[ PostalAddress  ]
+|                  |<>--{0..*}--[ Email          ]
 |                  |<>--{0..*}--[ Telephone      ]
 |                  |<>--{0..1}--[ Fax            ]
 |                  |<>--{0..1}--[ Timezone       ]
@@ -665,6 +759,8 @@ Contact class logically inherits contact information from its ancestors.
 <list style="hanging">
 
 <t hangText="ContactName"><vspace/>Zero or one.  ML_STRING.  The name of the contact.  The contact may either be an organization or a person.  The type attribute disambiguates the semantics.</t>
+
+<t hangText="ContactTitle"><vspace/>Zero or one.  ML_STRING.  The title for the individual named in the ContactName.</t>
 
 <t hangText="Description"><vspace/>Zero or many.  ML_STRING.  A free-form description of this contact.  In the case of a person, this is often the organizational title of the individual.</t>
 
@@ -720,7 +816,7 @@ Contact class logically inherits contact information from its ancestors.
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.</t>
 
-	</list></t>
+</list></t>
 
 <section title="RegistryHandle Class" anchor="registryhandle">
 <t>The RegistryHandle class represents a handle into an Internet registry or community-specific database.  The handle is specified in the element content and the type attribute specifies the database.
@@ -943,7 +1039,7 @@ description of the methodology used by the intruder.
 <t> The Reference class has 4 attributes.
 <list style="hanging">								
 <t hangText="indicator-uid"><vspace/>Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group releated indicators.</t>
+<t hangText="indicator-set-id"><vspace/>Optional.  STRING.  The indicator set ID is used to group related indicators.</t>
 <t hangText="attacktype"><vspace/>Optional.  ENUM.  A unique identifier for an Indicator.</t>
 <t hangText="ext-attacktype"><vspace/>Optional.  STRING.  A mechanism by which to extend the Attack Type.</t>
 </list>
@@ -1054,7 +1150,6 @@ description of the methodology used by the intruder.
 
 <t hangText="severity"><vspace />Optional.  ENUM.  An estimate of the relative severity of the activity.  The permitted values are shown below.  There is no default value.
 <list style="numbers">
-<?rfc needLines="5" ?>
 <t>low.  Low severity</t>
 <t>medium. Medium severity</t>
 <t>high. High severity</t>
@@ -1540,8 +1635,10 @@ The System class describes a system or network involved in an event.  The system
 | ENUM category       |<>--{0..*}--[ Service         ]
 | STRING ext-category |<>--{0..*}--[ OperatingSystem ]
 | STRING interface    |<>--{0..*}--[ Counter         ]
-| ENUM spoofed        |<>--{0..*}--[ Description     ]
-|                     |<>--{0..*}--[ AdditionalData  ]
+| ENUM spoofed        |<>--{0..*}--[ AssetID         ]
+| ENUM virtual        |<>--{0..*}--[ Description     ]
+| ENUM ownership      |<>--{0..*}--[ AdditionalData  ]
+| ENUM ext-ownership  |
 +---------------------+
 ]]></artwork>
 </figure></t>
@@ -1557,13 +1654,15 @@ The System class describes a system or network involved in an event.  The system
 
 <t hangText="Counter"><vspace/>Zero or more.  A counter with which to summarize properties of this host or network.</t>
 
+<t hangText="AssetID"><vspace/>Zero or more.  An asset identifier for the System.</t>
+
 <t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form text description of the System.</t>
 
-<t hangText="AdditionalData"><vspace/>Zero or many.  A mechanism by which to extend the data model.</t> 
+<t hangText="AdditionalData"><vspace/>Zero or more.  A mechanism by which to extend the data model.</t> 
 </list>
 </t>
 
-<t>The System class has six attributes:
+<t>The System class has eight attributes:
 <list style="hanging">
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  This attribute is defined in <xref target="Incident" />.</t>
@@ -1598,12 +1697,37 @@ The System class describes a system or network involved in an event.  The system
 <t>no.  The category attribute value is believed to be correct.</t>
 </list>
 </t>
+
+<t hangText="virtual"><vspace/>Optional.  ENUM.  Indicates whether this System is a virtual or physical device.  The default value is "no".  The possible values are:
+
+<list style="numbers">
+<t>yes.  The System is a virtual device.</t>
+
+<t>no.  The System is a physical device.</t>
+</list>
+</t>
+
+<t hangText="ownership"><vspace/>Optional.  ENUM.  Describes the ownership of this System relative to the sender of the IODEF document.  The possible values are:
+
+<list style="numbers">
+<t>organization.  The System is owned by the organization.</t>
+<t>personal.  The System is owned by employee or affiliate of the organization.</t>
+<t>partner.  The System is owned by a partner of the organization.</t>
+<t>customer.  The System is owned by a customer of the organization.</t>
+<t>no-relationship.  The System is owned by an entity that has no known relationship with the organization.</t>
+<t>unknown.  The ownership of the System is unknown.</t>
+<t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
+</list>
+</t>
+
+<t hangText="ext-ownership"><vspace/>Optional. STRING.  A means by which to extend the ownership attribute.  See <xref target="extending_enums" />.</t>
+
 </list></t>
 
 </section> <!-- System -->
 
 <section title="Node Class" anchor="Node">
-<t>The Node class names a system (e.g., PC, router) or network.</t>
+<t>The Node class names an asset or network.</t>
 
 <t>This class was derived from the IDMEF <xref target="refs.IDMEF"/>.</t>
 
@@ -1806,7 +1930,7 @@ The System class describes a system or network involved in an event.  The system
 <t>camera.  Camera server</t>
 <t>proxy.  Proxy server</t>
 <t>remote-access.  Remote access server</t>
-<t>log.  Logserver (e.g., syslog)</t>
+<t>log.  Log server (e.g., syslog)</t>
 <t>virtualization.  Server running virtual machines</t>
 <t>pos.  Point-of-sale device</t>
 <t>scada. Supervisory control and data acquisition system</t>
@@ -2137,7 +2261,7 @@ This class was derived from the IDMEF <xref target="refs.IDMEF" />.
 <t>ext-value.  Registry key information from an external source.</t>
 </list></t>
 <t hangText="indicator-uid"><vspace />Optional.  STRING.  A unique identifier for an Indicator.</t>
-<t hangText="indicator-set-id"><vspace />Optional. STRING. The indicator set ID is used to group relfated indicators.</t>
+<t hangText="indicator-set-id"><vspace />Optional. STRING. The indicator set ID is used to group related indicators.</t>
 </list>
 </t>
 </section> <!-- Key -->
@@ -2288,7 +2412,6 @@ extension attribute named "ext-foo".  An element may have many
 extensible, and therefore many extension, attributes. 
 </t>
 
-<?rfc needLines="10" ?>
 <t>
 In addition to a corresponding extension attribute, each extensible attribute has "ext-value" as one its possible values.  This particular value serves as an escape sequence and has no valid meaning.
 </t>
@@ -2327,7 +2450,7 @@ The following guidelines exist for extensions using XML:
 
 <t>The extension schema MUST declare a separate namespace.  It is RECOMMENDED that these extensions have the prefix "iodef-".  This recommendation makes readability of the document easier by allowing the reader to infer which namespaces relate to IODEF by inspection.</t>
 
-<t>It is RECOMMENDED that extension schemas follow the naming convention of the IODEF data model.  This makes reading an extended IODEF document look like any other IODEF document.  The names of all elements are capitalized.  For elements with composed names, a capital letter is used for each word.  Attribute names are lower case.  Attributes with composed names are seperated by a hyphen.</t>  
+<t>It is RECOMMENDED that extension schemas follow the naming convention of the IODEF data model.  This makes reading an extended IODEF document look like any other IODEF document.  The names of all elements are capitalized.  For elements with composed names, a capital letter is used for each word.  Attribute names are lower case.  Attributes with composed names are separated by a hyphen.</t>  
 
 <t>Parsers that encounter an unrecognized element in a namespace that they do support MUST reject the document as a syntax error.</t>
 
@@ -2743,7 +2866,6 @@ This section provides examples of an incident encoded in the IODEF.  These examp
 <section title="The IODEF Schema" anchor="schema">
 <t>
 <figure><artwork><![CDATA[
-
   <xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-2.0"
              xmlns="urn:ietf:params:xml:ns:iodef-2.0"
              xmlns:iodef="urn:ietf:params:xml:ns:iodef-2.0"
@@ -2760,12 +2882,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
     </xs:documentation>
   </xs:annotation>
 
-<!-- CHANGE: See above addition of xmlns:ds and import of same 
-       namespace.  This is to use the digital signature hash 
-       inclusion of a file by referencing the existing standard as 
-       was done in RFC5901, RFC3275 is the reference, see RFC5901 
-       section 5.9.5.2
--->
   <!--
    ==================================================================
    ==  List of changes                                             ==
@@ -2827,18 +2943,18 @@ The following are in the Record class:
           <xs:choice>
             <xs:element ref="iodef:IncidentID"/>
             <!-- CHANGE - the incidentID can still be used, 
-              but when you have a set of indictaors or include
+              but when you have a set of indicators or include
               a watch list, a ReportID may be preferred.  If 
               this is agreed upon, do we make them both unique
               so the same key can be used in databases?  This 
               should not be used as your index value unless you
-              are the issueing entity. -->
+              are the issuing entity. -->
             <xs:element name="ReportID" type="IncidentIDType"/>
           </xs:choice>
           <xs:element ref="iodef:AlternativeID"
                       minOccurs="0"/>
           <xs:element ref="iodef:RelatedActivity"
-                      minOccurs="0"/>
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:DetectTime"
                       minOccurs="0"/>
           <xs:element ref="iodef:StartTime"
@@ -2867,6 +2983,7 @@ The following are in the Record class:
               <xs:enumeration value="traceback"/>
               <xs:enumeration value="mitigation"/>
               <xs:enumeration value="reporting"/>
+              <xs:enumeration value="watch" />
               <xs:enumeration value="other"/>
               <xs:enumeration value="ext-value"/>
             </xs:restriction>
@@ -2941,16 +3058,82 @@ The following are in the Record class:
   -->
     <xs:element name="RelatedActivity">
       <xs:complexType>
-        <xs:choice>
-          <xs:element ref="iodef:IncidentID"
-                      maxOccurs="unbounded"/>
-          <xs:element ref="iodef:URL"
-                      maxOccurs="unbounded"/>
-        </xs:choice>
+        <xs:sequence>
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="iodef:IncidentID" 
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:URL"
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:ThreatActor"
+                        maxOccurs="unbounded"/>
+            <xs:element ref="iodef:Campaign"
+                        maxOccurs="unbounded"/>               
+          </xs:choice>
+          <xs:element ref="iodef:Confidence"
+                      minOccurs="0"/>
+          <xs:element ref="iodef:Description"
+                      minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
         <xs:attribute name="restriction"
                       type="iodef:restriction-type"/>
       </xs:complexType>
     </xs:element>
+
+  <!--
+   ==================================================================
+   ==  ThreatActor class                                           ==
+   ==================================================================
+  -->
+    <xs:element name="ThreatActor">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element ref="iodef:ThreatActorID" />
+              <xs:element ref="iodef:Description"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:element ref="iodef:Description"
+                        minOccurs="1" maxOccurs="unbounded"/>
+          </xs:choice>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="ThreatActorID" type="xs:string"/>
+
+  <!--
+   ==================================================================
+   ==  Campaign class                                              ==
+   ==================================================================
+  -->
+    <xs:element name="Campaign">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element ref="iodef:CampaignID"/>
+              <xs:element ref="iodef:Description"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:element ref="iodef:Description"
+                        minOccurs="1" maxOccurs="unbounded"/>
+          </xs:choice>
+          <xs:element ref="iodef:AdditionalData"
+                      minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="restriction"
+                      type="iodef:restriction-type"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="CampaignID" type="xs:string"/>
+
+
   <!--
    ==================================================================
    ==  AdditionalData class                                        ==
@@ -2966,6 +3149,8 @@ The following are in the Record class:
       <xs:complexType>
         <xs:sequence>
           <xs:element ref="iodef:ContactName"
+                      minOccurs="0"/>
+          <xs:element ref="iodef:ContactTitle"
                       minOccurs="0"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -3015,10 +3200,9 @@ The following are in the Record class:
                       type="iodef:restriction-type"/>
       </xs:complexType>
     </xs:element>
-<!-- CHANGE - UML states the type disambiguates the type of 
-     Name person or organization.  Do we want this added to the 
-     schema? -->
     <xs:element name="ContactName"
+                type="iodef:MLStringType"/>
+    <xs:element name="ContactTitle"
                 type="iodef:MLStringType"/>
     <xs:element name="RegistryHandle">
       <xs:complexType>
@@ -3445,6 +3629,8 @@ The following are in the Record class:
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Counter"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="AssetID" type="xs:string"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Description"
                       minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:AdditionalData"
@@ -3475,7 +3661,7 @@ The following are in the Record class:
         <!-- CHANGE - adding an attribute to mark sets of 
              indicators -->
         <xs:attribute name="indicator-set-id"
-          type="xs:string" use="optional"/>
+                      type="xs:string" use="optional"/>
         <xs:attribute name="spoofed"
                       default="unknown">
           <xs:simpleType>
@@ -3486,6 +3672,23 @@ The following are in the Record class:
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
+        <xs:attribute name="virtual" type="yes-no-type"
+                      use="optional" default="no"/>
+        <xs:attribute name="ownership">
+          <xs:simpleType>
+            <xs:restriction base="xs:NMTOKEN">
+              <xs:enumeration value="organization"/>
+              <xs:enumeration value="personal"/>
+              <xs:enumeration value="partner"/>
+              <xs:enumeration value="customer"/>
+              <xs:enumeration value="no-relationship"/>
+              <xs:enumeration value="unknown"/>
+              <xs:enumeration value="ext-value"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ext-ownership" 
+                      type="xs:string" use="optional"/>
       </xs:complexType>
     </xs:element>
   <!--
@@ -3762,7 +3965,7 @@ The following are in the Record class:
                     type="iodef:RelatedDNSEntryType" 
                     maxOccurs="unbounded" minOccurs="0" />
         <xs:element name="Nameservers"
-                    maxOccurs="unbounded" minOccurs="0" />
+                    maxOccurs="unbounded" minOccurs="0">
           <xs:complexType id="Nameservers.type">
             <xs:sequence>
               <xs:element name="Server" type="iodef:MLStringType"/>
@@ -3995,22 +4198,18 @@ The following are in the Record class:
                 </xs:restriction>
               </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name="ext-category"
+            <xs:attribute name="ext-category" 
                           type="xs:string" use="optional"/>
-<!-- CHANGE: Including a unique ID for indicators, may be
-     used to connect indicators in different representations
--->
-             <xs:attribute name="indicator-uid"
-                   type="xs:string" use="optional"/>
            </xs:complexType>
          </xs:element>
-         <!-- CHANGE: Including an indicator set ID that may be used
-              to detail changes int he history class as it relates to 
-              indicators or sets.
-           -->
+       </xs:sequence>
+         <!-- CHANGE: Including a unique ID for indicators, may be
+              used to connect indicators in different representations
+         -->
+         <xs:attribute name="indicator-uid"
+                   type="xs:string" use="optional"/>
          <xs:attribute name="indicator-set-id"
                        type="xs:string" use="optional"/>
-       </xs:sequence>
      </xs:complexType>
 <!-- CHANGE: Should this be broken out as another class
      for WindowsRegistryKeyModified and add attributes
@@ -4168,6 +4367,13 @@ The following are in the Record class:
    == Global attribute type declarations                           ==
    ==================================================================
   -->
+    <xs:simpleType name="yes-no-type">
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="yes"/>
+        <xs:enumeration value="no"/>
+      </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="restriction-type">
       <xs:restriction base="xs:NMTOKEN">
         <xs:enumeration value="default"/>
@@ -4265,7 +4471,6 @@ The following are in the Record class:
         </xs:restriction>
       </xs:simpleType>
   </xs:schema>		
-						
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
