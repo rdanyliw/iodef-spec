@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="pre5378Trust200902" 
-     docName="draft-ietf-mile-rfc5070-bis-07" 
+     docName="draft-ietf-mile-rfc5070-bis-08" 
      obsoletes="5070" 
      category="std">
 	
@@ -44,7 +44,7 @@ The Incident Object Description Exchange Format v2</title>
     </author>
        
     
-<date month="July" year="2014"/>
+<date month="August" year="2014"/>
 <area>Security</area>
 <workgroup>MILE Working Group</workgroup>
 <keyword>STD</keyword>
@@ -370,7 +370,7 @@ Every incident is represented by an instance of the Incident class.  This class 
 | STRING ext-purpose      |<>--{0..1}--[ AlternativeID   ]
 | ENUM lang               |<>--{0..*}--[ RelatedActivity ]
 | ENUM restriction        |<>--{0..1}--[ DetectTime      ]
-| STRING observable-uid   |<>--{0..1}--[ StartTime       ]
+| STRING observable-id    |<>--{0..1}--[ StartTime       ]
 |                         |<>--{0..1}--[ EndTime         ]
 |                         |<>----------[ ReportTime      ]
 |                         |<>--{0..*}--[ Description     ]
@@ -488,7 +488,7 @@ This attribute is defined as an enumerated value with a default value of "privat
 </section> <!-- @restriction -->
 
 <section title="observable-id Attribute" anchor="observableid_attribute">
-<t>Information included in an incident report may be an observable relevant to an indicator.  The observable-id attribute provides a unique identifier in the scope of the document for this observable.  This identifer can then used to reference the observable with an ObservableReference class to define an indicator in the IndicatorData class.</t>
+<t>Information included in an incident report may be an observable relevant to an indicator.  The observable-id attribute provides a unique identifier in the scope of the document for this observable.  This identifier can then used to reference the observable with an ObservableReference class to define an indicator in the IndicatorData class.</t>
 
 </section> <!-- observable-id attribute -->
 
@@ -2766,8 +2766,12 @@ This class was derived from <xref target="RFC4765" />.
 <t>PKI-file-ds.  PKI file digital signature.</t>
 <t>PGP-email-ds.  PGP email digital signature.</t>
 <t>PGP-file-ds.  PGP file digital signature.</t>
-<t>file-hash.  A file hash.</t>
-<t>email-hash.  An email hash.</t>
+<t>file-hash.  A hash computed over the entire contents of a file.</t>
+<t>email-hash.  A hash computed over the headers and body of an email message.</t>
+<t>email-headers-hash.  A hash computed over all of the headers of an email message.</t>
+<t>email-body-hash.  A hash computed over the body of an email message.</t>
+<t>email-headers-hash.  A hash computed over all of the email headers.</t>
+
 <t>ext-value.  An escape value used to extend this attribute.  See <xref target="extending_enums" />.</t>
 </list></t>
 <t hangText="ext-type"><vspace />Optional.  STRING.  A means by which to extend the type attribute.  See <xref target="extending_enums" />.</t>
@@ -2829,7 +2833,7 @@ This class was derived from <xref target="RFC4765" />.
 <t hangText="AlternativeIndicatorID"><vspace />Zero or one. An alternative identifier for this indicator.  See <xref target="AlternativeIndicatorID" /></t>
 <t hangText="Description"><vspace />Zero or more. ML_STRING.  A free-form textual description of the indicator.</t>
 <t hangText="StartTime"><vspace />Zero or one. DATETIME.  A timestamp of the start of the time period during which this indicator is valid.</t>
-<t hangText="EndTime"><vspace />Zero or one. DATETIME. A timestamp fo the end of the time period during which this indicaor is valid.</t>
+<t hangText="EndTime"><vspace />Zero or one. DATETIME. A timestamp of the end of the time period during which this indicator is valid.</t>
 <t hangText="Confidence"><vspace />Zero or one.  An estimate of the confidence in the quality of the indicator.  See <xref target="Confidence" />.</t>
 <t hangText="Contact"><vspace />Zero or more.  Contact information for this indicator. See <xref target="Contact" />.</t>
 <t hangText="Observable"><vspace />Zero or one.  An observable feature or phenomenon of this indicator.  See <xref target="Observable" />.</t>
@@ -2841,7 +2845,7 @@ This class was derived from <xref target="RFC4765" />.
 
 <t>The Indicator class MUST have exactly one instance of an Observable, IndicatorExpression, ObservableReference, or IndicatorReference class.</t>
 
-<t>The StartTime and EndTime classes can be used to define an interval during which the indicator is valid.  If both classes are present, the indicator is consider valid only during the decribed interval.  If neither class is provided, the indicator is considered valid during any time interval.  If only a StartTime is provided, the indicator is valid anytime after this timestamp.  If only an EndTime is provided, the indicator is valid anytime prior to this timestamp.</t>
+<t>The StartTime and EndTime classes can be used to define an interval during which the indicator is valid.  If both classes are present, the indicator is consider valid only during the described interval.  If neither class is provided, the indicator is considered valid during any time interval.  If only a StartTime is provided, the indicator is valid anytime after this timestamp.  If only an EndTime is provided, the indicator is valid anytime prior to this timestamp.</t>
 
 <t>The Indicator class has one attribute:
 <list style="hanging">
@@ -2850,7 +2854,7 @@ This class was derived from <xref target="RFC4765" />.
 </t>
 
 <section title="IndicatorID Class" anchor="IndicatorID">
-<t>The IndicatorID class identifies an indicator with a indentifier globally unique identifier.  The combination of the name and version attributes, and the element content form this identifier.  Indicators generated by given CSIRT MUST NOT resuse the same value unless they are referencing the same indicator.</t>
+<t>The IndicatorID class identifies an indicator with a globally unique identifier.  The combination of the name and version attributes, and the element content form this identifier.  Indicators generated by given CSIRT MUST NOT reuse the same value unless they are referencing the same indicator.</t>
 
 <t>
 <figure title="The IndicatorID Class" anchor="figure_indicatorid_class">
@@ -3133,7 +3137,7 @@ Version 2 of the IODEF data model makes a number of changes to <xref target="RFC
 
 <list style="symbols">
 <t>Renames the Service@ip_protocol attribute to @ip-protocol.</t>
-<t>Removes the Node/NodeName in favor of representing domain names with Node/DomainData/Name.  Node/DataTime was also removed so that Node/DomainData/DateDomainWasChecked can represent the time at which the name to address resolution occured.</t>
+<t>Removes the Node/NodeName in favor of representing domain names with Node/DomainData/Name.  Node/DataTime was also removed so that Node/DomainData/DateDomainWasChecked can represent the time at which the name to address resolution occurred.</t>
 </list>
 
 </t>
@@ -4974,6 +4978,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
             <xs:enumeration value="PGP-file-ds"/>
             <xs:enumeration value="file-hash"/>
             <xs:enumeration value="email-hash"/>
+            <xs:enumeration value="email-headers-hash"/>
+            <xs:enumeration value="email-body-hash"/>
             <!-- QUESTION: Are values needed to differentiate the 
                  key information shared when the ds:KeyInfo class 
                  is referenced? -->

@@ -5,10 +5,10 @@ MILE Working Group                                            R. Danyliw
 Internet-Draft                                                      CERT
 Obsoletes: 5070 (if approved)                             P. W. Stoecker
 Intended status: Standards Track                                     RSA
-Expires: December 31, 2014                                     July 2014
+Expires: January 31, 2015                                    August 2014
 
            The Incident Object Description Exchange Format v2
-                     draft-ietf-mile-rfc5070-bis-07
+                     draft-ietf-mile-rfc5070-bis-08
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 31, 2014.
+   This Internet-Draft will expire on January 31, 2015.
 
 Copyright Notice
 
@@ -54,9 +54,9 @@ Copyright Notice
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 1]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 1]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -113,9 +113,9 @@ Table of Contents
        3.3.2.  observable-id Attribute  . . . . . . . . . . . . . . . 15
      3.4.  IncidentID Class . . . . . . . . . . . . . . . . . . . . . 15
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 2]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 2]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
      3.5.  AlternativeID Class  . . . . . . . . . . . . . . . . . . . 16
      3.6.  RelatedActivity Class  . . . . . . . . . . . . . . . . . . 16
@@ -165,18 +165,18 @@ Internet-Draft                  IODEFv2                        July 2014
      3.23. OperatingSystem Class  . . . . . . . . . . . . . . . . . . 61
      3.24. EmailData Class  . . . . . . . . . . . . . . . . . . . . . 61
      3.25. Record Class . . . . . . . . . . . . . . . . . . . . . . . 62
-       3.25.1.  RecordData Class  . . . . . . . . . . . . . . . . . . 63
+       3.25.1.  RecordData Class  . . . . . . . . . . . . . . . . . . 62
        3.25.2.  RecordPattern Class . . . . . . . . . . . . . . . . . 64
        3.25.3.  RecordItem Class  . . . . . . . . . . . . . . . . . . 65
      3.26. WindowsRegistryKeysModified Class  . . . . . . . . . . . . 65
        3.26.1.  Key Class . . . . . . . . . . . . . . . . . . . . . . 66
-     3.27. HashData Class . . . . . . . . . . . . . . . . . . . . . . 67
+     3.27. HashData Class . . . . . . . . . . . . . . . . . . . . . . 66
      3.28. IndicatorData Class  . . . . . . . . . . . . . . . . . . . 68
      3.29. Indicator Class  . . . . . . . . . . . . . . . . . . . . . 68
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 3]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 3]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
        3.29.1.  IndicatorID Class . . . . . . . . . . . . . . . . . . 70
        3.29.2.  AlternativeIndicatorID Class  . . . . . . . . . . . . 71
@@ -235,9 +235,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 4]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 4]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The data model encodes information about hosts, networks, and the
@@ -294,9 +294,9 @@ Internet-Draft                  IODEFv2                        July 2014
       AdditionalData.
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 5]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 5]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    o  The following class was added to Incident: IndicatorData.
@@ -353,9 +353,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 6]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 6]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The normative IODEF data model is specified with the text in Section
@@ -412,9 +412,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 7]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 7]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 1.5.  About the IODEF Implementation
 
@@ -471,9 +471,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The ML_STRING data type is implemented as an "iodef:MLStringType" in
    the schema.
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 8]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 8]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
 2.5.  Bytes
@@ -530,9 +530,9 @@ Internet-Draft                  IODEFv2                        July 2014
 2.10.  Port Lists
 
 
-Danyliw & Stoecker     Expires December 31, 2014                [Page 9]
+Danyliw & Stoecker      Expires January 31, 2015                [Page 9]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    A list of network ports are represented by the PORTLIST data type.  A
@@ -589,9 +589,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 10]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 10]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    An identifier unique to the Document is represented by the ID data
@@ -648,9 +648,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 11]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 11]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  STRING.  A free-form string to convey processing
       instructions to the recipient of the document.  Its semantics must
@@ -669,7 +669,7 @@ Internet-Draft                  IODEFv2                        July 2014
    | STRING ext-purpose      |<>--{0..1}--[ AlternativeID   ]
    | ENUM lang               |<>--{0..*}--[ RelatedActivity ]
    | ENUM restriction        |<>--{0..1}--[ DetectTime      ]
-   | STRING observable-uid   |<>--{0..1}--[ StartTime       ]
+   | STRING observable-id    |<>--{0..1}--[ StartTime       ]
    |                         |<>--{0..1}--[ EndTime         ]
    |                         |<>----------[ ReportTime      ]
    |                         |<>--{0..*}--[ Description     ]
@@ -707,9 +707,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
    ReportTime 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 12]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 12]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       One.  The time the incident was reported.
 
@@ -766,9 +766,9 @@ Internet-Draft                  IODEFv2                        July 2014
       5.  other.  The document was sent for purposes specified in the
           Expectation class.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 13]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 13]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       6.  ext-value.  An escape value used to extend this attribute.
@@ -825,9 +825,9 @@ Internet-Draft                  IODEFv2                        July 2014
    1.  public.  The information can be freely distributed without
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 14]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 14]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
        restriction.
 
@@ -857,7 +857,7 @@ Internet-Draft                  IODEFv2                        July 2014
    Information included in an incident report may be an observable
    relevant to an indicator.  The observable-id attribute provides a
    unique identifier in the scope of the document for this observable.
-   This identifer can then used to reference the observable with an
+   This identifier can then used to reference the observable with an
    ObservableReference class to define an indicator in the IndicatorData
    class.
 
@@ -884,9 +884,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 15]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 15]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
    The IncidentID class has three attributes:
 
@@ -943,9 +943,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 16]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 16]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +------------------+
@@ -1002,9 +1002,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 17]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 17]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +------------------+
@@ -1061,9 +1061,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 18]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 18]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
    Description.
 
@@ -1120,9 +1120,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
       5.  date-time.  The element content is of type DATETIME.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 19]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 19]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       6.  ntpstamp.  Same as date-time.
@@ -1179,9 +1179,9 @@ Internet-Draft                  IODEFv2                        July 2014
       semantics of the element content.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 20]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 20]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    restriction 
@@ -1238,9 +1238,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
    Description 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 21]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 21]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Zero or more.  ML_STRING.  A free-form description of this
       contact.  In the case of a person, this is often the
@@ -1297,9 +1297,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
       5.  provider.  An external hosting provider for an asset.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 22]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 22]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       6.  zone.  An entity with authority over a DNS zone.
@@ -1356,9 +1356,9 @@ Internet-Draft                  IODEFv2                        July 2014
    restriction 
       Optional.  ENUM.  This attribute is defined in Section 3.2.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 23]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 23]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
 3.10.1.  RegistryHandle Class
@@ -1415,9 +1415,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 24]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 24]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +---------------------+
@@ -1474,9 +1474,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The Telephone class has one attribute:
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 25]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 25]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    meaning 
@@ -1533,9 +1533,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 26]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 26]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +-------------------+
@@ -1592,9 +1592,9 @@ Internet-Draft                  IODEFv2                        July 2014
       11.  internal-notification.  A party within the organization
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 27]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 27]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
            discovered the activity
 
@@ -1651,9 +1651,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
    restriction 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 28]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 28]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  ENUM.  This attribute is defined in  Section 3.2.
 
@@ -1710,9 +1710,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The aggregate classes that constitute Reference:
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 29]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 29]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    ReferenceName 
@@ -1769,9 +1769,9 @@ Internet-Draft                  IODEFv2                        July 2014
       time.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 30]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 30]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    MonetaryImpact 
@@ -1828,9 +1828,9 @@ Internet-Draft                  IODEFv2                        July 2014
    | STRING ext-type  |
    +------------------+
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 31]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 31]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The element content will be a free-form textual description of the
@@ -1887,9 +1887,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 32]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 32]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
           database was attempted.
 
@@ -1946,9 +1946,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 33]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 33]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  ENUM.  Characterizes the severity of the incident on
       business functions.  The permitted values are shown below.  They
@@ -2005,9 +2005,9 @@ Internet-Draft                  IODEFv2                        July 2014
       9.  legal.  Incident resulted in legal or regulatory action
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 34]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 34]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       10.  ext-value.  An escape value used to extend this attribute.
@@ -2064,9 +2064,9 @@ Internet-Draft                  IODEFv2                        July 2014
       2.  elapsed.  Elapsed time from the beginning of the recovery to
           its completion (i.e., wall-clock time).
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 35]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 35]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       3.  downtime.  Duration of time for which some provided service(s)
@@ -2123,9 +2123,9 @@ Internet-Draft                  IODEFv2                        July 2014
    | STRING currency  |
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 36]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 36]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
    +------------------+
 
@@ -2182,9 +2182,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 37]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 37]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       1.  low.  Low confidence in the validity.
 
@@ -2241,9 +2241,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 38]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 38]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +-------------------------+
@@ -2300,9 +2300,9 @@ Internet-Draft                  IODEFv2                        July 2014
       difference is only one of tense.  When an action is in this class,
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 39]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 39]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       it has been completed.  See Section 3.17.
 
@@ -2359,9 +2359,9 @@ Internet-Draft                  IODEFv2                        July 2014
       event.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 40]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 40]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    Discovery 
@@ -2418,9 +2418,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 41]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 41]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    There is substantial overlap in the Incident and EventData classes.
@@ -2477,9 +2477,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 42]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 42]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The Expectation class conveys to the recipient of the IODEF document
@@ -2536,9 +2536,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
    severity 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 43]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 43]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  ENUM.  Indicates the desired priority of the action.
       This attribute is an enumerated list with no default value, and
@@ -2595,9 +2595,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 44]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 44]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       15.  status-triage.  Conveys receipts and the triaging of an
@@ -2654,9 +2654,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 45]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 45]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The System class describes a system or network involved in an event.
@@ -2713,9 +2713,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
    restriction 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 46]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 46]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  ENUM.  This attribute is defined in Section 3.2.
 
@@ -2772,9 +2772,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 47]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 47]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       3.  unknown.  It is not known if the System is virtual.
 
@@ -2831,9 +2831,9 @@ Internet-Draft                  IODEFv2                        July 2014
       DomainData MUST be specified.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 48]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 48]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    Address 
@@ -2890,9 +2890,9 @@ Internet-Draft                  IODEFv2                        July 2014
       3.  e-mail.   Electronic mail address (RFC 822)
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 49]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 49]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       4.  ipv4-addr.  IPv4 host address in dotted-decimal notation
@@ -2949,9 +2949,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The NodeRole class has three attributes:
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 50]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 50]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    category 
@@ -3008,9 +3008,9 @@ Internet-Draft                  IODEFv2                        July 2014
       24.  dhcp.  DHCP server
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 51]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 51]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       25.  infra.  Infrastructure server (e.g., router, firewall, DHCP)
@@ -3067,9 +3067,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 52]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 52]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +---------------------+
@@ -3126,9 +3126,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 53]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 53]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
       Optional.  ENUM.  If present, the Counter class represents a rate
       rather than a count over the entire event.  In that case, this
@@ -3183,12 +3183,13 @@ Internet-Draft                  IODEFv2                        July 2014
       Zero or more.  The name servers identified for the domain listed
       in Name.
 
-   DomainContacts 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 54]
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 54]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
+   DomainContacts 
       Zero or one.  Contact information for the domain listed in Name
       supplied by the registrar or through a whois query.
 
@@ -3243,10 +3244,9 @@ Internet-Draft                  IODEFv2                        July 2014
       9.  other.  The domain has a known status but it is not one of the
           redefined enumerated values.
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 55]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 55]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       10.  unknown.  The domain has an unknown status.
@@ -3303,9 +3303,9 @@ Internet-Draft                  IODEFv2                        July 2014
    Server 
       One.  ML_STRING.  The domain name of the name server.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 56]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 56]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    Address 
@@ -3362,9 +3362,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 57]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 57]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +-------------------------+
@@ -3421,9 +3421,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 58]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 58]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    When a given System classes with category="source" and another with
@@ -3477,15 +3477,13 @@ Internet-Draft                  IODEFv2                        July 2014
 
    dtype 
       Required.  ENUM.  The data type of the element content.  The
-
-
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 59]
-
-Internet-Draft                  IODEFv2                        July 2014
-
       permitted values for this attribute are shown below.  The default
       value is "string".
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 59]
+
+Internet-Draft                  IODEFv2                      August 2014
+
 
       1.  boolean.  The element content is of type BOOLEAN.
 
@@ -3528,22 +3526,6 @@ Internet-Draft                  IODEFv2                        July 2014
    The Application class describes an application running on a System
    providing a Service.
 
-
-
-
-
-
-
-
-
-
-
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 60]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
    +--------------------+
    | Application        |
    +--------------------+
@@ -3555,6 +3537,12 @@ Internet-Draft                  IODEFv2                        July 2014
    | STRING version     |
    | STRING patch       |
    +--------------------+
+
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 60]
+
+Internet-Draft                  IODEFv2                      August 2014
+
 
    The aggregate class that constitute Application is:
 
@@ -3595,14 +3583,6 @@ Internet-Draft                  IODEFv2                        July 2014
 
 3.24.  EmailData Class
 
-
-
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 61]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
    The EmailData class describes headers from an email message.  Common
    headers have dedicated classes, but arbitrary headers can also be
    described.
@@ -3617,6 +3597,11 @@ Internet-Draft                  IODEFv2                        July 2014
    +-------------------------+
 
    The aggregate class that constitutes EmailData are:
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 61]
+
+Internet-Draft                  IODEFv2                      August 2014
+
 
    EmailFrom 
       Zero or one.  The value of the "From:" header field in an email.
@@ -3656,12 +3641,6 @@ Internet-Draft                  IODEFv2                        July 2014
 
    The aggregate class that constitutes Record is:
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 62]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
    RecordData 
       One or more.  Log or audit data generated by a particular type of
       sensor.  Separate instances of the RecordData class SHOULD be used
@@ -3671,6 +3650,16 @@ Internet-Draft                  IODEFv2                        July 2014
 
    restriction 
       Optional.  ENUM.  This attribute has been defined in Section 3.2.
+
+
+
+
+
+
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 62]
+
+Internet-Draft                  IODEFv2                      August 2014
 
 3.25.1.  RecordData Class
 
@@ -3710,16 +3699,6 @@ Internet-Draft                  IODEFv2                        July 2014
    RecordItem 
       Zero or more.  Log, audit, or forensic data.
 
-
-
-
-
-
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 63]
-
-Internet-Draft                  IODEFv2                        July 2014
-
    HashData 
       Zero or one.  The file name and hash of a file indicator.
 
@@ -3730,6 +3709,16 @@ Internet-Draft                  IODEFv2                        July 2014
    AdditionalData 
       Zero or more.  An extension mechanism for data not explicitly
       represented in the data model.
+
+
+
+
+
+
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 63]
+
+Internet-Draft                  IODEFv2                      August 2014
 
    The RecordData class has two attribute:
 
@@ -3774,12 +3763,6 @@ Internet-Draft                  IODEFv2                        July 2014
 
       3.  xpath.  XML Path (XPath) [W3C.XPATH]
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 64]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
       4.  ext-value.  An escape value used to extend this attribute.
           See Section 5.1.
 
@@ -3790,6 +3773,12 @@ Internet-Draft                  IODEFv2                        July 2014
    offset 
       Optional.  INTEGER.  Amount of units (determined by the offsetunit
       attribute) to seek into the RecordItem data before matching the
+
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 64]
+
+Internet-Draft                  IODEFv2                      August 2014
+
       pattern.
 
    offsetunit 
@@ -3833,12 +3822,6 @@ Internet-Draft                  IODEFv2                        July 2014
    | ID observable-id            |<>--{1..*}--[ Key ]
    +-----------------------------+
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 65]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
    The aggregate class that constitutes the WindowsRegistryKeysModified
    class is:
 
@@ -3849,6 +3832,12 @@ Internet-Draft                  IODEFv2                        July 2014
 
    observable-id 
       Optional.  ID.  See Section 3.3.2.
+
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 65]
+
+Internet-Draft                  IODEFv2                      August 2014
+
 
 3.26.1.  Key Class
 
@@ -3892,12 +3881,6 @@ Internet-Draft                  IODEFv2                        July 2014
 
       7.  ext-value.  External value.
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 66]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
    ext-registryaction 
       Optional.  A means by which to extend the registryaction
       attribute.  See Section 5.1.
@@ -3909,6 +3892,11 @@ Internet-Draft                  IODEFv2                        July 2014
 
    The HashData class describes files names and associated hashes and
    signatures.  ... TODO Fix Issue #20 and #25 ...
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 66]
+
+Internet-Draft                  IODEFv2                      August 2014
+
 
    +--------------------------+
    | HashData                 |
@@ -3951,24 +3939,35 @@ Internet-Draft                  IODEFv2                        July 2014
 
       1.  PKI-email-ds.  PKI email digital signature.
 
-
-Danyliw & Stoecker     Expires December 31, 2014               [Page 67]
-
-Internet-Draft                  IODEFv2                        July 2014
-
-
       2.  PKI-file-ds.  PKI file digital signature.
 
       3.  PGP-email-ds.  PGP email digital signature.
 
       4.  PGP-file-ds.  PGP file digital signature.
 
-      5.  file-hash.  A file hash.
+      5.  file-hash.  A hash computed over the entire contents of a
+          file.
 
-      6.  email-hash.  An email hash.
+      6.  email-hash.  A hash computed over the headers and body of an
+          email message.
 
-      7.  ext-value.  An escape value used to extend this attribute.
-          See Section 5.1.
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 67]
+
+Internet-Draft                  IODEFv2                      August 2014
+
+
+      7.  email-headers-hash.  A hash computed over all of the headers
+          of an email message.
+
+      8.  email-body-hash.  A hash computed over the body of an email
+          message.
+
+      9.  email-headers-hash.  A hash computed over all of the email
+          headers.
+
+      10.  ext-value.  An escape value used to extend this attribute.
+           See Section 5.1.
 
    ext-type 
       Optional.  STRING.  A means by which to extend the type attribute.
@@ -4011,9 +4010,10 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 68]
+
+Danyliw & Stoecker      Expires January 31, 2015               [Page 68]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    +--------------------+
@@ -4051,8 +4051,8 @@ Internet-Draft                  IODEFv2                        July 2014
       period during which this indicator is valid.
 
    EndTime 
-      Zero or one.  DATETIME. A timestamp fo the end of the time period
-      during which this indicaor is valid.
+      Zero or one.  DATETIME. A timestamp of the end of the time period
+      during which this indicator is valid.
 
    Confidence 
       Zero or one.  An estimate of the confidence in the quality of the
@@ -4070,9 +4070,9 @@ Internet-Draft                  IODEFv2                        July 2014
       Zero or one.  A reference to a feature or phenomenon defined
       elsewhere in the document.  See Section 3.29.5.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 69]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 69]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    IndicatorExpression 
@@ -4091,7 +4091,7 @@ Internet-Draft                  IODEFv2                        July 2014
 
    The StartTime and EndTime classes can be used to define an interval
    during which the indicator is valid.  If both classes are present,
-   the indicator is consider valid only during the decribed interval.
+   the indicator is consider valid only during the described interval.
    If neither class is provided, the indicator is considered valid
    during any time interval.  If only a StartTime is provided, the
    indicator is valid anytime after this timestamp.  If only an EndTime
@@ -4104,11 +4104,11 @@ Internet-Draft                  IODEFv2                        July 2014
 
 3.29.1.  IndicatorID Class
 
-   The IndicatorID class identifies an indicator with a indentifier
-   globally unique identifier.  The combination of the name and version
-   attributes, and the element content form this identifier.  Indicators
-   generated by given CSIRT MUST NOT resuse the same value unless they
-   are referencing the same indicator.
+   The IndicatorID class identifies an indicator with a globally unique
+   identifier.  The combination of the name and version attributes, and
+   the element content form this identifier.  Indicators generated by
+   given CSIRT MUST NOT reuse the same value unless they are referencing
+   the same indicator.
 
    +------------------+
    | IndicatorID      |
@@ -4129,9 +4129,9 @@ Internet-Draft                  IODEFv2                        July 2014
       attribute in Section 3.4.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 70]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 70]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    version 
@@ -4188,9 +4188,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The aggregate classes that constitute Observable are:
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 71]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 71]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    Address 
@@ -4247,9 +4247,9 @@ Internet-Draft                  IODEFv2                        July 2014
    The Observable class MUST have exactly one of the possible child
    classes.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 72]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 72]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The Observable class has no attributes.
@@ -4306,9 +4306,9 @@ Internet-Draft                  IODEFv2                        July 2014
       Optional.  ENUM.  The operator to be applied between the child
       elements.
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 73]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 73]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
       1.  not.  negation operator.
@@ -4365,9 +4365,9 @@ Internet-Draft                  IODEFv2                        July 2014
       class will have this identifier set in the IndicatorID class.
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 74]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 74]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    euid-ref 
@@ -4424,9 +4424,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 4.3.  Validation
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 75]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 75]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The IODEF documents MUST be well-formed XML.  It is RECOMMENDED that
@@ -4483,9 +4483,9 @@ Internet-Draft                  IODEFv2                        July 2014
    incompatibilities where the data model has changed between versions:
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 76]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 76]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    o  Renames the Service@ip_protocol attribute to @ip-protocol.
@@ -4493,7 +4493,7 @@ Internet-Draft                  IODEFv2                        July 2014
    o  Removes the Node/NodeName in favor of representing domain names
       with Node/DomainData/Name.  Node/DataTime was also removed so that
       Node/DomainData/DateDomainWasChecked can represent the time at
-      which the name to address resolution occured.
+      which the name to address resolution occurred.
 
 5.  Extending the IODEF
 
@@ -4542,9 +4542,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 77]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 77]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    The classes of the data model can be extended only through the use of
@@ -4601,9 +4601,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 78]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 78]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    6.  Some users of the IODEF may have private schema definitions that
@@ -4660,9 +4660,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 79]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 79]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    Internationalization and localization is of specific concern to the
@@ -4719,9 +4719,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 80]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 80]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    
@@ -4778,9 +4778,9 @@ Internet-Draft                  IODEFv2                        July 2014
                <!-- Additional logs -->
              <RecordItem dtype="url">
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 81]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 81]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                 http://mylogs.example.com/logs/httpd_access</RecordItem>
            </RecordData>
@@ -4837,9 +4837,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 82]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 82]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    
@@ -4896,9 +4896,9 @@ Internet-Draft                  IODEFv2                        July 2014
              <Node>
                <Address category="ipv4-addr">192.0.2.201</Address>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 83]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 83]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
              </Node>
              <Service ip_protocol="6">
@@ -4955,9 +4955,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 84]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 84]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    
@@ -5014,9 +5014,9 @@ Internet-Draft                  IODEFv2                        July 2014
                <Address category="ipv4-addr">192.0.2.3</Address>
              </Node>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 85]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 85]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
              <Counter type="byte" duration="second">250000</Counter>
              <Description>bot</Description>
@@ -5073,9 +5073,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 86]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 86]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    
@@ -5132,9 +5132,9 @@ Internet-Draft                  IODEFv2                        July 2014
            <System category="source">
              <Node>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 87]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 87]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                <Address category="ipv4-addr">192.0.2.241</Address>
              </Node>
@@ -5191,9 +5191,9 @@ Internet-Draft                  IODEFv2                        July 2014
 
 
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 88]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 88]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
 
    <xs:schema targetNamespace="urn:ietf:params:xml:ns:iodef-2.0"
@@ -5250,9 +5250,9 @@ Internet-Draft                  IODEFv2                        July 2014
                          minOccurs="0"/>
              <xs:element ref="iodef:StartTime"
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 89]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 89]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                          minOccurs="0"/>
              <xs:element ref="iodef:EndTime"
@@ -5309,9 +5309,9 @@ Internet-Draft                  IODEFv2                        July 2014
              <xs:attribute name="name"
                            type="xs:string" use="required"/>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 90]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 90]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
              <xs:attribute name="instance"
                            type="xs:string" use="optional"/>
@@ -5368,9 +5368,9 @@ Internet-Draft                  IODEFv2                        July 2014
                            maxOccurs="unbounded"/>
                <xs:element ref="iodef:ThreatActor"
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 91]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 91]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                            maxOccurs="unbounded"/>
                <xs:element ref="iodef:Campaign"
@@ -5427,9 +5427,9 @@ Internet-Draft                  IODEFv2                        July 2014
                  <xs:element ref="iodef:CampaignID"/>
                  <xs:element ref="iodef:Description"
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 92]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 92]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                            minOccurs="0" maxOccurs="unbounded"/>
                </xs:sequence>
@@ -5486,9 +5486,9 @@ Internet-Draft                  IODEFv2                        July 2014
              <xs:simpleType>
                <xs:restriction base="xs:NMTOKEN">
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 93]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 93]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                  <xs:enumeration value="creator"/>
                  <xs:enumeration value="reporter"/>
@@ -5545,9 +5545,9 @@ Internet-Draft                  IODEFv2                        July 2014
                      <xs:enumeration value="afrinic"/>
                      <xs:enumeration value="local"/>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 94]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 94]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                      <xs:enumeration value="ext-value"/>
                    </xs:restriction>
@@ -5604,9 +5604,9 @@ Internet-Draft                  IODEFv2                        July 2014
          <xs:restriction base="xs:string">
            <xs:pattern value="Z|[\+\-](0[0-9]|1[0-4]):[0-5][0-9]"/>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 95]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 95]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
          </xs:restriction>
        </xs:simpleType>
@@ -5663,9 +5663,9 @@ Internet-Draft                  IODEFv2                        July 2014
              <xs:element ref="iodef:Description"
                          minOccurs="0" maxOccurs="unbounded"/>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 96]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 96]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
              <xs:element name="DefinedCOA"
                          type="iodef:MLStringType"
@@ -5722,9 +5722,9 @@ Internet-Draft                  IODEFv2                        July 2014
                  <xs:enumeration value="investigation"/>
                  <xs:enumeration value="internal-notification"/>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 97]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 97]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                  <xs:enumeration value="external-notification"/>
                  <xs:enumeration value="unknown"/>
@@ -5781,9 +5781,9 @@ Internet-Draft                  IODEFv2                        July 2014
        <xs:element name="Reference">
          <xs:complexType>
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 98]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 98]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
            <xs:sequence>
              <xs:element name="ReferenceName"
@@ -5840,9 +5840,9 @@ Internet-Draft                  IODEFv2                        July 2014
        </xs:element>
        <xs:element name="Impact">
 
-Danyliw & Stoecker     Expires December 31, 2014               [Page 99]
+Danyliw & Stoecker      Expires January 31, 2015               [Page 99]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
          <xs:complexType>
            <xs:simpleContent>
@@ -5899,9 +5899,9 @@ Internet-Draft                  IODEFv2                        July 2014
                    </xs:restriction>
                  </xs:simpleType>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 100]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 100]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                </xs:attribute>
                <xs:attribute name="ext-severity"
@@ -5958,9 +5958,9 @@ Internet-Draft                  IODEFv2                        July 2014
          </xs:complexType>
        </xs:element>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 101]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 101]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
        <xs:element name="MonetaryImpact">
          <xs:complexType>
@@ -6017,9 +6017,9 @@ Internet-Draft                  IODEFv2                        July 2014
                          minOccurs="0" maxOccurs="unbounded"/>
              <xs:element ref="iodef:Expectation"
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 102]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 102]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                          minOccurs="0" maxOccurs="unbounded"/>
              <xs:element ref="iodef:Record"
@@ -6076,9 +6076,9 @@ Internet-Draft                  IODEFv2                        July 2014
                          minOccurs="0" maxOccurs="unbounded"/>
            </xs:sequence>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 103]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 103]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
            <xs:attribute name="restriction"
                          type="iodef:restriction-type"/>
@@ -6135,9 +6135,9 @@ Internet-Draft                  IODEFv2                        July 2014
              </xs:choice>
              <xs:element ref="iodef:PostalAddress"
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 104]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 104]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                          minOccurs="0"/>
              <xs:element ref="iodef:Location"
@@ -6194,9 +6194,9 @@ Internet-Draft                  IODEFv2                        July 2014
                      <xs:enumeration value="client"/>
                      <xs:enumeration value="client-enterprise"/>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 105]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 105]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                      <xs:enumeration value="client-partner"/>
                      <xs:enumeration value="client-remote"/>
@@ -6253,9 +6253,9 @@ Internet-Draft                  IODEFv2                        July 2014
          <xs:complexType>
            <xs:sequence>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 106]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 106]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
              <xs:choice minOccurs="0">
                <xs:element name="Port"
@@ -6312,9 +6312,9 @@ Internet-Draft                  IODEFv2                        July 2014
                      <xs:enumeration value="ext-value"/>
                    </xs:restriction>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 107]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 107]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                  </xs:simpleType>
                </xs:attribute>
@@ -6371,9 +6371,9 @@ Internet-Draft                  IODEFv2                        July 2014
                        type="xs:dateTime"
                        minOccurs="0" maxOccurs="1" />
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 108]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 108]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
            <xs:element name="ExpirationDate"
                        type="xs:dateTime"
@@ -6430,9 +6430,9 @@ Internet-Draft                  IODEFv2                        July 2014
          <xs:extension base="xs:string">
          <xs:attribute name="record-type" use="optional">
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 109]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 109]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
            <xs:simpleType>
              <xs:restriction base="xs:NMTOKEN">
@@ -6489,9 +6489,9 @@ Internet-Draft                  IODEFv2                        July 2014
             <xs:element name="Server" type="iodef:MLStringType"/>
             <xs:element ref="iodef:Address" maxOccurs="unbounded"/>
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 110]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 110]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
           </xs:sequence>
         </xs:complexType>
@@ -6548,9 +6548,9 @@ Internet-Draft                  IODEFv2                        July 2014
                          type="iodef:restriction-type"/>
            <xs:attribute name="observable-id"
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 111]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 111]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                          type="xs:ID" use="optional"/>
          </xs:complexType>
@@ -6607,9 +6607,9 @@ Internet-Draft                  IODEFv2                        July 2014
                <xs:sequence>
                <!-- Allows for the value to be optional for cases
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 112]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 112]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                     such as, the registry key was deleted -->
                   <xs:element name="KeyName" type="xs:string"/>
@@ -6666,9 +6666,9 @@ Internet-Draft                  IODEFv2                        July 2014
                        minOccurs="0" maxOccurs="unbounded"/>
            <xs:element ref="ds:Reference"
 
-Danyliw & Stoecker     Expires December 31, 2014              [Page 113]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 113]
 
-Internet-Draft                  IODEFv2                        July 2014
+Internet-Draft                  IODEFv2                      August 2014
 
                        minOccurs="0" maxOccurs="unbounded"/>
            <xs:element ref="iodef:AdditionalData"
@@ -6683,6 +6683,8 @@ Internet-Draft                  IODEFv2                        July 2014
                <xs:enumeration value="PGP-file-ds"/>
                <xs:enumeration value="file-hash"/>
                <xs:enumeration value="email-hash"/>
+               <xs:enumeration value="email-headers-hash"/>
+               <xs:enumeration value="email-body-hash"/>
                <!-- QUESTION: Are values needed to differentiate the
                     key information shared when the ds:KeyInfo class
                     is referenced? -->
@@ -6722,13 +6724,13 @@ Internet-Draft                  IODEFv2                        July 2014
          <xs:attribute name="name"
                        type="xs:string"/>
         <!-- CHANGE: Should UserAgent or HTTPUserAgent fit in
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 114]
+
+Internet-Draft                  IODEFv2                      August 2014
+
              SoftwareTypes? This is typically intended to mean
              servers, but the category seems more appropriate
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 114]
-
-Internet-Draft                  IODEFv2                        July 2014
-
              than others.
         -->
          <xs:attribute name="user-agent"
@@ -6781,13 +6783,13 @@ Internet-Draft                  IODEFv2                        July 2014
             </xs:choice>
           </xs:sequence>
           <xs:attribute name="restriction"
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 115]
+
+Internet-Draft                  IODEFv2                      August 2014
+
                        type="iodef:restriction-type"/>
         </xs:complexType>
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 115]
-
-Internet-Draft                  IODEFv2                        July 2014
-
       </xs:element>
    
       <xs:element name="IndicatorID" type="iodef:IndicatorIDType"/>
@@ -6840,13 +6842,13 @@ Internet-Draft                  IODEFv2                        July 2014
             <xs:element ref="iodef:Reference"
                         minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="iodef:Assessment"
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 116]
+
+Internet-Draft                  IODEFv2                      August 2014
+
                         minOccurs="0"/>
             <xs:element ref="iodef:HistoryItem"
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 116]
-
-Internet-Draft                  IODEFv2                        July 2014
-
                         minOccurs="0"/>
             <xs:element ref="iodef:AdditionalData"
                         minOccurs="0"/>
@@ -6899,13 +6901,13 @@ Internet-Draft                  IODEFv2                        July 2014
           <xs:attribute name="euid-ref"
                         type="xs:string" use="optional"/>
           <xs:attribute name="version"
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 117]
+
+Internet-Draft                  IODEFv2                      August 2014
+
                         type="xs:string" use="optional"/>
         </xs:complexType>
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 117]
-
-Internet-Draft                  IODEFv2                        July 2014
-
       </xs:element>
    <!--   ==================================================================
       == Miscellaneous simple classes                                 ==
@@ -6958,13 +6960,13 @@ Internet-Draft                  IODEFv2                        July 2014
                     minOccurs="0" maxOccurs="unbounded"/>
          </xs:sequence>
          <xs:attribute name="proto"
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 118]
+
+Internet-Draft                  IODEFv2                      August 2014
+
                        type="xs:integer" use="required"/>
          <xs:attribute name="field"
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 118]
-
-Internet-Draft                  IODEFv2                        July 2014
-
                        type="xs:string" use="required"/>
          <xs:attribute name="dtype"
                        type="iodef:proto-dtype-type"
@@ -7017,13 +7019,13 @@ Internet-Draft                  IODEFv2                        July 2014
        <xs:simpleType name="duration-type">
          <xs:restriction base="xs:NMTOKEN">
            <xs:enumeration value="second"/>
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 119]
+
+Internet-Draft                  IODEFv2                      August 2014
+
            <xs:enumeration value="minute"/>
            <xs:enumeration value="hour"/>
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 119]
-
-Internet-Draft                  IODEFv2                        July 2014
-
            <xs:enumeration value="day"/>
            <xs:enumeration value="month"/>
            <xs:enumeration value="quarter"/>
@@ -7076,13 +7078,13 @@ Internet-Draft                  IODEFv2                        July 2014
            <xs:enumeration value="ipv4-packet"/>
            <xs:enumeration value="ipv6-packet"/>
            <xs:enumeration value="url"/>
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 120]
+
+Internet-Draft                  IODEFv2                      August 2014
+
            <xs:enumeration value="csv"/>
            <xs:enumeration value="winreg"/>
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 120]
-
-Internet-Draft                  IODEFv2                        July 2014
-
            <xs:enumeration value="xml"/>
            <xs:enumeration value="ext-value"/>
          </xs:restriction>
@@ -7133,15 +7135,17 @@ Internet-Draft                  IODEFv2                        July 2014
    the latter risk must be addressed by the systems that process, store,
    and archive IODEF documents and information derived from them.
 
+
+
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 121]
+
+Internet-Draft                  IODEFv2                      August 2014
+
+
    Executable content could be embedded into the IODEF document directly
    or through an extension.  The IODEF parser should handle this content
    with care to prevent unintentional automated execution.
-
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 121]
-
-Internet-Draft                  IODEFv2                        July 2014
-
 
    The contents of an IODEF document may include a request for action or
    an IODEF parser may independently have logic to take certain actions
@@ -7191,16 +7195,18 @@ Internet-Draft                  IODEFv2                        July 2014
 
 11.  Acknowledgments
 
+
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 122]
+
+Internet-Draft                  IODEFv2                      August 2014
+
+
    The following groups and individuals, listed alphabetically,
    contributed substantially to this document and should be recognized
    for their efforts.
 
    o  Kathleen Moriarty, EMC Corporation
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 122]
-
-Internet-Draft                  IODEFv2                        July 2014
-
 
    o  Brian Trammell, ETH Zurich
 
@@ -7248,18 +7254,19 @@ Internet-Draft                  IODEFv2                        July 2014
    [RFC4646]  Philips, A. and M. Davis, "Tags for Identifying of
               Languages", RFC 4646, September 2006.
 
+
+
+Danyliw & Stoecker      Expires January 31, 2015              [Page 123]
+
+Internet-Draft                  IODEFv2                      August 2014
+
+
    [RFC3986]  Berners-Lee, T., Fielding, R. and L. Masinter, "Uniform
               Resource Identifiers (URI): Generic Syntax", RFC 3986,
               January 2005`.
 
    [RFC2978]  Freed, N. and J. Postel, "IANA Charset Registration
               Procedures", BCP 2978, October 2000.
-
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 123]
-
-Internet-Draft                  IODEFv2                        July 2014
-
 
    [RFC4519]  Sciberras, A., "Schema for User Applications", RFC 4519,
               June 2006.
@@ -7308,17 +7315,17 @@ Internet-Draft                  IODEFv2                        July 2014
               for the Format for Incident Information Exchange (FINE)",
               Work in Progress, June 2006.
 
+Danyliw & Stoecker      Expires January 31, 2015              [Page 124]
+
+Internet-Draft                  IODEFv2                      August 2014
+
+
    [RFC4765]  Debar, H., Curry, D., Debar, H. and B. Feinstein,
               "Intrusion Detection Message Exchange Format", RFC 4765,
               March 2007.
 
    [RFC6545]  Moriarty, K., "Real-time Inter-network Defense (RID)", RFC
               6545, April 2012.
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 124]
-
-Internet-Draft                  IODEFv2                        July 2014
-
 
    [RFC6546]  Trammell, B., "Transport of Real-time Inter-network
               Defense (RID) Messages over HTTP/TLS", RFC 6546, April
@@ -7366,11 +7373,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-Danyliw & Stoecker     Expires December 31, 2014              [Page 125]
+Danyliw & Stoecker      Expires January 31, 2015              [Page 125]

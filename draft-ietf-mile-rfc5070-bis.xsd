@@ -1360,6 +1360,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
             <xs:enumeration value="PGP-file-ds"/>
             <xs:enumeration value="file-hash"/>
             <xs:enumeration value="email-hash"/>
+            <xs:enumeration value="email-headers-hash"/>
+            <xs:enumeration value="email-body-hash"/>
             <!-- QUESTION: Are values needed to differentiate the 
                  key information shared when the ds:KeyInfo class 
                  is referenced? -->

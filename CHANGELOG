@@ -1,11 +1,6 @@
 editorial = just the text was changed
 schema = text and schema was modified
 
-** (schema) Removed System@category={watchlist-source,watchlist-target} (Issue #42)
-** (schema) Remove HashInformation@type={PKI-email-ds-watchlist,PKI-file-ds-watchlist,PGP-email-ds-watchlist,PGP-file-ds-watchlist,file-hash-watchlist,email-hash-watchlist} (Issue #42)
-** (editorial) Removed Key@type (from the text but it was already gone from the schema) (Issue #42) 
-** (schema) Added Incident/IndicatorData, Indicator, IndicatorID, AlternativeIndicatorID, Observable, IndicatorExpression, ObservableReference, and IndicatorReference (Issues #14, 28)
-** (schema) Renamed all @indicator-uid to be @observable-id. Removed @indicator-set-id (Issue #41)
-** (schema) Renamed HashInformation in schema to be HashData. The text already used this name.
-** (text) changed RecordPattern@type="regex" reference to be POSIX ERE (Issue #2)
-** (text) Refined description of DomainData@status="other"
+** (text) Added improved language to HashData to described how the file and email hashes should be computed
+** (schema) Added HashData@type={email-headers-hash, email-body-hash} (Issue #45)
+
