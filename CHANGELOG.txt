@@ -1,0 +1,13 @@
+editorial = just the text was changed
+schema = text and schema was modified
+
+** (text) Added improved language to HashData to described how the file and email hashes should be computed
+** (schema) Added HashData@type={email-headers-hash, email-body-hash} (Issue #45)
+** (schema) Added NodeRole@category="webmail" to address feedback from draft-mile-implementationreport-00
+** (text) Replaced RFC 4646 reference to be RFC 5646 (per Alexey review)
+** (schema) Removed ReportID class
+** (text) Changed the default value of Impact@type to be consistent with the schema (i.e., "unknown") (per NATO feedback)
+** (text) Corrected HistoryItem@action text to reference Expectation@action (per NATO feedback)
+** (text) Corrected documentation of PostalAddress@meaning to have a data type of STRING (per NATO feedback) 
+** (schema) added Assessment/MitigatingFactor (Issue #45, sub-issue #3)
+

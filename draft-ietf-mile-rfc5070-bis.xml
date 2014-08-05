@@ -124,9 +124,9 @@ This document contains changes with respect to its predecessor RFC5070.
 <t>The following class was added to Incident: IndicatorData.</t>
 <t>The following classes were added to Incident and EventData: Discovery.</t>
 <t>The following classes and attributes were added to the Service class:  EmailData, DomainData, AssetID, ApplicationHeader @virtual, and @ownership.  Service@ip_protocol was renamed to @ip-protocol.</t>
-<t>The following classes were added to the Record class:  FileName and WindowsRegistryKeysModified.</t>
+<t>The following classes were added to the Record class:  HashData and WindowsRegistryKeysModified.</t>
 <t>The following classes were added to the RelatedActivity class: ThreatActor, Campaign, Confidence, Description, and AdditionalData.</t>
-<t>The following classes were added to Assessment: BusinessImpact.</t>
+<t>The following classes were added to Assessment: BusinessImpact and MitigatingFactor.</t>
 <t>The following classes were added to Node: PostalAddress and DomainData.  The following classes were removed from Node: Removed NodeName and DateTime.</t>
 <t>The following classes were added to the Contact class: ContactTitle.</t>
 <t>The following classes were added to Expectation and HistoryItem: DefinedCOA.</t>
@@ -251,7 +251,7 @@ The various data elements of the IODEF data model are typed.  This section discu
 </section>
 
 <section title="Date-Time Strings" anchor="dt_date_time">
-<t>Date-time strings are represented by the DATETIME data type.  Each date-time string identifies a particular instant in time; ranges are not supported.</t>
+<t>Date-time strings are represented by the DATETIME data type.  Each date-time string identifies a particular instant in time.  Ranges are not supported.</t>
 
 <t>Date-time strings are formatted according to a subset of <xref target="ISO8601" /> documented in <xref target="RFC3339" />.</t>
 
@@ -347,7 +347,7 @@ The IODEF-Document class is the top level class in the IODEF data model.  All IO
 <list style="hanging">
 <t hangText="version"><vspace/>Required.  STRING.  The IODEF specification version number to which this IODEF document conforms.  The value of this attribute MUST be "2.00"</t>
 
-<t hangText="lang"><vspace/>Required.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Required.  ENUM.  A valid language code per <xref target="RFC5646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 <t hangText="formatid"><vspace/>Optional.  STRING.  A free-form string to convey processing instructions to the recipient of the document.  Its semantics must be negotiated out-of-band.</t>
 	</list></t>
@@ -448,7 +448,7 @@ This attribute is defined as an enumerated list:
 
 <t hangText="ext-purpose"><vspace/>Optional.  STRING.  A means by which to extend the purpose attribute.  See <xref target="extending_enums" />.</t>
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC5646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 <t hangText="restriction"><vspace/>Optional.  ENUM.  See <xref target="restriction" />.</t>
 
@@ -917,7 +917,7 @@ the handle belongs.   The possible values are:
 +---------------------+
 | POSTAL              |
 |                     |
-| ENUM meaning        |
+| STRING meaning      |
 | ENUM lang           |
 +---------------------+
 ]]></artwork>
@@ -925,9 +925,9 @@ the handle belongs.   The possible values are:
 
 <t>The PostalAddress class has two attributes:
 <list style="hanging">
-<t hangText="meaning"><vspace/>Optional.  ENUM.  A free-form description of the element content.</t>
+<t hangText="meaning"><vspace/>Optional.  STRING.  A free-form description of the element content.</t>
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC5646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 </list>
 </t>
 </section> <!-- PostalAddress class -->
@@ -1203,13 +1203,14 @@ description of techniques, tactics, or procedures used by the intruder.
 +-------------------------+
 | Assessment              |
 +-------------------------+ 
-| ENUM occurrence         |<>--{0..*}--[ Impact         ]
-| ENUM restriction        |<>--{0..*}--[ BusinessImpact ]
-| ID observable-id        |<>--{0..*}--[ TimeImpact     ]
-|                         |<>--{0..*}--[ MonetaryImpact ]
-|                         |<>--{0..*}--[ Counter        ]
-|                         |<>--{0..1}--[ Confidence     ]
-|                         |<>--{0..*}--[ AdditionalData ]
+| ENUM occurrence         |<>--{0..*}--[ Impact           ]
+| ENUM restriction        |<>--{0..*}--[ BusinessImpact   ]
+| ID observable-id        |<>--{0..*}--[ TimeImpact       ]
+|                         |<>--{0..*}--[ MonetaryImpact   ]
+|                         |<>--{0..*}--[ Counter          ]
+|                         |<>--{0..*}--[ MitigatingFactor ]
+|                         |<>--{0..1}--[ Confidence       ]
+|                         |<>--{0..*}--[ AdditionalData   ]
 +-------------------------+
 ]]></artwork>
 </figure>
@@ -1231,6 +1232,9 @@ description of techniques, tactics, or procedures used by the intruder.
 
 <t hangText="Counter"><vspace/>Zero or more.  A counter with which to summarize the magnitude of the activity.</t>
 
+<t hangText="MitigatingFactor"><vspace/>Zero or one.  ML_STRING.  A description of a mitigating factor an impact.
+</t> 
+
 <t hangText="Confidence"><vspace/>Zero or one.  An estimate of confidence in the assessment.
 </t> 
 
@@ -1240,7 +1244,6 @@ description of techniques, tactics, or procedures used by the intruder.
 </list>
 	</t>
 <t>A least one instance of the possible three impact classes (i.e., Impact, TimeImpact, or MonetaryImpact) MUST be present.</t>
-
 
 <t>The Assessment class has three attributes:
 <list style="hanging">
@@ -1290,7 +1293,7 @@ description of techniques, tactics, or procedures used by the intruder.
 <t>The Impact class has five attributes:
 <list style="hanging">
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC5646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 <t hangText="severity"><vspace />Optional.  ENUM.  An estimate of the relative severity of the activity.  The permitted values are shown below.  There is no default value.
 <list style="numbers">
@@ -1307,7 +1310,7 @@ description of techniques, tactics, or procedures used by the intruder.
 <t>succeeded.  The attempted activity succeeded.</t>
 </list></t>
 
-<t hangText="type"><vspace />Required.  ENUM.  Classifies the malicious activity into incident categories.  The permitted values are shown below.  The default value is "other".
+<t hangText="type"><vspace />Required.  ENUM.  Classifies the malicious activity into incident categories.  The permitted values are shown below.  The default value is "unknown".
 <list style="numbers">
 <t>admin.  Administrative privileges were attempted.</t>
 <t>dos.  A denial of service was attempted.</t>
@@ -1613,7 +1616,7 @@ The element content is a positive, floating point number (REAL) specifying a uni
 action or occurrence documented in this history log entry.  As
 activity will likely have been instigated either through a previously
 conveyed expectation or internal investigation, this attribute is
-identical to the category attribute of the Expectation class.  The difference is only one of tense.  When an action is in this class, it has been completed.  See <xref target="Expectation" />.</t>
+identical to the action attribute of the Expectation class.  The difference is only one of tense.  When an action is in this class, it has been completed.  See <xref target="Expectation" />.</t>
 
 <t hangText="ext-action"><vspace/>Optional.  STRING.  A means by which to extend the action attribute.  See <xref target="extending_enums" />.</t>
 <t hangText="observable-id"><vspace/>Optional.  ID.  See <xref target="observableid_attribute" />.</t>
@@ -1747,7 +1750,6 @@ For example, an EventData class might be used to describe two machines involved 
 	</figure></t>
 
 <t>The aggregate classes that constitute Expectation are:
-
 
 <list style="hanging">
 <t hangText="Description"><vspace/>Zero or more.  ML_STRING.  A free-form description of the desired action(s).</t>
@@ -2060,6 +2062,7 @@ The System class describes a system or network involved in an event.  The system
 <t>server-public.  Server with public services</t>
 <t>www.  WWW server</t>
 <t>mail.  Mail server</t>
+<t>webmail.  Web mail server</t>
 <t>messaging.  Messaging server (e.g., NNTP, IRC, IM)</t>
 <t>streaming.  Streaming-media server</t>
 <t>voice.  Voice server (e.g., SIP, H.323)</t>
@@ -2091,7 +2094,7 @@ The System class describes a system or network involved in an event.  The system
 
 <t hangText="ext-category"><vspace />Optional.  STRING.  A means by which to extend the category attribute.  See <xref target="extending_enums" />.</t> 
 
-<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC4646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
+<t hangText="lang"><vspace/>Optional.  ENUM.  A valid language code per <xref target="RFC5646" /> constrained by the definition of "xs:language".  The interpretation of this code is described in <xref target="internationalization" />. </t>
 
 </list>
 </t>
@@ -3112,7 +3115,7 @@ The IODEF documents MUST be well-formed XML.  It is RECOMMENDED that recipients 
 <list style="symbols">
 <t>The elements or attributes that are defined as POSTAL, NAME, PHONE, and EMAIL data-types are implemented as "xs:string", but more rigid formatting requirements are specified in the text.</t>
 
-<t>The IODEF-Document@lang and MLStringType@lang attributes are declared as an "xs:language" that constrains values with a regular expression.  However, the value of this attribute still needs to be validated against the list of possible enumerated values is defined in <xref target="RFC4646" />.</t>
+<t>The IODEF-Document@lang and MLStringType@lang attributes are declared as an "xs:language" that constrains values with a regular expression.  However, the value of this attribute still needs to be validated against the list of possible enumerated values is defined in <xref target="RFC5646" />.</t>
 
 <t>The MonetaryImpact@currency attribute is declared as an "xs:string", but the list of valid values as defined in <xref target="ISO4217" />.</t>
 
@@ -3266,7 +3269,7 @@ The following XML excerpt demonstrates the use of the above schema as an extensi
 </t>
 
 <t>
-Since IODEF is implemented as an XML Schema, it implicitly supports all the different character encodings, such as UTF-8 and UTF-16, possible with XML.  Additionally, each IODEF document MUST specify the language in which their contents are encoded.  The language can be specified with the attribute "xml:lang" (per Section 2.12 of <xref target="W3C.XML" />) in the top-level element (i.e., IODEF-Document@lang) and letting all other elements inherit that definition.  All IODEF classes with a free-form text definition (i.e., all those defined of type iodef:MLStringType) can also specify a language different from the rest of the document.  The valid language codes for the "xml:lang" attribute are described in <xref target="RFC4646" />.  
+Since IODEF is implemented as an XML Schema, it implicitly supports all the different character encodings, such as UTF-8 and UTF-16, possible with XML.  Additionally, each IODEF document MUST specify the language in which their contents are encoded.  The language can be specified with the attribute "xml:lang" (per Section 2.12 of <xref target="W3C.XML" />) in the top-level element (i.e., IODEF-Document@lang) and letting all other elements inherit that definition.  All IODEF classes with a free-form text definition (i.e., all those defined of type iodef:MLStringType) can also specify a language different from the rest of the document.  The valid language codes for the "xml:lang" attribute are described in <xref target="RFC5646" />.  
 </t>
 
 <t>
@@ -3734,22 +3737,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
 
   <!--
    ==================================================================
-   ==  ReportID class                                              ==
-   ==================================================================
-  -->
-    <xs:element name="ReportID">
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element ref="iodef:IncidentID"
-            maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="restriction"
-          type="iodef:restriction-type"/>
-      </xs:complexType>
-    </xs:element>
-
-  <!--
-   ==================================================================
    ==  AlternativeID class                                         ==
    ==================================================================
   -->
@@ -4190,6 +4177,9 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           </xs:choice>
           <xs:element ref="iodef:Counter"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="MitigatingFactor"
+                      type="iodef:MLStringType"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Confidence" minOccurs="0"/>
           <xs:element ref="iodef:AdditionalData"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -4541,6 +4531,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                   <xs:enumeration value="server-public"/>
                   <xs:enumeration value="www"/>
                   <xs:enumeration value="mail"/>
+                  <xs:enumeration value="webmail" />
                   <xs:enumeration value="messaging"/>
                   <xs:enumeration value="streaming"/>
                   <xs:enumeration value="voice"/>
@@ -5036,7 +5027,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                 type="iodef:SoftwareType"/>
 
   <!--
-==================================================================
+   ==================================================================
    == IndicatorData classes                                 ==
    ==================================================================
 -->
@@ -5077,28 +5068,29 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
      </xs:complexType>
    </xs:element>
 
-   <xs:element name="IndicatorID" type="iodef:IndicatorIDType"/>
-   <xs:complexType name="IndicatorIDType">
-      <xs:simpleContent>
-        <xs:extension base="xs:id">
-          <xs:attribute name="name"
-                        type="xs:string" use="required"/>
-          <xs:attribute name="version"
-                        type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:simpleContent>
-    </xs:complexType>
+   <xs:element name="IndicatorID">
+     <xs:complexType>
+       <xs:simpleContent>
+         <xs:extension base="xs:ID">
+           <xs:attribute name="name"
+                         type="xs:string" use="required"/>
+           <xs:attribute name="version"
+                         type="xs:string" use="required"/>
+         </xs:extension>
+       </xs:simpleContent>
+     </xs:complexType>
+   </xs:element>
 
-    <xs:element name="AlternativeIndicatorID">
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element ref="iodef:IndicatorID"
-                      maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="restriction"
-                      type="iodef:restriction-type"/>
-      </xs:complexType>
-    </xs:element>
+   <xs:element name="AlternativeIndicatorID">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:IndicatorID"
+                     maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                     type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
 
    <xs:element name="Observable">
      <xs:complexType>
@@ -5184,7 +5176,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                      type="xs:string" use="optional"/>
      </xs:complexType>
    </xs:element>
-<!--   ==================================================================
+<!--  
+   ==================================================================
    == Miscellaneous simple classes                                 ==
    ==================================================================
   -->
@@ -5380,8 +5373,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           <xs:enumeration value="ext-value"/>
         </xs:restriction>
       </xs:simpleType>
-</xs:schema>		
-
+</xs:schema>
 ]]></artwork></figure></t>
 </section>  <!-- IODEF Schema -->
 
@@ -5527,7 +5519,7 @@ The following groups and individuals, listed alphabetically, contributed substan
 <seriesInfo name="RFC" value="2119" />
 </reference>	
 
-<reference anchor="RFC4646">
+<reference anchor="RFC5646">
 <front>
 	<title>Tags for Identifying of Languages</title>
 	<author initials="A." surname="Philips">
@@ -5536,9 +5528,9 @@ The following groups and individuals, listed alphabetically, contributed substan
 	<author initials="M." surname="Davis">
 		<organization />
 	</author>	
-	<date month="September" year="2006" />
+	<date month="September" year="2009" />
 </front>
-<seriesInfo name="RFC" value="4646" />
+<seriesInfo name="RFC" value="5646" />
 </reference>	
 
 <reference anchor="RFC3986">

@@ -116,22 +116,6 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
 
   <!--
    ==================================================================
-   ==  ReportID class                                              ==
-   ==================================================================
-  -->
-    <xs:element name="ReportID">
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element ref="iodef:IncidentID"
-            maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="restriction"
-          type="iodef:restriction-type"/>
-      </xs:complexType>
-    </xs:element>
-
-  <!--
-   ==================================================================
    ==  AlternativeID class                                         ==
    ==================================================================
   -->
@@ -572,6 +556,9 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
           </xs:choice>
           <xs:element ref="iodef:Counter"
                       minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="MitigatingFactor"
+                      type="iodef:MLStringType"
+                      minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="iodef:Confidence" minOccurs="0"/>
           <xs:element ref="iodef:AdditionalData"
                       minOccurs="0" maxOccurs="unbounded"/>
@@ -923,6 +910,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                   <xs:enumeration value="server-public"/>
                   <xs:enumeration value="www"/>
                   <xs:enumeration value="mail"/>
+                  <xs:enumeration value="webmail" />
                   <xs:enumeration value="messaging"/>
                   <xs:enumeration value="streaming"/>
                   <xs:enumeration value="voice"/>
@@ -1418,7 +1406,7 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                 type="iodef:SoftwareType"/>
 
   <!--
-==================================================================
+   ==================================================================
    == IndicatorData classes                                 ==
    ==================================================================
 -->
@@ -1459,28 +1447,29 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
      </xs:complexType>
    </xs:element>
 
-   <xs:element name="IndicatorID" type="iodef:IndicatorIDType"/>
-   <xs:complexType name="IndicatorIDType">
-      <xs:simpleContent>
-        <xs:extension base="xs:id">
-          <xs:attribute name="name"
-                        type="xs:string" use="required"/>
-          <xs:attribute name="version"
-                        type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:simpleContent>
-    </xs:complexType>
+   <xs:element name="IndicatorID">
+     <xs:complexType>
+       <xs:simpleContent>
+         <xs:extension base="xs:ID">
+           <xs:attribute name="name"
+                         type="xs:string" use="required"/>
+           <xs:attribute name="version"
+                         type="xs:string" use="required"/>
+         </xs:extension>
+       </xs:simpleContent>
+     </xs:complexType>
+   </xs:element>
 
-    <xs:element name="AlternativeIndicatorID">
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element ref="iodef:IndicatorID"
-                      maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="restriction"
-                      type="iodef:restriction-type"/>
-      </xs:complexType>
-    </xs:element>
+   <xs:element name="AlternativeIndicatorID">
+     <xs:complexType>
+       <xs:sequence>
+         <xs:element ref="iodef:IndicatorID"
+                     maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="restriction"
+                     type="iodef:restriction-type"/>
+     </xs:complexType>
+   </xs:element>
 
    <xs:element name="Observable">
      <xs:complexType>
@@ -1566,7 +1555,8 @@ REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
                      type="xs:string" use="optional"/>
      </xs:complexType>
    </xs:element>
-<!--   ==================================================================
+<!--  
+   ==================================================================
    == Miscellaneous simple classes                                 ==
    ==================================================================
   -->
